@@ -1,0 +1,212 @@
+/*
+ * The section's palette is a set of custom properties. The motion scene tweens
+ * them from sand to night as the section arrives; without motion it stays light.
+ */
+.process {
+  --bg: var(--color-sand);
+  --fg: var(--color-navy);
+  --line: rgba(16, 31, 54, 0.16);
+  --muted: rgba(16, 31, 54, 0.74);
+  --acc: var(--color-gold-deep);
+  --tile: var(--color-cream);
+
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding-block: clamp(28px, 3vw, 40px) clamp(72px, 8vw, 120px);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.titleWrap {
+  position: relative;
+  padding-block: clamp(56px, 7vw, 104px);
+}
+
+.title {
+  position: relative;
+  z-index: 1;
+  max-width: 15ch;
+  font-size: clamp(36px, 5vw, 80px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: var(--acc);
+}
+
+.orbit {
+  position: absolute;
+  top: 6%;
+  right: -4%;
+  width: min(54vw, 720px);
+  aspect-ratio: 2.3 / 1;
+  border: 2px solid var(--acc);
+  border-left-color: transparent;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  opacity: 0.75;
+  transform: rotate(-14deg);
+  pointer-events: none;
+}
+
+.orbitSecond {
+  top: 22%;
+  right: 2%;
+  width: min(40vw, 540px);
+  opacity: 0.4;
+  transform: rotate(-6deg);
+}
+
+/* 1px gaps over the line colour draw the hairlines; six cells fill every row. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: clamp(24px, 2.6vw, 40px);
+  background: var(--bg);
+}
+
+.stepName {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-size: clamp(26px, 2.3vw, 34px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  color: var(--acc);
+}
+
+.stepNumber {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+}
+
+.media {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--tile);
+}
+
+.icon {
+  width: 62%;
+  height: auto;
+  color: var(--fg);
+}
+
+.headline {
+  margin-top: 6px;
+  font-size: clamp(19px, 1.5vw, 22px);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.body {
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--muted);
+}
+
+.cta {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 420px;
+  overflow: hidden;
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+.ctaStar {
+  position: absolute;
+  width: 112%;
+  height: auto;
+  opacity: 0.1;
+}
+
+.ctaLabel {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 26px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    transform 0.35s ease;
+}
+
+.ctaArrow {
+  width: 22px;
+  height: 22px;
+}
+
+.cta:hover .ctaLabel {
+  background: var(--color-ink);
+  color: var(--color-gold);
+  transform: scale(1.04);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ctaStar {
+    animation: spin 40s linear infinite;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cta {
+    min-height: 300px;
+  }
+}

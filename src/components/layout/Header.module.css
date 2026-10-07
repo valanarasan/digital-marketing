@@ -1,0 +1,140 @@
+.header {
+  position: relative;
+  z-index: 10;
+  color: var(--color-cream);
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: rgba(243, 239, 230, 0.14);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: var(--header-height);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mark {
+  width: 40px;
+  height: auto;
+  color: var(--color-gold);
+}
+
+.word {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.05;
+}
+
+.word small {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--font-sans);
+  font-size: 9.5px;
+  letter-spacing: 0.42em;
+  opacity: 0.7;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: clamp(18px, 3vw, 40px);
+  font-size: 15px;
+}
+
+.links {
+  display: flex;
+  gap: clamp(18px, 3vw, 40px);
+}
+
+.link {
+  position: relative;
+  display: inline-block;
+  padding: 12px 0;
+  opacity: 0.88;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 8px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s ease;
+}
+
+.link:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.menuButton {
+  display: none;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(243, 239, 230, 0.28);
+  border-radius: var(--radius-pill);
+  background: none;
+  cursor: pointer;
+}
+
+.drawer {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .links,
+  .cta {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .drawer {
+    display: block;
+    position: absolute;
+    inset: 100% 0 auto;
+    padding: 8px var(--gutter) 28px;
+    background: var(--color-ink);
+    border-bottom: 1px solid var(--line-on-dark);
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+    transition:
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .drawerOpen {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+}
+
+.drawerLink {
+  display: block;
+  padding: 12px 0;
+  font-family: var(--font-serif);
+  font-size: 28px;
+  border-bottom: 1px solid var(--line-on-dark);
+}

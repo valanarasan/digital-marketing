@@ -1,0 +1,112 @@
+/* Colours come from the parent through currentColor and --accordion-accent. */
+.accordion {
+  --accordion-line: rgba(255, 255, 255, 0.11);
+  border-bottom: 1px solid var(--accordion-line);
+}
+
+.item {
+  position: relative;
+  border-top: 1px solid var(--accordion-line);
+}
+
+.item::before {
+  content: '';
+  position: absolute;
+  inset: -1px 0 auto;
+  height: 1px;
+  background: var(--accordion-accent, var(--color-gold));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s ease;
+}
+
+.item:hover::before,
+.open::before {
+  transform: scaleX(1);
+}
+
+.heading {
+  font: inherit;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 44px;
+  padding: 26px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.index {
+  align-self: flex-start;
+  margin-top: 4px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--accordion-accent, var(--color-gold));
+}
+
+.title {
+  flex: 1;
+  font-size: clamp(24px, 2.4vw, 36px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  transition: transform 0.45s ease;
+}
+
+.item:hover .title {
+  transform: translateX(6px);
+}
+
+.plus {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  transition: transform 0.45s ease;
+}
+
+.plus::before,
+.plus::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1.5px;
+  margin-top: -0.75px;
+  background: currentColor;
+}
+
+.plus::after {
+  transform: rotate(90deg);
+}
+
+.open .plus {
+  transform: rotate(45deg);
+  color: var(--accordion-accent, var(--color-gold));
+}
+
+.panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transition:
+    grid-template-rows 0.55s var(--ease-soft),
+    opacity 0.45s ease;
+}
+
+.open .panel {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.panelInner {
+  overflow: hidden;
+}

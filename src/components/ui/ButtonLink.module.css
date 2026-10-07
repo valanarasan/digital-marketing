@@ -1,0 +1,51 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.arrow {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  transition: transform 0.35s ease;
+}
+
+.button:hover .arrow {
+  transform: translateX(4px);
+}
+
+.solid {
+  min-height: 54px;
+  padding: 0 28px;
+  background: var(--color-gold);
+  color: var(--color-ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.solid:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px -12px rgba(226, 176, 74, 0.7);
+}
+
+.pill {
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid rgba(243, 239, 230, 0.28);
+  font-size: 15px;
+}
+
+.pill:hover {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-ink);
+}

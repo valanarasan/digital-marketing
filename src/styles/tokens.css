@@ -1,0 +1,43 @@
+/*
+ * Design tokens — "Midnight Gold". Every colour, typeface and rhythm value the
+ * components use comes from here, so a palette change is a one-file change.
+ */
+:root {
+  /* Navy family */
+  --color-ink: #0a1424; /* hero ground */
+  --color-navy: #101f36; /* brand navy: text on light, cards */
+  --color-dark: #0d1a2d; /* services band */
+  --color-night: #060c17; /* footer */
+
+  /* Gold family */
+  --color-gold: #e2b04a; /* the accent */
+  --color-gold-bright: #ffe3a1; /* travelling light */
+  --color-gold-deep: #85600a; /* accent text on light grounds (AA) */
+
+  /* Light grounds */
+  --color-cream: #f3efe6; /* text on navy, "who we are" ground */
+  --color-sand: #e8e2d4; /* process ground before it darkens */
+  --color-white: #ffffff;
+
+  /* Lines and muted text */
+  --line-on-dark: rgba(243, 239, 230, 0.16);
+  --line-on-light: rgba(16, 31, 54, 0.16);
+  --text-muted-on-dark: rgba(243, 239, 230, 0.82);
+  --text-muted-on-light: rgba(16, 31, 54, 0.8);
+
+  /* Type */
+  --font-sans: 'Geist Variable', 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+
+  /* Layout */
+  --page-max: 1440px;
+  --gutter: clamp(16px, 4vw, 56px);
+  --header-height: 84px;
+  --radius-pill: 999px;
+  --radius-card: 16px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
+}

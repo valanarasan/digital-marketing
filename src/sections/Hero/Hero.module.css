@@ -1,0 +1,253 @@
+.hero {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 900px;
+  overflow: hidden;
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+/* Faint lotus behind the headline, drawn in on load. */
+.watermark {
+  position: absolute;
+  top: 54%;
+  left: 50%;
+  z-index: 0;
+  width: min(980px, 96vw);
+  color: var(--color-gold);
+  opacity: 0.08;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.watermark svg {
+  width: 100%;
+  height: auto;
+}
+
+.watermark path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.mast {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+  padding-block: 18px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(243, 239, 230, 0.66);
+}
+
+.mastMark {
+  width: 30px;
+  height: auto;
+  color: var(--color-gold);
+}
+
+.location {
+  text-align: right;
+}
+
+.rule {
+  position: relative;
+  z-index: 1;
+  height: 1px;
+  background: var(--line-on-dark);
+}
+
+.head {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+}
+
+.headInner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: clamp(28px, 3.4vw, 52px) clamp(22px, 2.8vw, 40px);
+  text-align: center;
+  outline: none;
+}
+
+.title {
+  font-weight: 500;
+}
+
+.lead {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 4.4vw, 66px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: var(--color-cream);
+}
+
+.mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.line {
+  display: inline-block;
+}
+
+.payoff {
+  display: block;
+  margin-top: 0.14em;
+  font-family: var(--font-serif);
+  font-size: clamp(50px, 9vw, 134px);
+  font-style: italic;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  color: var(--color-gold);
+}
+
+/* Padding keeps the italic overhang inside the wipe's clip box. */
+.payoffInner {
+  display: inline-block;
+  padding: 0 0.12em 0.14em 0.04em;
+}
+
+.swoosh {
+  width: min(860px, 82%);
+  margin-top: 4px;
+}
+
+.base {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.75fr) minmax(0, 1.15fr);
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.column {
+  padding: 26px clamp(16px, 2.4vw, 36px) 28px;
+}
+
+.column:first-child {
+  padding-left: 0;
+}
+
+.column:last-child {
+  padding-right: 0;
+}
+
+.column + .column {
+  border-left: 1px solid var(--line-on-dark);
+}
+
+.subcopy {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted-on-dark);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.cue {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: auto;
+  padding-top: 24px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(243, 239, 230, 0.6);
+}
+
+.cueLine {
+  position: relative;
+  width: 1px;
+  height: 48px;
+  overflow: hidden;
+  background: rgba(243, 239, 230, 0.18);
+}
+
+.cueLine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 40%;
+  background: var(--color-gold);
+}
+
+@keyframes cue {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(250%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cueLine::after {
+    animation: cue 2.2s var(--ease-in-out) infinite;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    position: relative;
+    min-height: 0;
+  }
+
+  .mast {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .location {
+    display: none;
+  }
+
+  .base {
+    grid-template-columns: 1fr;
+  }
+
+  .column,
+  .column:first-child,
+  .column:last-child {
+    padding: 24px 0 28px;
+  }
+
+  .column + .column {
+    border-left: 0;
+    border-top: 1px solid var(--line-on-dark);
+  }
+
+  .cue {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .swoosh {
+    width: 94%;
+  }
+}

@@ -1,0 +1,71 @@
+.trust {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(16, 31, 54, 0.2);
+  background: var(--color-white);
+  color: var(--color-navy);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 22px;
+  border-bottom: 1px solid rgba(16, 31, 54, 0.14);
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.tag {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(16, 31, 54, 0.66);
+}
+
+.arrow {
+  font-weight: 300;
+  color: rgba(16, 31, 54, 0.3);
+}
+
+.star {
+  flex: none;
+  width: 0.62em;
+  height: 0.62em;
+  color: var(--color-gold);
+}
+
+.sectors {
+  border-top: 1px solid rgba(16, 31, 54, 0.14);
+  color: rgba(16, 31, 54, 0.78);
+}
+
+.dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-gold);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .star {
+    animation: spin 9s linear infinite;
+  }
+}
+
+@media (max-width: 720px) {
+  .tag {
+    display: none;
+  }
+}
