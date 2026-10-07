@@ -10,7 +10,7 @@ describe('HomePage', () => {
     render(<HomePage />);
     const main = screen.getByRole('main');
     const ids = Array.from(main.querySelectorAll('section[id]')).map((section) => section.id);
-    expect(ids).toEqual(['top', 'about', 'services', 'process']);
+    expect(ids).toEqual(['top', 'clients', 'about', 'services', 'process']);
     expect(document.getElementById('contact')?.tagName).toBe('FOOTER');
   });
 

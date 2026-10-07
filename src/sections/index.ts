@@ -1,3 +1,4 @@
+export * from './Clients';
 export * from './Hero';
 export * from './Process';
 export * from './Services';

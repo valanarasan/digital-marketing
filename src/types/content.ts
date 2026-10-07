@@ -81,6 +81,35 @@ export interface TrustContent {
   sectors: string[];
 }
 
+/**
+ * A client whose logo appears on the page. The logo is the client's own file,
+ * served unaltered from public/.
+ */
+export interface Client {
+  id: string;
+  name: string;
+  sector: string;
+  /** Path under public/, without a leading slash (resolved against the deploy base). */
+  logo: string;
+  /** The file's pixel size, so the page reserves the right space before it loads. */
+  width: number;
+  height: number;
+  /**
+   * The tile colour behind the logo: the file's own background colour, sampled
+   * from its edges, so artwork and tile meet without a visible seam. White
+   * artwork on transparency gets the site's ink instead.
+   */
+  tile: string;
+}
+
+export interface ClientsContent {
+  kicker: string;
+  heading: string;
+  /** The last words of the heading, set in the serif accent. */
+  headingAccent: string;
+  lead: string;
+}
+
 export interface WhoContent {
   kicker: string;
   /** Plain words, then the emphasised words that close the sentence. */

@@ -1,6 +1,8 @@
 import type { LeverId } from '@/types/content';
 import {
   business,
+  clients,
+  clientsIntro,
   footer,
   footerNav,
   hero,
@@ -17,7 +19,7 @@ import {
 } from '@/content';
 import { useSingleSelect } from '@/hooks';
 import { Footer, Header } from '@/components/layout';
-import { Hero, Process, Services, Statement, TrustStrip, WhoWeAre } from '@/sections';
+import { Clients, Hero, Process, Services, Statement, TrustStrip, WhoWeAre } from '@/sections';
 
 export const MAIN_CONTENT_ID = 'main-content';
 
@@ -50,6 +52,7 @@ export function HomePage() {
           contentId={MAIN_CONTENT_ID}
         />
         <TrustStrip content={trust} />
+        <Clients content={clientsIntro} clients={clients} />
         <WhoWeAre content={who} />
         <Statement content={statement} />
         <Services

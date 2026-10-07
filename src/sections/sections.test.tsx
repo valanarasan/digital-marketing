@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { runScene } from '@/motion/gsap';
 import {
+  clientsScene,
   heroScene,
   processScene,
   servicesScene,
@@ -10,6 +11,8 @@ import {
   whoScene,
 } from '@/motion/scenes';
 import {
+  clients,
+  clientsIntro,
   hero,
   levers,
   problems,
@@ -20,6 +23,7 @@ import {
   trust,
   who,
 } from '@/content';
+import { Clients } from './Clients';
 import { Hero } from './Hero';
 import { NoiseWord } from './Hero/NoiseWord';
 import { ProblemIndex } from './Hero/ProblemIndex';
@@ -130,6 +134,36 @@ describe('NoiseWord', () => {
     expect(rest(letters[0])).toBe('-0.02em 0.03em -3deg');
     expect(rest(letters[6])).toBe(rest(letters[0]));
     expect(rest(letters[1])).not.toBe(rest(letters[0]));
+  });
+});
+
+describe('Clients', () => {
+  it('lists every client with its own logo file, named and captioned', () => {
+    render(<Clients content={clientsIntro} clients={clients} />);
+    expect(
+      screen.getByRole('heading', {
+        name: `${clientsIntro.heading} ${clientsIntro.headingAccent}`,
+      }),
+    ).toBeInTheDocument();
+    const items = within(screen.getByRole('list')).getAllByRole('listitem');
+    expect(items).toHaveLength(clients.length);
+    clients.forEach((client, index) => {
+      const logo = within(items[index]).getByRole('img', { name: `${client.name} logo` });
+      expect(logo).toHaveAttribute('src', `/${client.logo}`);
+      expect(logo).toHaveAttribute('width', String(client.width));
+      expect(logo).toHaveAttribute('loading', 'lazy');
+      expect(items[index]).toHaveTextContent(client.sector);
+    });
+    expect(sceneFor(clientsScene)).toBe(true);
+  });
+
+  it('paints each tile the colour its logo was drawn on', () => {
+    render(<Clients content={clientsIntro} clients={clients} />);
+    for (const client of clients) {
+      const tile = screen.getByRole('img', { name: `${client.name} logo` }).parentElement!;
+      expect(tile.style.backgroundColor).not.toBe('');
+      expect(tile).toHaveStyle({ backgroundColor: client.tile });
+    }
   });
 });
 

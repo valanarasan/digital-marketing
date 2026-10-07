@@ -1,3 +1,4 @@
+export * from './clients';
 export * from './footer';
 export * from './hero';
 export * from './process';

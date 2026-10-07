@@ -53,6 +53,9 @@ Design rules the code follows:
   find their targets through `data-anim` attributes, never class names.
 - **Components depend on abstractions.** Sections call `useMotion(ref, scene)`; only
   `src/motion/gsap.ts` knows about GSAP and Lenis, so tests mock one module.
+- **Client logos are the clients' own files.** `public/clients/` holds them byte for byte (only
+  renamed); never recompress, recolour or crop them. Each tile is painted the colour the logo
+  was drawn on (`tile` in `src/content/clients.ts`) so the file's edge never shows.
 - **Reduced motion is respected everywhere.** With `prefers-reduced-motion: reduce`, no scene
   runs, Lenis stays off and CSS loops stop; the static layout is the real one.
 
@@ -63,6 +66,7 @@ Design rules the code follows:
 | Hero | masthead rule draws, lotus watermark traces, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
 | Hero (wide screens) | stays pinned while the next sections slide over it (`useStickyOffset`) |
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
+| Clients | heading and lead rise in; the logo tiles follow one after another |
 | Who we are | statement lights up word by word; lotus draws itself on a loop (CSS) |
 | Statement | impressions / followers / traffic struck through in turn |
 | Services | heading rises; levers arrive as a staircase; gold curve grows |

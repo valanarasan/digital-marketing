@@ -1,0 +1,129 @@
+.clients {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(72px, 8vw, 120px);
+  background: var(--color-navy);
+  color: var(--color-cream);
+}
+
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: end;
+  gap: clamp(24px, 4vw, 64px);
+  margin-bottom: clamp(36px, 4.5vw, 64px);
+}
+
+.kicker {
+  color: var(--color-gold);
+}
+
+.heading {
+  max-width: 15ch;
+  font-size: clamp(34px, 3.6vw, 56px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  color: var(--color-white);
+}
+
+.accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: var(--color-gold);
+}
+
+.lead {
+  justify-self: end;
+  max-width: 42ch;
+  font-size: clamp(16px, 1.25vw, 18px);
+  line-height: 1.55;
+  color: rgba(243, 239, 230, 0.74);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 28px);
+}
+
+.figure {
+  margin: 0;
+}
+
+/*
+ * The tile supplies the ground the logo was made for; the artwork itself is
+ * never filtered, cropped or recoloured — only scaled to fit, whole.
+ */
+.tile {
+  --tile-pad: clamp(14px, 1.8vw, 26px);
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border: 1px solid var(--line-on-dark);
+  border-radius: var(--radius-card);
+  transition:
+    transform 0.45s var(--ease-soft),
+    box-shadow 0.45s ease;
+}
+
+/* Out of flow, so a square logo can't stretch its tile: every tile keeps 4:3. */
+.logo {
+  position: absolute;
+  top: var(--tile-pad);
+  left: var(--tile-pad);
+  width: calc(100% - 2 * var(--tile-pad));
+  height: calc(100% - 2 * var(--tile-pad));
+  object-fit: contain;
+}
+
+.figure:hover .tile {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.55);
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 12px;
+  margin-top: 14px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.name {
+  font-weight: 500;
+  color: var(--color-white);
+}
+
+.sector {
+  color: rgba(243, 239, 230, 0.62);
+}
+
+@media (max-width: 900px) {
+  .head {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .lead {
+    justify-self: start;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .caption {
+    flex-direction: column;
+    font-size: 14px;
+  }
+
+  .sector {
+    font-size: 13px;
+  }
+}
