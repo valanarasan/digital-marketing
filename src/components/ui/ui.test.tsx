@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Accordion } from './Accordion';
+import { BrandLogo } from './BrandLogo';
 import { ButtonLink } from './ButtonLink';
 import { Container } from './Container';
 import { FlowerStar } from './FlowerStar';
 import { Kicker } from './Kicker';
-import { LotusMark } from './LotusMark';
 import { MapEmbed } from './MapEmbed';
 import { Marquee } from './Marquee';
 import { Monogram } from './Monogram';
@@ -84,13 +84,24 @@ describe('small building blocks', () => {
     const { container } = render(<FlowerStar />);
     expect(container.querySelectorAll('ellipse')).toHaveLength(4);
   });
+});
 
-  it('LotusMark is decorative, and normalises path length only when drawable', () => {
-    const { container, rerender } = render(<LotusMark />);
-    expect(container.querySelector('svg')).toHaveAttribute('aria-hidden', 'true');
-    expect(container.querySelector('path')).not.toHaveAttribute('pathLength');
-    rerender(<LotusMark drawable />);
-    expect(container.querySelectorAll('path[pathLength="1"]')).toHaveLength(5);
+describe('BrandLogo', () => {
+  it.each([
+    ['full', '/brand/logo.svg', 'Hiranmaye Digital — Strategy drives growth'],
+    ['name', '/brand/logo-name.svg', 'Hiranmaye Digital'],
+    ['mark', '/brand/mark.svg', 'Hiranmaye Digital lotus'],
+  ] as const)('serves the %s cut of the original logo, named', (variant, src, alt) => {
+    render(<BrandLogo variant={variant} className="x" />);
+    const logo = screen.getByRole('img', { name: alt });
+    expect(logo).toHaveAttribute('src', src);
+    expect(logo).toHaveClass('x');
+    expect(Number(logo.getAttribute('width'))).toBeGreaterThan(0);
+  });
+
+  it('stays silent for assistive tech when decorative', () => {
+    const { container } = render(<BrandLogo variant="mark" decorative />);
+    expect(container.querySelector('img')).toHaveAttribute('alt', '');
   });
 });
 

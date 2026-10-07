@@ -1,5 +1,5 @@
 import { useId } from 'react';
-import type { Lever, Problem } from '@/types/content';
+import type { Lever, LeverId, Problem } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { leverForProblem } from '@/lib/levers';
 import { ArrowIcon } from '@/components/ui';
@@ -13,6 +13,8 @@ export interface ProblemIndexProps {
   onToggle: (id: string) => void;
   /** Where the answer's lever name links to (the services section). */
   leverHref: string;
+  /** Takes over the lever link, so the page can scroll to that lever already open. */
+  onLeverClick: (id: LeverId) => void;
 }
 
 /**
@@ -26,6 +28,7 @@ export function ProblemIndex({
   selectedId,
   onToggle,
   leverHref,
+  onLeverClick,
 }: ProblemIndexProps) {
   const questionId = useId();
   const lever = leverForProblem(problems, levers, selectedId);
@@ -60,7 +63,16 @@ export function ProblemIndex({
         {lever ? (
           <>
             <span className={styles.muted}>Start with</span>
-            <a className={styles.lever} href={leverHref}>
+            <a
+              className={styles.lever}
+              href={leverHref}
+              onClick={(event) => {
+                // Keep the click from the smooth-scroll anchor handler too: the page scrolls to the lever.
+                event.preventDefault();
+                event.stopPropagation();
+                onLeverClick(lever.id);
+              }}
+            >
               {lever.title}
             </a>
             <span>{lever.services.join(' • ')}</span>

@@ -12,6 +12,8 @@ vi.mock('@/motion/gsap', () => ({
   ScrollTrigger: {},
   runScene: vi.fn(() => () => {}),
   startSmoothScroll: vi.fn(() => () => {}),
+  scrollToY: vi.fn(),
+  createScrollSteps: vi.fn(() => ({ scrollToStep: vi.fn(), destroy: vi.fn() })),
 }));
 
 class MockResizeObserver {

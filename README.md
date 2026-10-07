@@ -5,8 +5,8 @@ with the copy from `final_website_content.pdf`. Three pages, each with its own U
 
 | Page | URL | What's on it |
 | --- | --- | --- |
-| Home | `/` | hero and growth check, trust strip, clients, who we are, statement, services, process, why us |
-| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, quote, vision & mission, team and board, clients & partners |
+| Home | `/` | hero and growth check, trust strip, statement, services (opening lever by lever as you scroll), process, clients |
+| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team and board, clients & partners |
 | Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
 
 Every page ends with the same footer (contact, About us, map, socials). A fresh repo, separate
@@ -69,6 +69,9 @@ Design rules the code follows:
   find their targets through `data-anim` attributes, never class names.
 - **Components depend on abstractions.** Sections call `useMotion(ref, scene)`; only
   `src/motion/gsap.ts` knows about GSAP and Lenis, so tests mock one module.
+- **One logo, the original.** The client's logo lives in `brand/` (original, vector, 4K masters;
+  see `brand/README.md`) and on the site as three cuts in `public/brand/`, always through
+  `BrandLogo`. Never redraw the lotus or set the name in type.
 - **Client logos are the clients' own files.** `public/clients/` holds them byte for byte (only
   renamed); never recompress, recolour or crop them. Each tile is painted the colour the logo
   was drawn on (`tile` in `src/content/clients.ts`) so the file's edge never shows.
@@ -79,20 +82,22 @@ Design rules the code follows:
 
 | Section | Motion |
 | --- | --- |
-| Hero | masthead rule draws, lotus watermark traces, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
+| Hero | masthead rule draws, the logo's lotus fades up behind the headline, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
 | Hero (wide screens) | stays pinned while the next sections slide over it (`useStickyOffset`) |
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
 | Clients | heading and lead rise in; the logo tiles follow one after another |
-| Who we are | statement lights up word by word; lotus draws itself on a loop (CSS) |
+| Who we are | statement lights up word by word; the logo's lotus floats gently (CSS) |
 | Statement | impressions / followers / traffic struck through in turn |
-| Services | heading rises; levers arrive as a staircase; gold curve grows |
+| Services | heading rises; levers arrive as a staircase; gold curve grows; the open lever follows the scroll (`useScrollSteps`) |
 | Process | section turns from sand to night; illustrations scale up and clip in |
 | Why us, Story, Vision & Mission, Team, Solutions | each block rises in once as it scrolls into view |
-| Inner-page title band | lotus watermark traces itself; kicker, title and index rise in on load |
-| Footer | wordmark rises letter by letter |
+| Inner-page title band | the logo's lotus fades up; kicker, title and index rise in on load |
+| Footer | the full logo rises into place |
 
-The growth check in the hero is wired to the services accordion: picking a problem opens the
-lever that answers it.
+The services accordion follows the scroll: as the list passes the reading line, each lever opens
+in turn (`createScrollSteps` in `src/motion/gsap.ts`). The growth check in the hero is wired to
+it: picking a problem opens the lever that answers it, and the "Start with …" link glides down
+to that lever, holding it open on the way. Clicking a lever still opens it directly.
 
 ## Deploy (GitHub Pages)
 

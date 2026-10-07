@@ -26,27 +26,11 @@
   gap: 12px;
 }
 
-.mark {
-  width: 40px;
-  height: auto;
-  color: var(--color-gold);
-}
-
-.word {
-  font-family: var(--font-serif);
-  font-size: 17px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  line-height: 1.05;
-}
-
-.word small {
+/* The logo's own lotus-and-name cut; its tagline would not read at header size. */
+.brand {
   display: block;
-  margin-top: 3px;
-  font-family: var(--font-sans);
-  font-size: 9.5px;
-  letter-spacing: 0.42em;
-  opacity: 0.7;
+  width: auto;
+  height: 52px;
 }
 
 .nav {
@@ -109,6 +93,10 @@
   .links,
   .cta {
     display: none;
+  }
+
+  .brand {
+    height: 44px;
   }
 
   .menuButton {

@@ -7,7 +7,7 @@
   color: var(--color-cream);
 }
 
-/* The lotus, large and faint, off the right edge; drawn in on load. */
+/* The logo's lotus, large and faint, off the right edge; it fades up on load. */
 .watermark {
   position: absolute;
   right: -8vw;
@@ -15,18 +15,14 @@
   z-index: 0;
   width: min(900px, 80vw);
   color: var(--color-gold);
-  opacity: 0.09;
+  opacity: 0.06;
   pointer-events: none;
 }
 
-.watermark svg {
+.watermark img {
+  display: block;
   width: 100%;
   height: auto;
-}
-
-.watermark path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
 }
 
 .body {

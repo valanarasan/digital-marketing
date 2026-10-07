@@ -59,10 +59,9 @@ describe('Header', () => {
       'href',
       '#contact',
     );
-    expect(screen.getByRole('link', { name: 'Hiranmaye Digital — home' })).toHaveAttribute(
-      'href',
-      '/',
-    );
+    const logoLink = screen.getByRole('link', { name: 'Hiranmaye Digital — home' });
+    expect(logoLink).toHaveAttribute('href', '/');
+    expect(logoLink.querySelector('img')).toHaveAttribute('src', '/brand/logo-name.svg');
   });
 
   it('closes the drawer when any drawer link is tapped', async () => {
@@ -150,11 +149,11 @@ describe('Footer', () => {
     expect(nav.querySelectorAll('a')).toHaveLength(footerNav.length);
   });
 
-  it('splits the wordmark into animatable letters, hidden from assistive tech', () => {
+  it('closes with the full original logo, tagline and all', () => {
     render(<Footer content={footer} business={business} nav={footerNav} />);
-    const letters = document.querySelectorAll('[data-anim="letter"]');
-    expect(letters).toHaveLength(footer.wordmark.length);
-    expect(letters[0].closest('[aria-hidden="true"]')).not.toBeNull();
+    expect(
+      screen.getByRole('img', { name: 'Hiranmaye Digital — Strategy drives growth' }),
+    ).toHaveAttribute('src', '/brand/logo.svg');
   });
 });
 

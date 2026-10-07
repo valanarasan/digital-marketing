@@ -61,14 +61,9 @@
 }
 
 .lotus {
-  width: 72%;
+  display: block;
+  width: 66%;
   height: auto;
-  color: var(--color-gold-deep);
-}
-
-.lotus path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
 }
 
 .problemCell {
@@ -97,38 +92,19 @@
   color: var(--color-navy);
 }
 
-/* Draw in, hold, draw out, rest — petals slightly out of step. */
-@keyframes draw {
-  0% {
-    stroke-dashoffset: 1;
+/* A slow float, so the lotus feels alive without pulling focus. */
+@keyframes float {
+  from {
+    transform: translateY(4px);
   }
-  39%,
-  50% {
-    stroke-dashoffset: 0;
+  to {
+    transform: translateY(-6px);
   }
-  89%,
-  100% {
-    stroke-dashoffset: 1;
-  }
-}
-
-.link {
-  margin-top: 20px;
-  color: var(--color-navy);
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .lotus path {
-    animation: draw 9s ease-in-out infinite;
-  }
-
-  .lotus path:nth-child(3),
-  .lotus path:nth-child(4) {
-    animation-delay: 0.25s;
-  }
-
-  .lotus path:nth-child(5) {
-    animation-delay: 0.5s;
+  .lotus {
+    animation: float 6s ease-in-out infinite alternate;
   }
 }
 

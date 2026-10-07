@@ -130,8 +130,6 @@ export interface WhoContent {
   problem: string;
   answerLead: string;
   answer: string;
-  /** Optional onward link, e.g. from the home page to Inside Hiranmaye. */
-  link?: NavItem;
 }
 
 export interface StatementContent {
@@ -167,7 +165,6 @@ export interface FooterContent {
   /** Accessible title of the embedded map, and the link to the full listing. */
   mapTitle: string;
   mapLink: string;
-  wordmark: string;
   legal: NavItem[];
 }
 

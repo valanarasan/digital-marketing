@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { App } from '@/App';
+import { createScrollSteps } from '@/motion/gsap';
+import type { ScrollSteps } from '@/motion/gsap';
 import { HomePage } from './HomePage';
 
 const leverButton = (name: string) => screen.getByRole('button', { name });
@@ -10,7 +12,7 @@ describe('HomePage', () => {
     render(<HomePage />);
     const main = screen.getByRole('main');
     const ids = Array.from(main.querySelectorAll('section[id]')).map((section) => section.id);
-    expect(ids).toEqual(['top', 'clients', 'about', 'services', 'process', 'why-us']);
+    expect(ids).toEqual(['top', 'services', 'process', 'clients']);
     expect(document.getElementById('contact')?.tagName).toBe('FOOTER');
   });
 
@@ -34,6 +36,22 @@ describe('HomePage', () => {
     expect(leverButton('Not Enough Leads')).toHaveAttribute('aria-pressed', 'false');
     expect(screen.getByText('Pick one to see where we would start.')).toBeInTheDocument();
     expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('opens each lever as scrolling reaches it', () => {
+    render(<HomePage />);
+    const [, , report] = vi.mocked(createScrollSteps).mock.calls[0];
+    act(() => report(4));
+    expect(leverButton('Get Smarter')).toHaveAttribute('aria-expanded', 'true');
+    expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('glides from the hero\'s "Start with" link to that lever', async () => {
+    render(<HomePage />);
+    await userEvent.click(leverButton('High Ad Costs'));
+    await userEvent.click(screen.getByRole('link', { name: 'Get Results' }));
+    const steps = vi.mocked(createScrollSteps).mock.results[0].value as ScrollSteps;
+    expect(steps.scrollToStep).toHaveBeenCalledWith(3);
   });
 
   it('lets the services accordion be driven on its own', async () => {

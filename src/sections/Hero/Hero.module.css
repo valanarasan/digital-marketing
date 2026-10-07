@@ -10,7 +10,7 @@
   color: var(--color-cream);
 }
 
-/* Faint lotus behind the headline, drawn in on load. */
+/* The logo's lotus, faint behind the headline; it fades up on load. */
 .watermark {
   position: absolute;
   top: 54%;
@@ -18,19 +18,15 @@
   z-index: 0;
   width: min(980px, 96vw);
   color: var(--color-gold);
-  opacity: 0.08;
+  opacity: 0.06;
   transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
-.watermark svg {
+.watermark img {
+  display: block;
   width: 100%;
   height: auto;
-}
-
-.watermark path {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 0;
 }
 
 .mast {
@@ -48,9 +44,9 @@
 }
 
 .mastMark {
-  width: 30px;
+  display: block;
+  width: 38px;
   height: auto;
-  color: var(--color-gold);
 }
 
 .location {

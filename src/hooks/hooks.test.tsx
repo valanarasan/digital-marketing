@@ -1,10 +1,12 @@
 import { act, render, renderHook } from '@testing-library/react';
 import { useRef } from 'react';
 import { renderToString } from 'react-dom/server';
-import { runScene } from '@/motion/gsap';
+import { createScrollSteps, runScene } from '@/motion/gsap';
+import type { ScrollSteps } from '@/motion/gsap';
 import { setMatchMedia } from '@/test/setup';
 import { useMotion } from './useMotion';
 import { useReducedMotion } from './useReducedMotion';
+import { useScrollSteps } from './useScrollSteps';
 import { useSingleSelect } from './useSingleSelect';
 import { useStickyOffset } from './useStickyOffset';
 
@@ -164,5 +166,46 @@ describe('useMotion', () => {
   it('skips the scene when there is no root element', () => {
     render(<MotionProbe scene={vi.fn()} withRoot={false} />);
     expect(runScene).not.toHaveBeenCalled();
+  });
+});
+
+describe('useScrollSteps', () => {
+  function StepsProbe({
+    onStep,
+    withList = true,
+    expose,
+  }: {
+    onStep: (index: number) => void;
+    withList?: boolean;
+    expose: (go: (index: number) => void) => void;
+  }) {
+    const ref = useRef<HTMLUListElement>(null);
+    expose(useScrollSteps(ref, 3, onStep));
+    return withList ? <ul ref={ref} data-testid="list" /> : null;
+  }
+
+  it('reports each step as the list scrolls, can glide to one, and stops on unmount', () => {
+    const onStep = vi.fn();
+    let go: (index: number) => void = () => {};
+    const { getByTestId, unmount } = render(
+      <StepsProbe onStep={onStep} expose={(fn) => (go = fn)} />,
+    );
+    const [element, count, report] = vi.mocked(createScrollSteps).mock.calls[0];
+    expect(element).toBe(getByTestId('list'));
+    expect(count).toBe(3);
+    report(1);
+    expect(onStep).toHaveBeenCalledWith(1);
+    go(2);
+    const steps = vi.mocked(createScrollSteps).mock.results[0].value as ScrollSteps;
+    expect(steps.scrollToStep).toHaveBeenCalledWith(2);
+    unmount();
+    expect(steps.destroy).toHaveBeenCalled();
+  });
+
+  it('does nothing without a list to watch', () => {
+    let go: (index: number) => void = () => {};
+    render(<StepsProbe onStep={vi.fn()} withList={false} expose={(fn) => (go = fn)} />);
+    expect(createScrollSteps).not.toHaveBeenCalled();
+    expect(() => go(1)).not.toThrow();
   });
 });

@@ -1,6 +1,8 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { runScene } from '@/motion/gsap';
+import { createRef } from 'react';
+import { createScrollSteps, runScene } from '@/motion/gsap';
+import type { ScrollSteps } from '@/motion/gsap';
 import {
   clientsScene,
   heroScene,
@@ -15,7 +17,6 @@ import {
 import {
   aboutHero,
   aboutIndex,
-  aboutWho,
   clients,
   clientsIntro,
   partners,
@@ -50,6 +51,7 @@ import { ProblemIndex } from './Hero/ProblemIndex';
 import { Process } from './Process';
 import { StepIcon } from './Process/StepIcon';
 import { Services } from './Services';
+import type { ServicesHandle } from './Services';
 import { Statement } from './Statement';
 import { TrustStrip } from './TrustStrip';
 import { WhoWeAre } from './WhoWeAre';
@@ -58,7 +60,7 @@ const sceneFor = (scene: unknown) =>
   vi.mocked(runScene).mock.calls.some(([, called]) => called === scene);
 
 describe('Hero', () => {
-  const renderHero = (selected: string | null = 'leads', onToggle = vi.fn()) =>
+  const renderHero = (selected: string | null = 'leads', onToggle = vi.fn(), onShow = vi.fn()) =>
     render(
       <Hero
         header={<div data-testid="header" />}
@@ -67,6 +69,7 @@ describe('Hero', () => {
         levers={levers}
         selectedProblem={selected}
         onToggleProblem={onToggle}
+        onShowLever={onShow}
         contentId="main-content"
       />,
     );
@@ -105,6 +108,13 @@ describe('Hero', () => {
     await userEvent.click(screen.getByRole('button', { name: /High Ad Costs/ }));
     expect(onToggle).toHaveBeenCalledWith('ad-costs');
   });
+
+  it('hands the "Start with" link to the page instead of jumping to the anchor', async () => {
+    const onShow = vi.fn();
+    renderHero('brand', vi.fn(), onShow);
+    await userEvent.click(screen.getByRole('link', { name: 'Get Noticed' }));
+    expect(onShow).toHaveBeenCalledWith('noticed');
+  });
 });
 
 describe('ProblemIndex', () => {
@@ -114,6 +124,7 @@ describe('ProblemIndex', () => {
     levers,
     onToggle: vi.fn(),
     leverHref: '#services',
+    onLeverClick: vi.fn(),
   };
 
   it('lists the problems as toggle buttons under the question', () => {
@@ -141,6 +152,20 @@ describe('ProblemIndex', () => {
   it('prompts for a pick when nothing is selected', () => {
     render(<ProblemIndex {...props} selectedId={null} />);
     expect(screen.getByText('Pick one to see where we would start.')).toBeInTheDocument();
+  });
+
+  it('takes over the lever link: no jump to the anchor, the page is told which lever', () => {
+    const onLeverClick = vi.fn();
+    render(<ProblemIndex {...props} selectedId="ad-costs" onLeverClick={onLeverClick} />);
+    const link = screen.getByRole('link', { name: 'Get Results' });
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    const outside = vi.fn();
+    window.addEventListener('click', outside);
+    link.dispatchEvent(click);
+    window.removeEventListener('click', outside);
+    expect(click.defaultPrevented).toBe(true);
+    expect(outside).not.toHaveBeenCalled();
+    expect(onLeverClick).toHaveBeenCalledWith('results');
   });
 });
 
@@ -213,17 +238,6 @@ describe('WhoWeAre', () => {
     expect(screen.getByText(who.answerLead)).toBeInTheDocument();
     expect(sceneFor(whoScene)).toBe(true);
   });
-
-  it('links on to Inside Hiranmaye when the content asks, and not otherwise', () => {
-    const { unmount } = render(<WhoWeAre content={who} />);
-    expect(screen.getByRole('link', { name: 'Inside Hiranmaye' })).toHaveAttribute(
-      'href',
-      '/inside-hiranmaye/',
-    );
-    unmount();
-    render(<WhoWeAre content={aboutWho} />);
-    expect(screen.queryByRole('link')).not.toBeInTheDocument();
-  });
 });
 
 describe('Statement', () => {
@@ -240,7 +254,15 @@ describe('Statement', () => {
 
 describe('Services', () => {
   it('shows each lever with its services and opens the chosen one', () => {
-    render(<Services content={services} levers={levers} openId="results" onToggle={vi.fn()} />);
+    render(
+      <Services
+        content={services}
+        levers={levers}
+        openId="results"
+        onToggle={vi.fn()}
+        onStep={vi.fn()}
+      />,
+    );
     expect(screen.getByRole('link', { name: services.link.label })).toHaveAttribute(
       'href',
       '/solutions/',
@@ -261,9 +283,52 @@ describe('Services', () => {
 
   it('reports the lever id when a row is toggled', async () => {
     const onToggle = vi.fn();
-    render(<Services content={services} levers={levers} openId={null} onToggle={onToggle} />);
+    render(
+      <Services
+        content={services}
+        levers={levers}
+        openId={null}
+        onToggle={onToggle}
+        onStep={vi.fn()}
+      />,
+    );
     await userEvent.click(screen.getByRole('button', { name: 'Get Smarter' }));
     expect(onToggle).toHaveBeenCalledWith('smarter');
+  });
+
+  it('follows the scroll: each step through the list names the lever to open', () => {
+    const onStep = vi.fn();
+    render(
+      <Services
+        content={services}
+        levers={levers}
+        openId={null}
+        onToggle={vi.fn()}
+        onStep={onStep}
+      />,
+    );
+    const [element, count, report] = vi.mocked(createScrollSteps).mock.calls[0];
+    expect(element).toContainElement(screen.getByRole('button', { name: 'Get Found' }));
+    expect(count).toBe(levers.length);
+    report(2);
+    expect(onStep).toHaveBeenCalledWith('chosen');
+  });
+
+  it('glides to a lever on request, through the scroll steps', () => {
+    const ref = createRef<ServicesHandle>();
+    render(
+      <Services
+        content={services}
+        levers={levers}
+        openId={null}
+        onToggle={vi.fn()}
+        onStep={vi.fn()}
+        ref={ref}
+      />,
+    );
+    ref.current!.showLever('results');
+    const steps = vi.mocked(createScrollSteps).mock.results[0].value as ScrollSteps;
+    expect(steps.scrollToStep).toHaveBeenCalledWith(3);
   });
 });
 

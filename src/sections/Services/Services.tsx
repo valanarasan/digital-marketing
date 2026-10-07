@@ -1,16 +1,25 @@
-import { useRef } from 'react';
+import { useImperativeHandle, useRef } from 'react';
+import type { Ref } from 'react';
 import type { Lever, LeverId, ServicesContent } from '@/types/content';
 import { resolveHref } from '@/lib/href';
-import { useMotion } from '@/hooks';
+import { useMotion, useScrollSteps } from '@/hooks';
 import { servicesScene } from '@/motion/scenes';
 import { Accordion, Container, Kicker, TextLink } from '@/components/ui';
 import styles from './Services.module.css';
+
+/** Lets the page send a visitor to a given lever (the hero's "Start with …" link). */
+export interface ServicesHandle {
+  showLever(id: LeverId): void;
+}
 
 export interface ServicesProps {
   content: ServicesContent;
   levers: Lever[];
   openId: LeverId | null;
   onToggle: (id: LeverId) => void;
+  /** Called as scrolling brings each lever to the reading line; the page opens it. */
+  onStep: (id: LeverId) => void;
+  ref?: Ref<ServicesHandle>;
 }
 
 function MaskedWords({ text, className }: { text: string; className?: string }) {
@@ -25,10 +34,24 @@ function MaskedWords({ text, className }: { text: string; className?: string }) 
   ));
 }
 
-/** "One growth partner. Multiple growth levers." — the five levers as a single-open accordion. */
-export function Services({ content, levers, openId, onToggle }: ServicesProps) {
-  const ref = useRef<HTMLElement>(null);
-  useMotion(ref, servicesScene);
+/**
+ * "One Growth Partner. Multiple Growth Levers." — the five levers as a
+ * single-open accordion that follows the scroll: each lever opens as it reaches
+ * the reading line and the one before it closes. Clicking still opens any lever.
+ */
+export function Services({ content, levers, openId, onToggle, onStep, ref }: ServicesProps) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  useMotion(sectionRef, servicesScene);
+
+  const scrollToStep = useScrollSteps(listRef, levers.length, (index) => onStep(levers[index].id));
+  useImperativeHandle(
+    ref,
+    () => ({
+      showLever: (id) => scrollToStep(levers.findIndex((lever) => lever.id === id)),
+    }),
+    [scrollToStep, levers],
+  );
 
   const items = levers.map((lever) => ({
     id: lever.id,
@@ -45,7 +68,12 @@ export function Services({ content, levers, openId, onToggle }: ServicesProps) {
   }));
 
   return (
-    <section ref={ref} id="services" className={styles.services} aria-labelledby="services-title">
+    <section
+      ref={sectionRef}
+      id="services"
+      className={styles.services}
+      aria-labelledby="services-title"
+    >
       <svg className={styles.curve} viewBox="0 0 620 420" aria-hidden="true" focusable="false">
         <path d="M-20 210C200 222 410 290 470 440" pathLength={1} data-anim="curve" />
       </svg>
@@ -65,12 +93,14 @@ export function Services({ content, levers, openId, onToggle }: ServicesProps) {
             {content.link.label}
           </TextLink>
         </div>
-        <Accordion
-          items={items}
-          openId={openId}
-          onToggle={(id) => onToggle(id as LeverId)}
-          itemAnim="stair"
-        />
+        <div ref={listRef}>
+          <Accordion
+            items={items}
+            openId={openId}
+            onToggle={(id) => onToggle(id as LeverId)}
+            itemAnim="stair"
+          />
+        </div>
       </Container>
     </section>
   );

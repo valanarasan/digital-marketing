@@ -4,7 +4,7 @@ import type { NavItem, PageHeroContent } from '@/types/content';
 import { resolveHref } from '@/lib/href';
 import { useMotion } from '@/hooks';
 import { pageHeroScene } from '@/motion/scenes';
-import { Container, Kicker, LotusMark } from '@/components/ui';
+import { BrandLogo, Container, Kicker } from '@/components/ui';
 import styles from './PageHero.module.css';
 
 export interface PageHeroProps {
@@ -27,7 +27,7 @@ export function PageHero({ header, content, contentId, index, indexLabel }: Page
   return (
     <section ref={ref} className={styles.hero} aria-labelledby={titleId}>
       <div className={styles.watermark} data-anim="watermark" aria-hidden="true">
-        <LotusMark weight={0.3} drawable />
+        <BrandLogo variant="mark" decorative />
       </div>
 
       {header}

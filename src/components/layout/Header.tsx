@@ -2,7 +2,7 @@ import { useEffect, useId, useState } from 'react';
 import type { NavItem, PageId } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { resolveHref } from '@/lib/href';
-import { ButtonLink, Container, LotusMark } from '@/components/ui';
+import { BrandLogo, ButtonLink, Container } from '@/components/ui';
 import styles from './Header.module.css';
 
 export interface HeaderProps {
@@ -37,11 +37,7 @@ export function Header({ nav, cta, current }: HeaderProps) {
     <header className={styles.header}>
       <Container className={styles.inner}>
         <a className={styles.logo} href={resolveHref('')} aria-label="Hiranmaye Digital — home">
-          <LotusMark className={styles.mark} />
-          <span className={styles.word} aria-hidden="true">
-            HIRANMAYE
-            <small>DIGITAL</small>
-          </span>
+          <BrandLogo variant="name" className={styles.brand} decorative />
         </a>
 
         <nav className={styles.nav} aria-label="Primary">

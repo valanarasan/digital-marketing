@@ -1,15 +1,15 @@
 import { gsap } from '../gsap';
 import type { MotionScene } from '../types';
 
-/** The giant wordmark rises letter by letter as the page runs out. */
+/** The full logo rises into place as the page runs out. */
 export const footerScene: MotionScene = (root) => {
   const q = gsap.utils.selector(root);
-  const [wordmark] = q('[data-anim="wordmark"]');
+  const [brand] = q('[data-anim="brand"]');
 
-  gsap.from(q('[data-anim="letter"]'), {
-    yPercent: 100,
+  gsap.from(q('[data-anim="brand"] img'), {
+    yPercent: 24,
+    opacity: 0,
     ease: 'none',
-    stagger: 0.06,
-    scrollTrigger: { trigger: wordmark, start: 'top bottom', end: 'bottom bottom', scrub: 0.35 },
+    scrollTrigger: { trigger: brand, start: 'top bottom', end: 'center bottom', scrub: 0.35 },
   });
 };

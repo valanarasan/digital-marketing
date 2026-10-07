@@ -6,7 +6,7 @@ import { mapEmbedUrl } from '@/lib/maps';
 import { whatsappLink } from '@/lib/whatsapp';
 import { useMotion } from '@/hooks';
 import { footerScene } from '@/motion/scenes';
-import { Container, MapEmbed, SocialIcon } from '@/components/ui';
+import { BrandLogo, Container, MapEmbed, SocialIcon } from '@/components/ui';
 import styles from './Footer.module.css';
 
 export interface FooterProps {
@@ -101,13 +101,9 @@ export function Footer({ content, business, nav }: FooterProps) {
           </div>
         </div>
 
-        <p className={styles.wordmark} data-anim="wordmark" aria-hidden="true">
-          {Array.from(content.wordmark).map((letter, index) => (
-            <span key={`${letter}-${index}`} className={styles.letter} data-anim="letter">
-              {letter}
-            </span>
-          ))}
-        </p>
+        <div className={styles.brand} data-anim="brand">
+          <BrandLogo variant="full" className={styles.brandLogo} />
+        </div>
 
         <div className={styles.legal}>
           <span>

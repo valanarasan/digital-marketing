@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 import type { ReactNode } from 'react';
-import type { HeroContent, Lever, Problem } from '@/types/content';
+import type { HeroContent, Lever, LeverId, Problem } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { useMotion, useStickyOffset } from '@/hooks';
 import { heroScene } from '@/motion/scenes';
-import { ButtonLink, Container, LotusMark, TextLink } from '@/components/ui';
+import { BrandLogo, ButtonLink, Container, TextLink } from '@/components/ui';
 import { NoiseWord } from './NoiseWord';
 import { ProblemIndex } from './ProblemIndex';
 import { Swoosh } from './Swoosh';
@@ -18,6 +18,8 @@ export interface HeroProps {
   levers: Lever[];
   selectedProblem: string | null;
   onToggleProblem: (id: string) => void;
+  /** The growth check's "Start with …" link: take the visitor to that lever, open. */
+  onShowLever: (id: LeverId) => void;
   /** Id given to the headline block — the skip link's target. */
   contentId: string;
 }
@@ -36,6 +38,7 @@ export function Hero({
   levers,
   selectedProblem,
   onToggleProblem,
+  onShowLever,
   contentId,
 }: HeroProps) {
   const ref = useRef<HTMLElement>(null);
@@ -45,7 +48,7 @@ export function Hero({
   return (
     <section ref={ref} id="top" className={styles.hero} style={{ top }} aria-label="Introduction">
       <div className={styles.watermark} data-anim="watermark" aria-hidden="true">
-        <LotusMark weight={0.3} drawable />
+        <BrandLogo variant="mark" decorative />
       </div>
 
       {header}
@@ -54,7 +57,7 @@ export function Hero({
         <div className={styles.mast}>
           <span data-anim="mast">{content.eyebrow}</span>
           <span data-anim="mast">
-            <LotusMark className={styles.mastMark} weight={4} />
+            <BrandLogo variant="mark" className={styles.mastMark} decorative />
           </span>
           <span data-anim="mast" className={styles.location}>
             {content.location}
@@ -106,6 +109,7 @@ export function Hero({
               selectedId={selectedProblem}
               onToggle={onToggleProblem}
               leverHref="#services"
+              onLeverClick={onShowLever}
             />
           </div>
         </div>

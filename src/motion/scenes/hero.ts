@@ -2,8 +2,8 @@ import { gsap } from '../gsap';
 import type { MotionScene } from '../types';
 
 /**
- * Hero intro, once on load: the masthead rule draws, the lotus watermark traces
- * itself, the two lead lines rise out of their masks, "It creates momentum."
+ * Hero intro, once on load: the masthead rule draws, the logo's lotus fades up
+ * behind the headline, the two lead lines rise out of their masks, "It creates momentum."
  * wipes in like ink, then the underline draws and the base columns settle.
  * The one-off glitch on "noise." (timed to land as the second line finishes
  * rising) and the light travelling along the underline live in CSS.
@@ -25,9 +25,9 @@ export const heroScene: MotionScene = (root) => {
     )
     .from(q('[data-anim="mast"]'), { y: 14, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.15)
     .fromTo(
-      q('[data-anim="watermark"] path'),
-      { strokeDashoffset: 1 },
-      { strokeDashoffset: 0, duration: 3, ease: 'power2.inOut', stagger: 0.12 },
+      q('[data-anim="watermark"] img'),
+      { opacity: 0, scale: 0.94 },
+      { opacity: 1, scale: 1, duration: 2.6, ease: 'power2.out' },
       0.3,
     )
     .from(q('[data-anim="line"]'), { yPercent: 110, opacity: 0, duration: 1, stagger: 0.15 }, 0.25)

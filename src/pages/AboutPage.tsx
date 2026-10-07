@@ -2,7 +2,6 @@ import {
   aboutHero,
   aboutIndex,
   aboutIndexLabel,
-  aboutWho,
   business,
   clients,
   clientsIntro,
@@ -15,12 +14,14 @@ import {
   story,
   team,
   visionMission,
+  who,
+  whyUs,
 } from '@/content';
 import { Footer, Header } from '@/components/layout';
-import { Clients, PageHero, Quote, Story, Team, VisionMission, WhoWeAre } from '@/sections';
+import { Clients, PageHero, Quote, Story, Team, VisionMission, WhoWeAre, WhyUs } from '@/sections';
 import { MAIN_CONTENT_ID } from './ids';
 
-/** Inside Hiranmaye: who we are, our story, vision and mission, the team, clients and partners. */
+/** Inside Hiranmaye: who we are, our story, why us, vision and mission, the team, clients and partners. */
 export function AboutPage() {
   return (
     <>
@@ -32,8 +33,9 @@ export function AboutPage() {
           index={aboutIndex}
           indexLabel={aboutIndexLabel}
         />
-        <WhoWeAre content={aboutWho} />
+        <WhoWeAre content={who} />
         <Story content={story} />
+        <WhyUs content={whyUs} />
         <Quote content={quote} />
         <VisionMission content={visionMission} />
         <Team content={team} />

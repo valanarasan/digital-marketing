@@ -104,7 +104,6 @@ export const who: WhoContent = {
   answerLead: 'HIRANMAYE DIGITAL exists to bring the pieces together.',
   answer:
     'We connect business objectives with brand strategy, digital infrastructure, creative communication, paid media, search visibility and intelligent automation, so marketing stops functioning as a series of isolated activities and starts operating as a coordinated growth system.',
-  link: { label: 'Inside Hiranmaye', href: 'inside-hiranmaye/', page: 'about' },
 };
 
 export const statement: StatementContent = {
@@ -177,7 +176,6 @@ export const footer: FooterContent = {
   },
   mapTitle: 'Map of the Hiranmaye Digital office in Banashankari 2nd Stage, Bengaluru',
   mapLink: 'Open in Google Maps',
-  wordmark: 'Hiranmaye',
   legal: [
     { label: 'Privacy Policy', href: '#' },
     { label: 'Terms', href: '#' },

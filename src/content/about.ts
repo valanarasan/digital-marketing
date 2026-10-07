@@ -6,9 +6,7 @@ import type {
   StoryContent,
   TeamContent,
   VisionMissionContent,
-  WhoContent,
 } from '@/types/content';
-import { who } from './home';
 
 /**
  * Inside Hiranmaye (the About page), from "final_website_content.pdf", Page 2 and
@@ -28,13 +26,11 @@ export const aboutIndexLabel = 'On this page';
 export const aboutIndex: NavItem[] = [
   { label: 'Who we are', href: '#about' },
   { label: 'Our story', href: '#story' },
+  { label: 'Why us', href: '#why-us' },
   { label: 'Vision & Mission', href: '#vision' },
   { label: 'Our Team', href: '#team' },
   { label: 'Clients & Partners', href: '#clients' },
 ];
-
-/** "Who we are" opens the page as it does on home, minus the link back to this page. */
-export const aboutWho: WhoContent = { ...who, link: undefined };
 
 export const story: StoryContent = {
   kicker: 'Our story',
