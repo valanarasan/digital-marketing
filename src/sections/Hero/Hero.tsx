@@ -23,7 +23,7 @@ export interface HeroProps {
 }
 
 /**
- * The Editorial hero: a magazine-cover layout on navy. "noise." twitches,
+ * The Editorial hero: a magazine-cover layout on navy. "noise." glitches once and rests off-line,
  * "It creates momentum." sets large in gold italic over a travelling-light
  * underline, and the base row carries the subcopy, the calls to action and the
  * growth check. On wide screens it stays pinned while the page slides over it.

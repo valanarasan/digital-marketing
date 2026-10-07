@@ -60,7 +60,7 @@ Design rules the code follows:
 
 | Section | Motion |
 | --- | --- |
-| Hero | masthead rule draws, lotus watermark traces, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." jitters (CSS) |
+| Hero | masthead rule draws, lotus watermark traces, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
 | Hero (wide screens) | stays pinned while the next sections slide over it (`useStickyOffset`) |
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
 | Who we are | statement lights up word by word; lotus draws itself on a loop (CSS) |
@@ -74,15 +74,10 @@ lever that answers it.
 
 ## Deploy (GitHub Pages)
 
-The workflow is in `docs/github-pages-deploy.yml`. Move it into place once:
-
-```bash
-mkdir -p .github/workflows && git mv docs/github-pages-deploy.yml .github/workflows/deploy.yml
-```
-
-It runs typecheck, lint and the coverage gate, builds with `VITE_BASE=/<repo>/`, and
-publishes `dist/`. Set the repo variable `VITE_BASE` to `/` once a
-custom domain is attached. In the repo settings, Pages → Source: **GitHub Actions**.
+`.github/workflows/deploy.yml` runs on every push to `main`: typecheck, lint and the coverage
+gate, then a build with `VITE_BASE=/<repo>/`, and publishes `dist/`. Set the repo variable
+`VITE_BASE` to `/` once a custom domain is attached. In the repo settings, Pages → Source:
+**GitHub Actions**.
 
 ## Before launch
 

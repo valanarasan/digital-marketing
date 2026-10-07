@@ -5,8 +5,8 @@ import type { MotionScene } from '../types';
  * Hero intro, once on load: the masthead rule draws, the lotus watermark traces
  * itself, the two lead lines rise out of their masks, "It creates momentum."
  * wipes in like ink, then the underline draws and the base columns settle.
- * The jittering "noise." and the light travelling along the underline are
- * infinite, so they live in CSS.
+ * The one-off glitch on "noise." (timed to land as the second line finishes
+ * rising) and the light travelling along the underline live in CSS.
  */
 export const heroScene: MotionScene = (root) => {
   const q = gsap.utils.selector(root);

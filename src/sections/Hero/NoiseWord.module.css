@@ -2,32 +2,36 @@
   color: rgba(243, 239, 230, 0.5);
 }
 
+/* At rest: each letter slightly off its line (offsets set per letter in NoiseWord). */
 .letter {
   display: inline-block;
+  transform: translate(var(--x), var(--y)) rotate(var(--r));
 }
 
-@keyframes jitter {
+/*
+ * One short glitch, timed to start as the second headline line finishes rising
+ * (see the hero scene), then the letters settle into their rest and stay still.
+ */
+@keyframes glitch {
   0% {
-    transform: translate(0, 0) rotate(0deg);
+    transform: none;
   }
-  20% {
-    transform: translate(-0.04em, 0.03em) rotate(-4deg);
+  25% {
+    transform: translate(calc(var(--x) * -1.6), calc(var(--y) * 1.4)) rotate(calc(var(--r) * -1.5));
   }
-  40% {
-    transform: translate(0.03em, -0.04em) rotate(3deg);
+  50% {
+    transform: translate(calc(var(--x) * 1.8), calc(var(--y) * -1.2)) rotate(calc(var(--r) * 1.6));
   }
-  60% {
-    transform: translate(-0.02em, 0.04em) rotate(-2deg);
+  75% {
+    transform: translate(calc(var(--x) * -0.8), var(--y)) rotate(calc(var(--r) * -0.6));
   }
-  80% {
-    transform: translate(0.04em, 0) rotate(4deg);
+  100% {
+    transform: translate(var(--x), var(--y)) rotate(var(--r));
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .letter {
-    animation-name: jitter;
-    animation-timing-function: steps(1, end);
-    animation-iteration-count: infinite;
+    animation: glitch 0.7s steps(1, end) 1.35s 1 both;
   }
 }

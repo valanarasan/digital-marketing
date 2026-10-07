@@ -121,12 +121,15 @@ describe('ProblemIndex', () => {
 });
 
 describe('NoiseWord', () => {
-  it('gives each letter its own clock, cycling the timings past six letters', () => {
+  it('sets each letter slightly off its line, cycling the offsets past six letters', () => {
     const { container } = render(<NoiseWord word="noiseful" />);
     const letters = container.querySelectorAll<HTMLElement>('[aria-hidden="true"] > span');
     expect(letters).toHaveLength(8);
-    expect(letters[0].style.animationDuration).toBe(letters[6].style.animationDuration);
-    expect(letters[0].style.animationDuration).not.toBe(letters[1].style.animationDuration);
+    const rest = (letter: HTMLElement) =>
+      ['--x', '--y', '--r'].map((name) => letter.style.getPropertyValue(name)).join(' ');
+    expect(rest(letters[0])).toBe('-0.02em 0.03em -3deg');
+    expect(rest(letters[6])).toBe(rest(letters[0]));
+    expect(rest(letters[1])).not.toBe(rest(letters[0]));
   });
 });
 
