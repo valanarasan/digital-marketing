@@ -1,6 +1,9 @@
 /* Colours come from the parent through currentColor and --accordion-accent. */
 .accordion {
   --accordion-line: rgba(255, 255, 255, 0.11);
+  /* The running number's column and the gap after it; panel content indents by both. */
+  --accordion-index: 18px;
+  --accordion-gap: 16px;
   border-bottom: 1px solid var(--accordion-line);
 }
 
@@ -32,7 +35,7 @@
 .trigger {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--accordion-gap);
   width: 100%;
   min-height: 44px;
   padding: 26px 0;
@@ -44,6 +47,8 @@
 }
 
 .index {
+  flex: none;
+  width: var(--accordion-index);
   align-self: flex-start;
   margin-top: 4px;
   font-size: 12px;
@@ -109,4 +114,13 @@
 
 .panelInner {
   overflow: hidden;
+}
+
+/*
+ * Spacing lives on this inner box, not on .panelInner: padding there would
+ * survive the 0fr collapse and leave a gap under every closed item. The bottom
+ * padding keeps open content clear of the next item's rule.
+ */
+.panelBody {
+  padding: 2px 0 clamp(30px, 3vw, 44px) calc(var(--accordion-index) + var(--accordion-gap));
 }

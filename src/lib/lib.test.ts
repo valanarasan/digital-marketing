@@ -1,5 +1,6 @@
 import { cx } from './cx';
 import { findLever, leverForProblem } from './levers';
+import { mapEmbedUrl } from './maps';
 import { whatsappLink } from './whatsapp';
 import { levers, problems } from '@/content';
 
@@ -45,5 +46,23 @@ describe('leverForProblem', () => {
   it('returns null when nothing is selected or the id is unknown', () => {
     expect(leverForProblem(problems, levers, null)).toBeNull();
     expect(leverForProblem(problems, levers, 'nope')).toBeNull();
+  });
+});
+
+describe('mapEmbedUrl', () => {
+  const office = {
+    latitude: 12.9287471,
+    longitude: 77.5625986,
+    mapsUrl: 'https://maps.app.goo.gl/x',
+  };
+
+  it('drops the pin on the exact coordinates at street zoom', () => {
+    expect(mapEmbedUrl(office)).toBe(
+      'https://maps.google.com/maps?q=12.9287471,77.5625986&z=16&hl=en&output=embed',
+    );
+  });
+
+  it('takes another zoom level', () => {
+    expect(mapEmbedUrl(office, 13)).toContain('&z=13&');
   });
 });

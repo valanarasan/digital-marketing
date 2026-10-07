@@ -6,8 +6,12 @@ import { Container } from './Container';
 import { FlowerStar } from './FlowerStar';
 import { Kicker } from './Kicker';
 import { LotusMark } from './LotusMark';
+import { MapEmbed } from './MapEmbed';
 import { Marquee } from './Marquee';
+import { SocialIcon } from './SocialIcon';
+import type { SocialIconName } from './SocialIcon';
 import { TextLink } from './TextLink';
+import { business } from '@/content';
 
 describe('Accordion', () => {
   const items = [
@@ -105,5 +109,82 @@ describe('Marquee', () => {
       <Marquee items={['A', 'B']} separator={<i>·</i>} size="small" reverse />,
     );
     expect(container.querySelector('[aria-hidden="true"]')).toHaveTextContent('A·B·');
+  });
+});
+
+describe('MapEmbed', () => {
+  it('embeds a titled, lazy-loading map', () => {
+    render(
+      <MapEmbed
+        src="https://maps.google.com/maps?q=1,2&output=embed"
+        title="Office map"
+        className="m"
+      />,
+    );
+    const frame = screen.getByTitle('Office map');
+    expect(frame.tagName).toBe('IFRAME');
+    expect(frame).toHaveAttribute('src', 'https://maps.google.com/maps?q=1,2&output=embed');
+    expect(frame).toHaveAttribute('loading', 'lazy');
+    expect(frame.parentElement).toHaveClass('m');
+  });
+});
+
+describe('SocialIcon', () => {
+  const names: SocialIconName[] = [...business.socials.map((social) => social.network), 'whatsapp'];
+
+  function renderIcon(name: SocialIconName, className = 'icon'): SVGSVGElement {
+    const { container } = render(<SocialIcon name={name} className={className} />);
+    return container.querySelector('svg')!;
+  }
+
+  it('covers every channel the footer links to', () => {
+    expect([...names].sort()).toEqual(['facebook', 'instagram', 'linkedin', 'whatsapp', 'youtube']);
+  });
+
+  it.each(names)('draws %s on the shared 24x24 grid, decoratively', (name) => {
+    const svg = renderIcon(name);
+    expect(svg).toHaveAttribute('viewBox', '0 0 24 24');
+    expect(svg).toHaveAttribute('aria-hidden', 'true');
+    expect(svg).toHaveAttribute('focusable', 'false');
+    expect(svg).toHaveClass('icon');
+    expect(svg.querySelectorAll('path').length).toBeGreaterThan(0);
+  });
+
+  it.each([
+    ['whatsapp', '#25D366'],
+    ['youtube', '#FF0000'],
+    ['facebook', '#0866FF'],
+  ] as const)('fills the %s glyph with its brand colour', (name, colour) => {
+    const paths = renderIcon(name).querySelectorAll('path');
+    expect(paths).toHaveLength(1);
+    expect(paths[0]).toHaveAttribute('fill', colour);
+  });
+
+  it('knocks the i and the n out of the LinkedIn tile in white', () => {
+    const paths = renderIcon('linkedin').querySelectorAll('path');
+    expect(paths).toHaveLength(3);
+    expect(paths[0]).toHaveAttribute('fill', '#0A66C2');
+    expect(paths[1]).toHaveAttribute('fill', '#FFFFFF');
+    expect(paths[2]).toHaveAttribute('fill', '#FFFFFF');
+  });
+
+  /** A fill pointing at a gradient id that does not exist renders as black. */
+  it('points the Instagram fill at the gradient it defines, unique per icon', () => {
+    const { container } = render(
+      <>
+        <SocialIcon name="instagram" />
+        <SocialIcon name="instagram" />
+      </>,
+    );
+    const [first, second] = container.querySelectorAll('svg');
+    const firstId = first.querySelector('radialGradient')!.id;
+    expect(first.querySelectorAll('stop')).toHaveLength(5);
+    expect(first.querySelector('path')).toHaveAttribute('fill', `url(#${firstId})`);
+    expect(second.querySelector('radialGradient')!.id).not.toBe(firstId);
+  });
+
+  it('omits the class attribute when no class is passed', () => {
+    const { container } = render(<SocialIcon name="whatsapp" />);
+    expect(container.querySelector('svg')).not.toHaveAttribute('class');
   });
 });

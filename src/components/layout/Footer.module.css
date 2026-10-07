@@ -76,6 +76,28 @@
   transform-origin: left;
 }
 
+/* Social links lead with the platform's mark; the underline runs under the word only. */
+.social {
+  --social-icon: 18px;
+  --social-gap: 10px;
+  gap: var(--social-gap);
+}
+
+.social::after {
+  left: calc(var(--social-icon) + var(--social-gap));
+}
+
+.socialIcon {
+  flex: none;
+  width: var(--social-icon);
+  height: var(--social-icon);
+  transition: transform 0.35s ease;
+}
+
+.social:hover .socialIcon {
+  transform: translateY(-2px);
+}
+
 .mail {
   display: block;
   margin-top: 20px;
@@ -94,8 +116,9 @@
 
 .columns {
   display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 2fr);
-  gap: 24px;
+  grid-template-columns: minmax(0, 1.3fr) auto minmax(0, 1.4fr);
+  align-items: start;
+  gap: clamp(24px, 3vw, 44px);
   padding-top: 28px;
 }
 
@@ -115,6 +138,16 @@
   font-size: 22px;
   letter-spacing: -0.01em;
   color: var(--color-white);
+}
+
+.mapLink {
+  align-self: flex-start;
+  margin-top: 2px;
+  color: var(--color-gold);
+}
+
+.map {
+  width: clamp(150px, 12.5vw, 188px);
 }
 
 .nav {
@@ -165,7 +198,21 @@
   }
 
   .columns {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .columns nav {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .columns {
     grid-template-columns: 1fr;
+  }
+
+  .map {
+    width: min(100%, 220px);
   }
 }
 

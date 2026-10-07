@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { startSmoothScroll } from '@/motion/gsap';
 import { setMatchMedia } from '@/test/setup';
@@ -78,6 +78,34 @@ describe('Footer', () => {
       expect(screen.getByRole('link', { name: social.label })).toHaveAttribute('href', social.href);
     }
     expect(screen.getByText(business.address)).toBeInTheDocument();
+  });
+
+  it('leads every social link with its platform mark, WhatsApp included', () => {
+    render(<Footer content={footer} business={business} nav={footerNav} />);
+    const list = screen.getByRole('list', { name: 'Social channels' });
+    const links = within(list).getAllByRole('link');
+    expect(links.map((link) => link.textContent)).toEqual([
+      ...business.socials.map((social) => social.label),
+      'WhatsApp',
+    ]);
+    for (const link of links) {
+      expect(link.firstElementChild?.tagName.toLowerCase()).toBe('svg');
+      expect(link.firstElementChild).toHaveAttribute('aria-hidden', 'true');
+    }
+    expect(within(list).getByRole('link', { name: 'WhatsApp' })).toHaveAttribute(
+      'href',
+      `https://wa.me/${business.phoneDigits}`,
+    );
+  });
+
+  it('shows the office on a map and links to the Google Maps listing', () => {
+    render(<Footer content={footer} business={business} nav={footerNav} />);
+    const map = screen.getByTitle(footer.mapTitle);
+    expect(map).toHaveAttribute('src', expect.stringContaining('q=12.9287471,77.5625986'));
+    expect(screen.getByRole('link', { name: footer.mapLink })).toHaveAttribute(
+      'href',
+      business.office.mapsUrl,
+    );
   });
 
   it('shows the current year and the footer navigation', () => {

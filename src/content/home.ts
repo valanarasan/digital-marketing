@@ -159,6 +159,8 @@ export const footer: FooterContent = {
   prompt: 'Let’s talk growth.',
   promptSub: 'Tell us where the business needs to go.',
   whatsappCta: 'Message us on WhatsApp',
+  mapTitle: 'Map of the Hiranmaye Digital office in Banashankari 2nd Stage, Bengaluru',
+  mapLink: 'Open in Google Maps',
   wordmark: 'Hiranmaye',
   legal: [
     { label: 'Privacy Policy', href: '#' },

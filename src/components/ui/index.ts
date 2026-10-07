@@ -5,5 +5,7 @@ export * from './Container';
 export * from './FlowerStar';
 export * from './Kicker';
 export * from './LotusMark';
+export * from './MapEmbed';
 export * from './Marquee';
+export * from './SocialIcon';
 export * from './TextLink';

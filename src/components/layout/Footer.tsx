@@ -1,9 +1,11 @@
 import { useRef } from 'react';
-import type { Business, FooterContent, NavItem } from '@/types/content';
+import type { Business, FooterContent, NavItem, SocialLink } from '@/types/content';
+import { cx } from '@/lib/cx';
+import { mapEmbedUrl } from '@/lib/maps';
 import { whatsappLink } from '@/lib/whatsapp';
 import { useMotion } from '@/hooks';
 import { footerScene } from '@/motion/scenes';
-import { Container } from '@/components/ui';
+import { Container, MapEmbed, SocialIcon } from '@/components/ui';
 import styles from './Footer.module.css';
 
 export interface FooterProps {
@@ -17,6 +19,10 @@ export function Footer({ content, business, nav }: FooterProps) {
   useMotion(ref, footerScene);
 
   const whatsapp = whatsappLink(business.phoneDigits);
+  const socials: SocialLink[] = [
+    ...business.socials,
+    { network: 'whatsapp', label: 'WhatsApp', href: whatsapp },
+  ];
   const year = new Date().getFullYear();
 
   return (
@@ -33,28 +39,19 @@ export function Footer({ content, business, nav }: FooterProps) {
 
           <div>
             <ul role="list" className={styles.socials} aria-label="Social channels">
-              {business.socials.map((social) => (
-                <li key={social.label}>
+              {socials.map((social) => (
+                <li key={social.network}>
                   <a
-                    className={styles.underline}
+                    className={cx(styles.underline, styles.social)}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
+                    <SocialIcon name={social.network} className={styles.socialIcon} />
                     {social.label}
                   </a>
                 </li>
               ))}
-              <li>
-                <a
-                  className={styles.underline}
-                  href={whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  WhatsApp
-                </a>
-              </li>
             </ul>
 
             <a className={styles.mail} href={`mailto:${business.email}`}>
@@ -68,7 +65,20 @@ export function Footer({ content, business, nav }: FooterProps) {
                 </a>
                 <span>{business.address}</span>
                 <span>{business.hours}</span>
+                <a
+                  className={cx(styles.underline, styles.mapLink)}
+                  href={business.office.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {content.mapLink}
+                </a>
               </address>
+              <MapEmbed
+                className={styles.map}
+                src={mapEmbedUrl(business.office)}
+                title={content.mapTitle}
+              />
               <nav aria-label="Footer">
                 <ul role="list" className={styles.nav}>
                   {nav.map((item) => (

@@ -58,7 +58,9 @@ export function Accordion({ items, openId, onToggle, itemAnim, className }: Acco
               className={styles.panel}
               inert={!open}
             >
-              <div className={styles.panelInner}>{item.content}</div>
+              <div className={styles.panelInner}>
+                <div className={styles.panelBody}>{item.content}</div>
+              </div>
             </div>
           </div>
         );

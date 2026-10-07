@@ -5,9 +5,21 @@ export interface NavItem {
   href: string;
 }
 
+/** Platforms the site links to; each has a mark in SocialIcon. */
+export type SocialNetwork = 'whatsapp' | 'linkedin' | 'instagram' | 'youtube' | 'facebook';
+
 export interface SocialLink {
+  network: SocialNetwork;
   label: string;
   href: string;
+}
+
+/** The office pin and its public Google Maps listing. */
+export interface OfficeLocation {
+  latitude: number;
+  longitude: number;
+  /** Share link to the business listing on Google Maps. */
+  mapsUrl: string;
 }
 
 export interface Business {
@@ -19,6 +31,7 @@ export interface Business {
   address: string;
   city: string;
   hours: string;
+  office: OfficeLocation;
   socials: SocialLink[];
 }
 
@@ -104,6 +117,9 @@ export interface FooterContent {
   prompt: string;
   promptSub: string;
   whatsappCta: string;
+  /** Accessible title of the embedded map, and the link to the full listing. */
+  mapTitle: string;
+  mapLink: string;
   wordmark: string;
   legal: NavItem[];
 }

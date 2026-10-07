@@ -1,0 +1,17 @@
+/* Size comes from the parent: set a width and the box stays square. */
+.map {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 14px;
+  /* Shown while the tiles load. */
+  background: var(--color-navy);
+}
+
+.frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
