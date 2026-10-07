@@ -1,4 +1,6 @@
 import { cx } from './cx';
+import { resolveHref } from './href';
+import { initials } from './initials';
 import { findLever, leverForProblem } from './levers';
 import { mapEmbedUrl } from './maps';
 import { whatsappLink } from './whatsapp';
@@ -64,5 +66,33 @@ describe('mapEmbedUrl', () => {
 
   it('takes another zoom level', () => {
     expect(mapEmbedUrl(office, 13)).toContain('&z=13&');
+  });
+});
+
+describe('resolveHref', () => {
+  it('prefixes page paths with the deploy base', () => {
+    expect(resolveHref('solutions/')).toBe('/solutions/');
+    expect(resolveHref('', '/digital-marketing/')).toBe('/digital-marketing/');
+    expect(resolveHref('/inside-hiranmaye/', '/digital-marketing/')).toBe(
+      '/digital-marketing/inside-hiranmaye/',
+    );
+  });
+
+  it('leaves anchors and absolute URLs alone', () => {
+    expect(resolveHref('#contact', '/x/')).toBe('#contact');
+    expect(resolveHref('https://wa.me/1', '/x/')).toBe('https://wa.me/1');
+    expect(resolveHref('mailto:a@b.c', '/x/')).toBe('mailto:a@b.c');
+  });
+});
+
+describe('initials', () => {
+  it('takes the first and last initials', () => {
+    expect(initials('Vijayalakshmi Girish')).toBe('VG');
+    expect(initials('  abhishek kumar mishra ')).toBe('AM');
+  });
+
+  it('copes with a single name and with nothing', () => {
+    expect(initials('Jeeva')).toBe('J');
+    expect(initials('   ')).toBe('');
   });
 });

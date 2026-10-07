@@ -9,7 +9,10 @@ export interface TrustStripProps {
   content: TrustContent;
 }
 
-/** Who the agency builds for: business stages on a big ticker, sectors on a small reverse one. */
+/**
+ * Who the agency builds for: the ambition line, business stages on a big ticker,
+ * sectors on a small reverse one, and the two closing notes from the brief.
+ */
 export function TrustStrip({ content }: TrustStripProps) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, trustScene);
@@ -17,9 +20,12 @@ export function TrustStrip({ content }: TrustStripProps) {
   return (
     <section ref={ref} className={styles.trust} aria-labelledby="trust-label">
       <Container className={styles.head}>
-        <h2 id="trust-label" className={styles.label}>
-          {content.label}
-        </h2>
+        <div>
+          <h2 id="trust-label" className={styles.heading}>
+            {content.heading}
+          </h2>
+          <p className={styles.label}>{content.label}</p>
+        </div>
         <p className={styles.tag}>{content.tag}</p>
       </Container>
       <Marquee
@@ -34,6 +40,15 @@ export function TrustStrip({ content }: TrustStripProps) {
         size="small"
         reverse
       />
+      <Container>
+        <ul role="list" className={styles.notes}>
+          {content.notes.map((note) => (
+            <li key={note} className={styles.note}>
+              {note}
+            </li>
+          ))}
+        </ul>
+      </Container>
     </section>
   );
 }

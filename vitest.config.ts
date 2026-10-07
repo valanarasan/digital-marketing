@@ -39,8 +39,11 @@ export default defineConfig({
         // them (useMotion) is unit-tested.
         'src/motion/scenes/**',
         'src/motion/gsap.ts',
-        // Composition root: wiring with no branches worth asserting.
+        // Composition roots: page entries and the shared mount, wiring with no
+        // branches worth asserting. The pages they mount are tested.
         'src/main.tsx',
+        'src/mount.tsx',
+        'src/entries/**',
       ],
       thresholds: {
         lines: 100,

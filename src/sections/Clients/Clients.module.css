@@ -102,6 +102,37 @@
   color: rgba(243, 239, 230, 0.62);
 }
 
+.partners {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 12px 32px;
+  margin-top: clamp(48px, 5vw, 72px);
+  padding-top: 28px;
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.partnersLabel {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.partnerList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}
+
+.partner {
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.4vw, 34px);
+  font-style: italic;
+  color: var(--color-white);
+}
+
 @media (max-width: 900px) {
   .head {
     grid-template-columns: 1fr;

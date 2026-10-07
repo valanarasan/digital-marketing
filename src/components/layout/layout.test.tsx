@@ -10,7 +10,7 @@ import { SmoothScroll } from './SmoothScroll';
 
 describe('Header', () => {
   it('lists the section links and the call to action', () => {
-    render(<Header nav={navItems} cta={navCta} />);
+    render(<Header nav={navItems} cta={navCta} current="home" />);
     const primary = screen.getByRole('navigation', { name: 'Primary' });
     for (const item of navItems) {
       expect(primary).toContainElement(screen.getAllByRole('link', { name: item.label })[0]);
@@ -22,7 +22,7 @@ describe('Header', () => {
   });
 
   it('opens and closes the drawer from the menu button', async () => {
-    render(<Header nav={navItems} cta={navCta} />);
+    render(<Header nav={navItems} cta={navCta} current="home" />);
     const button = screen.getByRole('button', { name: 'Menu' });
     const drawer = document.getElementById(button.getAttribute('aria-controls') ?? '');
     expect(drawer).toHaveAttribute('inert');
@@ -37,7 +37,7 @@ describe('Header', () => {
   });
 
   it('closes the drawer on Escape but not on other keys', async () => {
-    render(<Header nav={navItems} cta={navCta} />);
+    render(<Header nav={navItems} cta={navCta} current="home" />);
     const button = screen.getByRole('button', { name: 'Menu' });
     await userEvent.click(button);
     fireEvent.keyDown(window, { key: 'ArrowDown' });
@@ -46,14 +46,33 @@ describe('Header', () => {
     expect(button).toHaveAttribute('aria-expanded', 'false');
   });
 
+  it('marks the current page and resolves page links against the deploy base', () => {
+    render(<Header nav={navItems} cta={navCta} current="solutions" />);
+    const primary = screen.getByRole('navigation', { name: 'Primary' });
+    const solutions = within(primary).getByRole('link', { name: 'Solutions' });
+    expect(solutions).toHaveAttribute('aria-current', 'page');
+    expect(solutions).toHaveAttribute('href', '/solutions/');
+    const home = within(primary).getByRole('link', { name: 'Home' });
+    expect(home).not.toHaveAttribute('aria-current');
+    expect(home).toHaveAttribute('href', '/');
+    expect(within(primary).getByRole('link', { name: 'Let’s Connect' })).toHaveAttribute(
+      'href',
+      '#contact',
+    );
+    expect(screen.getByRole('link', { name: 'Hiranmaye Digital — home' })).toHaveAttribute(
+      'href',
+      '/',
+    );
+  });
+
   it('closes the drawer when any drawer link is tapped', async () => {
-    render(<Header nav={navItems} cta={navCta} />);
+    render(<Header nav={navItems} cta={navCta} current="home" />);
     const button = screen.getByRole('button', { name: 'Menu' });
     await userEvent.click(button);
     const drawer = document.getElementById(
       button.getAttribute('aria-controls') ?? '',
     ) as HTMLElement;
-    const link = drawer.querySelector('a[href="#about"]') as HTMLElement;
+    const link = drawer.querySelector('a[href="#contact"]') as HTMLElement;
     await userEvent.click(link);
     expect(button).toHaveAttribute('aria-expanded', 'false');
   });
@@ -105,6 +124,22 @@ describe('Footer', () => {
     expect(screen.getByRole('link', { name: footer.mapLink })).toHaveAttribute(
       'href',
       business.office.mapsUrl,
+    );
+  });
+
+  it('carries the About us block from the brief', () => {
+    render(<Footer content={footer} business={business} nav={footerNav} />);
+    expect(screen.getByRole('heading', { name: footer.about.kicker })).toBeInTheDocument();
+    expect(screen.getByText(footer.about.promise)).toBeInTheDocument();
+    expect(screen.getByText(footer.about.body)).toBeInTheDocument();
+  });
+
+  it('resolves page links in the footer menu', () => {
+    render(<Footer content={footer} business={business} nav={footerNav} />);
+    const nav = screen.getByRole('navigation', { name: 'Footer' });
+    expect(within(nav).getByRole('link', { name: 'Inside Hiranmaye' })).toHaveAttribute(
+      'href',
+      '/inside-hiranmaye/',
     );
   });
 

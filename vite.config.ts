@@ -9,6 +9,9 @@ import react from '@vitejs/plugin-react';
 const nodeEnv =
   (globalThis as { process?: { env: Record<string, string | undefined> } }).process?.env ?? {};
 
+/** One HTML entry per page, so each has a real URL: /, /inside-hiranmaye/, /solutions/. */
+const page = (path: string) => decodeURIComponent(new URL(path, import.meta.url).pathname);
+
 export default defineConfig({
   // GitHub Pages serves a project site from /<repo>/, a custom domain from /.
   // The deploy workflow sets VITE_BASE; local dev and custom domains use the root.
@@ -20,5 +23,12 @@ export default defineConfig({
   build: {
     target: 'es2022',
     cssCodeSplit: true,
+    rolldownOptions: {
+      input: {
+        home: page('./index.html'),
+        'inside-hiranmaye': page('./inside-hiranmaye/index.html'),
+        solutions: page('./solutions/index.html'),
+      },
+    },
   },
 });

@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { Business, FooterContent, NavItem, SocialLink } from '@/types/content';
 import { cx } from '@/lib/cx';
+import { resolveHref } from '@/lib/href';
 import { mapEmbedUrl } from '@/lib/maps';
 import { whatsappLink } from '@/lib/whatsapp';
 import { useMotion } from '@/hooks';
@@ -35,6 +36,12 @@ export function Footer({ content, business, nav }: FooterProps) {
             <a className={styles.pill} href={whatsapp} target="_blank" rel="noopener noreferrer">
               {content.whatsappCta}
             </a>
+
+            <div className={styles.about}>
+              <h2 className={styles.aboutKicker}>{content.about.kicker}</h2>
+              <p className={styles.aboutPromise}>{content.about.promise}</p>
+              <p className={styles.aboutBody}>{content.about.body}</p>
+            </div>
           </div>
 
           <div>
@@ -83,7 +90,7 @@ export function Footer({ content, business, nav }: FooterProps) {
                 <ul role="list" className={styles.nav}>
                   {nav.map((item) => (
                     <li key={item.href}>
-                      <a className={styles.underline} href={item.href}>
+                      <a className={styles.underline} href={resolveHref(item.href)}>
                         {item.label}
                       </a>
                     </li>

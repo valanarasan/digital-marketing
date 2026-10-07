@@ -1,20 +1,23 @@
 import { useEffect, useId, useState } from 'react';
-import type { NavItem } from '@/types/content';
+import type { NavItem, PageId } from '@/types/content';
 import { cx } from '@/lib/cx';
+import { resolveHref } from '@/lib/href';
 import { ButtonLink, Container, LotusMark } from '@/components/ui';
 import styles from './Header.module.css';
 
 export interface HeaderProps {
   nav: NavItem[];
   cta: NavItem;
+  /** The page being shown; its menu link is marked as the current page. */
+  current: PageId;
 }
 
 /**
- * Brand, section links and the call to action. Below 720px the links fold into
- * a drawer that closes on Escape and on any link tap — including the section
+ * Brand, page links and the call to action. On narrow screens the links fold
+ * into a drawer that closes on Escape and on any link tap — including the page
  * you are already on.
  */
-export function Header({ nav, cta }: HeaderProps) {
+export function Header({ nav, cta, current }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const drawerId = useId();
   const close = () => setOpen(false);
@@ -28,10 +31,12 @@ export function Header({ nav, cta }: HeaderProps) {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
+  const ariaCurrent = (item: NavItem) => (item.page === current ? 'page' : undefined);
+
   return (
     <header className={styles.header}>
       <Container className={styles.inner}>
-        <a className={styles.logo} href="#top" aria-label="Hiranmaye Digital — home">
+        <a className={styles.logo} href={resolveHref('')} aria-label="Hiranmaye Digital — home">
           <LotusMark className={styles.mark} />
           <span className={styles.word} aria-hidden="true">
             HIRANMAYE
@@ -43,13 +48,17 @@ export function Header({ nav, cta }: HeaderProps) {
           <ul role="list" className={styles.links}>
             {nav.map((item) => (
               <li key={item.href}>
-                <a className={styles.link} href={item.href}>
+                <a
+                  className={styles.link}
+                  href={resolveHref(item.href)}
+                  aria-current={ariaCurrent(item)}
+                >
                   {item.label}
                 </a>
               </li>
             ))}
           </ul>
-          <ButtonLink variant="pill" href={cta.href} className={styles.cta}>
+          <ButtonLink variant="pill" href={resolveHref(cta.href)} className={styles.cta}>
             {cta.label}
           </ButtonLink>
           <button
@@ -68,7 +77,12 @@ export function Header({ nav, cta }: HeaderProps) {
         <ul role="list" className={styles.drawerLinks}>
           {[...nav, cta].map((item) => (
             <li key={item.label}>
-              <a className={styles.drawerLink} href={item.href} onClick={close}>
+              <a
+                className={styles.drawerLink}
+                href={resolveHref(item.href)}
+                aria-current={ariaCurrent(item)}
+                onClick={close}
+              >
                 {item.label}
               </a>
             </li>

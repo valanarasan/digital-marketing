@@ -25,8 +25,9 @@ export interface HeroProps {
 /**
  * The Editorial hero: a magazine-cover layout on navy. "noise." glitches once and rests off-line,
  * "It creates momentum." sets large in gold italic over a travelling-light
- * underline, and the base row carries the subcopy, the calls to action and the
- * growth check. On wide screens it stays pinned while the page slides over it.
+ * underline, and the base row carries the calls to action and the growth check
+ * (the brief keeps the hero to tagline and CTA; the description lives in the
+ * footer's About us). On wide screens it stays pinned while the page slides over it.
  */
 export function Hero({
   header,
@@ -89,9 +90,6 @@ export function Hero({
 
       <Container>
         <div className={styles.base}>
-          <div className={styles.column} data-anim="base">
-            <p className={styles.subcopy}>{content.subcopy}</p>
-          </div>
           <div className={cx(styles.column, styles.actions)} data-anim="base">
             <ButtonLink href={content.primaryCta.href}>{content.primaryCta.label}</ButtonLink>
             <TextLink href={content.secondaryCta.href}>{content.secondaryCta.label}</TextLink>

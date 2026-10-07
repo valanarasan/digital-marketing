@@ -1,0 +1,135 @@
+.team {
+  position: relative;
+  z-index: 1;
+  padding-block: clamp(80px, 9vw, 140px);
+  background: var(--color-cream);
+  color: var(--color-navy);
+}
+
+.kicker {
+  color: var(--color-gold-deep);
+}
+
+.heading {
+  font-size: clamp(40px, 4.6vw, 72px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.groupTitle {
+  margin: clamp(48px, 5vw, 72px) 0 20px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold-deep);
+}
+
+/* The founder: a large card, name on the left, the bio in full on the right. */
+.founder {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
+  gap: clamp(24px, 4vw, 72px);
+  margin-top: clamp(32px, 4vw, 56px);
+  padding: clamp(28px, 3.6vw, 56px);
+  border: 1px solid var(--line-on-light);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+}
+
+.founder .groupTitle {
+  margin-top: 0;
+}
+
+.founderMark {
+  --monogram-size: clamp(88px, 9vw, 128px);
+  margin-top: 8px;
+}
+
+.founderName {
+  margin-top: 24px;
+  font-size: clamp(26px, 2.4vw, 36px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.role {
+  margin-top: 6px;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: var(--text-muted-on-light);
+}
+
+.founderBio {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.founderBio p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text-muted-on-light);
+}
+
+.founderBio p:first-child {
+  font-size: clamp(19px, 1.6vw, 22px);
+  line-height: 1.5;
+  color: var(--color-navy);
+}
+
+.people {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  align-items: start;
+}
+
+.card {
+  padding: clamp(22px, 2.4vw, 32px);
+  border: 1px solid var(--line-on-light);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+}
+
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.bio {
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-muted-on-light);
+}
+
+.more {
+  margin-top: 4px;
+}
+
+.summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gold-deep);
+  cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .founder {
+    grid-template-columns: 1fr;
+  }
+}

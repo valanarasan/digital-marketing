@@ -44,6 +44,11 @@
   display: inline-block;
 }
 
+.more {
+  margin-top: clamp(24px, 3vw, 40px);
+  color: var(--color-gold);
+}
+
 .accent {
   font-family: var(--font-serif);
   font-style: italic;

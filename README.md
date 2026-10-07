@@ -1,8 +1,16 @@
 # Hiranmaye Digital — site v2
 
-The launch home page for Hiranmaye Digital: the approved **Editorial hero** followed by the
-**Midnight Gold** sections (trust strip, who we are, statement, services, process, footer).
-A fresh repo, separate from the first site in `../Site`.
+The Hiranmaye Digital site: the approved **Editorial hero** and **Midnight Gold** sections,
+with the copy from `final_website_content.pdf`. Three pages, each with its own URL:
+
+| Page | URL | What's on it |
+| --- | --- | --- |
+| Home | `/` | hero and growth check, trust strip, clients, who we are, statement, services, process, why us |
+| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, quote, vision & mission, team and board, clients & partners |
+| Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
+
+Every page ends with the same footer (contact, About us, map, socials). A fresh repo, separate
+from the first site in `../Site`.
 
 ## Run it
 
@@ -39,16 +47,24 @@ src/
   components/
     ui/         small reusable pieces: Accordion, Marquee, ButtonLink, LotusMark…
     layout/     Header, Footer, SkipLink, SmoothScroll
-  sections/     one folder per home-page section, each with its own CSS module
-  motion/       GSAP setup (gsap.ts) and one scene per section (scenes/)
+  sections/     one folder per section, each with its own CSS module
+  motion/       GSAP setup (gsap.ts) and the scenes (scenes/)
   hooks/        useMotion, useReducedMotion, useSingleSelect, useStickyOffset
-  pages/        HomePage — composes content and sections, owns the shared state
+  pages/        HomePage, AboutPage, SolutionsPage — compose content and sections
+  main.tsx      home page entry; entries/ holds the other pages' entries
+  mount.tsx     the shell every page shares: fonts, global styles, smooth scroll, skip link
+index.html, inside-hiranmaye/index.html, solutions/index.html   one HTML file per page
 ```
+
+Links in the content files are written relative to the deploy base (`solutions/`, `''` for
+home) and resolved with `resolveHref`, so they work on `localhost`, on GitHub Pages under
+`/<repo>/`, and on a custom domain.
 
 Design rules the code follows:
 
 - **Content is data.** Components receive copy through props typed in `src/types`; nothing is
-  hard-coded in JSX. Editing `src/content/home.ts` changes the page.
+  hard-coded in JSX. `src/content/home.ts`, `about.ts`, `solutions.ts`, `clients.ts` and
+  `business.ts` hold every word on the site.
 - **Styling and motion are separate.** Every component has its own `.module.css`; motion scenes
   find their targets through `data-anim` attributes, never class names.
 - **Components depend on abstractions.** Sections call `useMotion(ref, scene)`; only
@@ -71,6 +87,8 @@ Design rules the code follows:
 | Statement | impressions / followers / traffic struck through in turn |
 | Services | heading rises; levers arrive as a staircase; gold curve grows |
 | Process | section turns from sand to night; illustrations scale up and clip in |
+| Why us, Story, Vision & Mission, Team, Solutions | each block rises in once as it scrolls into view |
+| Inner-page title band | lotus watermark traces itself; kicker, title and index rise in on load |
 | Footer | wordmark rises letter by letter |
 
 The growth check in the hero is wired to the services accordion: picking a problem opens the
@@ -87,4 +105,8 @@ gate, then a build with `VITE_BASE=/<repo>/`, and publishes `dist/`. Set the rep
 
 - Confirm the LinkedIn and Facebook URLs in `src/content/business.ts` (inferred from the handles).
 - Privacy Policy and Terms links in the footer point to `#` until those pages exist.
-- Only the home page exists so far; the nav links scroll to its sections.
+- Resources & Insights is in the content brief's menu but has no content yet, so it is not in
+  the menu; add it to `navItems` in `src/content/home.ts` once the page exists.
+- Team: photos (initials stand in for now), bios for Harshitha Girish, Saji Philip and Veena
+  Prasad, and roles for Praveena Pradeep and Harshitha Girish are still to come.
+- Content Marketing has no outcome line in the brief yet.

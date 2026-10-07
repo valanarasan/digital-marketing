@@ -1,0 +1,98 @@
+.hero {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding-bottom: clamp(40px, 5vw, 72px);
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+/* The lotus, large and faint, off the right edge; drawn in on load. */
+.watermark {
+  position: absolute;
+  right: -8vw;
+  bottom: -6vw;
+  z-index: 0;
+  width: min(900px, 80vw);
+  color: var(--color-gold);
+  opacity: 0.09;
+  pointer-events: none;
+}
+
+.watermark svg {
+  width: 100%;
+  height: auto;
+}
+
+.watermark path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.body {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(56px, 8vw, 120px);
+}
+
+.head {
+  outline: none;
+}
+
+.kicker {
+  color: var(--color-gold);
+}
+
+.title {
+  max-width: 16ch;
+  font-size: clamp(44px, 6.6vw, 108px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+  color: var(--color-white);
+}
+
+.accent {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.02em;
+  color: var(--color-gold);
+}
+
+.intro {
+  max-width: 36ch;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.45;
+  color: var(--text-muted-on-dark);
+}
+
+.indexNav {
+  margin-top: clamp(36px, 4.5vw, 64px);
+  padding-top: 24px;
+  border-top: 1px solid var(--line-on-dark);
+}
+
+.index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.indexLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(243, 239, 230, 0.24);
+  border-radius: var(--radius-pill);
+  font-size: 14px;
+  transition:
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.indexLink:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}

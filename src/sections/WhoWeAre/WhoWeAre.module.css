@@ -112,6 +112,11 @@
   }
 }
 
+.link {
+  margin-top: 20px;
+  color: var(--color-navy);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .lotus path {
     animation: draw 9s ease-in-out infinite;

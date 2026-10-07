@@ -16,12 +16,21 @@ import {
   statement,
   trust,
   who,
+  whyUs,
 } from '@/content';
 import { useSingleSelect } from '@/hooks';
 import { Footer, Header } from '@/components/layout';
-import { Clients, Hero, Process, Services, Statement, TrustStrip, WhoWeAre } from '@/sections';
-
-export const MAIN_CONTENT_ID = 'main-content';
+import {
+  Clients,
+  Hero,
+  Process,
+  Services,
+  Statement,
+  TrustStrip,
+  WhoWeAre,
+  WhyUs,
+} from '@/sections';
+import { MAIN_CONTENT_ID } from './ids';
 
 /**
  * Composition root for the home page: content in, sections out. The one piece
@@ -43,7 +52,7 @@ export function HomePage() {
     <>
       <main>
         <Hero
-          header={<Header nav={navItems} cta={navCta} />}
+          header={<Header nav={navItems} cta={navCta} current="home" />}
           content={hero}
           problems={problems}
           levers={levers}
@@ -62,6 +71,7 @@ export function HomePage() {
           onToggle={lever.toggle}
         />
         <Process intro={processIntro} steps={processSteps} />
+        <WhyUs content={whyUs} />
       </main>
       <Footer content={footer} business={business} nav={footerNav} />
     </>

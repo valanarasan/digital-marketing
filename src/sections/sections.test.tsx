@@ -4,6 +4,8 @@ import { runScene } from '@/motion/gsap';
 import {
   clientsScene,
   heroScene,
+  pageHeroScene,
+  riseScene,
   processScene,
   servicesScene,
   statementScene,
@@ -11,8 +13,19 @@ import {
   whoScene,
 } from '@/motion/scenes';
 import {
+  aboutHero,
+  aboutIndex,
+  aboutWho,
   clients,
   clientsIntro,
+  partners,
+  quote,
+  solutions,
+  solutionsPage,
+  story,
+  team,
+  visionMission,
+  whyUs,
   hero,
   levers,
   problems,
@@ -24,6 +37,13 @@ import {
   who,
 } from '@/content';
 import { Clients } from './Clients';
+import { PageHero } from './PageHero';
+import { Quote } from './Quote';
+import { SolutionsList } from './SolutionsList';
+import { Story } from './Story';
+import { Team } from './Team';
+import { VisionMission } from './VisionMission';
+import { WhyUs } from './WhyUs';
 import { Hero } from './Hero';
 import { NoiseWord } from './Hero/NoiseWord';
 import { ProblemIndex } from './Hero/ProblemIndex';
@@ -56,7 +76,7 @@ describe('Hero', () => {
     const heading = screen.getByRole('heading', { level: 1 });
     expect(heading).toHaveTextContent('Marketing that doesn’t');
     expect(heading).toHaveTextContent('just create');
-    expect(heading).toHaveTextContent('It creates momentum.');
+    expect(heading).toHaveTextContent(hero.payoff);
     expect(within(heading).getByText('noise.')).toHaveClass('sr-only');
   });
 
@@ -170,7 +190,9 @@ describe('Clients', () => {
 describe('TrustStrip', () => {
   it('names the section and lists stages and sectors for assistive tech', () => {
     render(<TrustStrip content={trust} />);
-    expect(screen.getByRole('heading', { name: trust.label })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: trust.heading })).toBeInTheDocument();
+    expect(screen.getByText(trust.label)).toBeInTheDocument();
+    for (const note of trust.notes) expect(screen.getByText(note)).toBeInTheDocument();
     expect(screen.getByText(trust.stages.join(', '))).toBeInTheDocument();
     expect(screen.getByText(trust.sectors.join(', '))).toBeInTheDocument();
     expect(sceneFor(trustScene)).toBe(true);
@@ -191,6 +213,17 @@ describe('WhoWeAre', () => {
     expect(screen.getByText(who.answerLead)).toBeInTheDocument();
     expect(sceneFor(whoScene)).toBe(true);
   });
+
+  it('links on to Inside Hiranmaye when the content asks, and not otherwise', () => {
+    const { unmount } = render(<WhoWeAre content={who} />);
+    expect(screen.getByRole('link', { name: 'Inside Hiranmaye' })).toHaveAttribute(
+      'href',
+      '/inside-hiranmaye/',
+    );
+    unmount();
+    render(<WhoWeAre content={aboutWho} />);
+    expect(screen.queryByRole('link')).not.toBeInTheDocument();
+  });
 });
 
 describe('Statement', () => {
@@ -208,6 +241,10 @@ describe('Statement', () => {
 describe('Services', () => {
   it('shows each lever with its services and opens the chosen one', () => {
     render(<Services content={services} levers={levers} openId="results" onToggle={vi.fn()} />);
+    expect(screen.getByRole('link', { name: services.link.label })).toHaveAttribute(
+      'href',
+      '/solutions/',
+    );
     expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
       'One Growth Partner. Multiple Growth Levers.',
     );
@@ -254,4 +291,189 @@ describe('StepIcon', () => {
       expect(container.querySelector('svg')?.childElementCount).toBeGreaterThan(2);
     },
   );
+});
+
+describe('Clients partners', () => {
+  it('lists the partners under the logos when given, and leaves them out otherwise', () => {
+    const { unmount } = render(
+      <Clients content={clientsIntro} clients={clients} partners={partners} />,
+    );
+    expect(screen.getByRole('heading', { name: partners.label })).toBeInTheDocument();
+    expect(screen.getByText('Jeeva')).toBeInTheDocument();
+    unmount();
+    render(<Clients content={clientsIntro} clients={clients} />);
+    expect(screen.queryByText('Jeeva')).not.toBeInTheDocument();
+  });
+});
+
+describe('WhyUs', () => {
+  it('numbers the six principles under one heading', () => {
+    render(<WhyUs content={whyUs} />);
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent('Why us?');
+    const points = within(screen.getByRole('list')).getAllByRole('listitem');
+    expect(points).toHaveLength(6);
+    whyUs.points.forEach((point, index) => {
+      expect(within(points[index]).getByRole('heading', { level: 3 })).toHaveTextContent(
+        point.title,
+      );
+      expect(points[index]).toHaveTextContent(point.body);
+    });
+    expect(sceneFor(riseScene)).toBe(true);
+  });
+});
+
+describe('Quote', () => {
+  it('sets the quotation with its source', () => {
+    render(<Quote content={quote} />);
+    expect(screen.getByText(`“${quote.text}”`)).toBeInTheDocument();
+    expect(screen.getByText(`— ${quote.cite}`)).toBeInTheDocument();
+  });
+});
+
+describe('PageHero', () => {
+  it('shows the kicker, title with accent, intro and an index of in-page links', () => {
+    render(
+      <PageHero
+        header={<div data-testid="header" />}
+        content={aboutHero}
+        contentId="main-content"
+        index={aboutIndex}
+        indexLabel="On this page"
+      />,
+    );
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Inside Hiranmaye.');
+    expect(screen.getByText(aboutHero.intro!)).toBeInTheDocument();
+    const index = screen.getByRole('navigation', { name: 'On this page' });
+    expect(within(index).getAllByRole('link')).toHaveLength(aboutIndex.length);
+    expect(within(index).getByRole('link', { name: 'Our story' })).toHaveAttribute(
+      'href',
+      '#story',
+    );
+    expect(document.getElementById('main-content')).toHaveAttribute('tabindex', '-1');
+    expect(sceneFor(pageHeroScene)).toBe(true);
+  });
+
+  it('copes with just a kicker and a title', () => {
+    render(
+      <PageHero
+        header={null}
+        content={{ kicker: 'Kicker', title: 'Plain title' }}
+        contentId="main-content"
+      />,
+    );
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Plain title');
+    expect(screen.queryByRole('navigation')).not.toBeInTheDocument();
+  });
+});
+
+describe('Story', () => {
+  it('asks the founding question and tells the story', () => {
+    render(<Story content={story} />);
+    expect(screen.getByRole('heading', { level: 2 })).toHaveTextContent(
+      `${story.lead} ${story.question}`,
+    );
+    for (const paragraph of story.paragraphs) {
+      expect(screen.getByText(paragraph)).toBeInTheDocument();
+    }
+  });
+});
+
+describe('VisionMission', () => {
+  it('names and states the vision and the mission', () => {
+    render(<VisionMission content={visionMission} />);
+    expect(screen.getByRole('heading', { name: 'Vision' })).toBeInTheDocument();
+    expect(screen.getByText(visionMission.vision.text)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Mission' })).toBeInTheDocument();
+    expect(screen.getByText(visionMission.mission.text)).toBeInTheDocument();
+  });
+});
+
+describe('Team', () => {
+  it('introduces the founder in full, then the team and the board', () => {
+    render(<Team content={team} />);
+    expect(screen.getByRole('heading', { level: 2, name: team.heading })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: team.founder.name })).toBeInTheDocument();
+    for (const paragraph of team.founder.bio) {
+      expect(screen.getByText(paragraph)).toBeInTheDocument();
+    }
+    for (const person of [...team.team, ...team.board]) {
+      expect(screen.getByRole('heading', { name: person.name })).toBeInTheDocument();
+    }
+    expect(screen.getAllByText('Board Member')).toHaveLength(team.board.length);
+  });
+
+  it('opens a long profile with its first paragraph and keeps the rest behind a disclosure', async () => {
+    render(<Team content={team} />);
+    const praveena = team.team[0];
+    const card = screen.getByRole('heading', { name: praveena.name }).closest('article')!;
+    expect(card).toHaveTextContent(praveena.bio[0]);
+    const summary = within(card).getByText(team.moreLabel);
+    const details = summary.closest('details')!;
+    expect(details).not.toHaveAttribute('open');
+    await userEvent.click(summary);
+    expect(details).toHaveAttribute('open');
+    expect(within(details).getByText(praveena.bio[3])).toBeInTheDocument();
+  });
+
+  it('shows a name-only card while a profile is still to come', () => {
+    render(<Team content={team} />);
+    const card = screen.getByRole('heading', { name: 'Harshitha Girish' }).closest('article')!;
+    expect(card.querySelectorAll('p')).toHaveLength(0);
+    expect(within(card).queryByText(team.moreLabel)).not.toBeInTheDocument();
+  });
+});
+
+describe('SolutionsList', () => {
+  const renderList = () => render(<SolutionsList content={solutionsPage} solutions={solutions} />);
+  const entry = (id: string) => document.getElementById(id) as HTMLElement;
+
+  it('gives every solution its own anchor, number and heading', () => {
+    renderList();
+    expect(screen.getAllByRole('article')).toHaveLength(13);
+    solutions.forEach((solution) => {
+      expect(within(entry(solution.id)).getByRole('heading', { level: 2 })).toHaveTextContent(
+        solution.name,
+      );
+    });
+    expect(sceneFor(riseScene)).toBe(true);
+  });
+
+  it('renders each part an entry has: details, outcome and its own call to action', () => {
+    renderList();
+    const strategy = entry('digital-marketing-strategy');
+    expect(within(strategy).getByText('What we solve')).toBeInTheDocument();
+    expect(within(strategy).getByText('What we do')).toBeInTheDocument();
+    expect(within(strategy).getByText(solutionsPage.outcomeLabel)).toBeInTheDocument();
+    expect(
+      within(strategy).getByRole('link', { name: 'Build your growth blueprint' }),
+    ).toHaveAttribute('href', '#contact');
+  });
+
+  it('opens Performance Marketing with its quotation instead of a headline', () => {
+    renderList();
+    const performance = entry('performance-marketing');
+    expect(within(performance).getByText('“A penny saved is a penny earned.”')).toBeInTheDocument();
+    expect(within(performance).getByText('— Benjamin Franklin')).toBeInTheDocument();
+  });
+
+  it('splits SEO • AEO • GEO into its three promises', () => {
+    renderList();
+    const search = entry('seo-aeo-geo');
+    for (const promise of ['Be ranked.', 'Be answered.', 'Be referenced.']) {
+      expect(within(search).getByText(promise)).toBeInTheDocument();
+    }
+  });
+
+  it('leaves out an outcome the brief left blank, and falls back to the default call to action', () => {
+    renderList();
+    expect(within(entry('content-marketing')).queryByText(solutionsPage.outcomeLabel)).toBeNull();
+    const photoshoot = entry('product-photoshoot');
+    expect(
+      within(photoshoot).getByText('From shelf to screen. From glance to purchase.'),
+    ).toBeInTheDocument();
+    expect(
+      within(photoshoot).getByRole('link', { name: solutionsPage.defaultCta }),
+    ).toBeInTheDocument();
+  });
 });

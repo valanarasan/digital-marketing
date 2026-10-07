@@ -7,5 +7,6 @@ export * from './Kicker';
 export * from './LotusMark';
 export * from './MapEmbed';
 export * from './Marquee';
+export * from './Monogram';
 export * from './SocialIcon';
 export * from './TextLink';

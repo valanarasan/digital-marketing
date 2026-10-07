@@ -1,8 +1,18 @@
 /** Shapes for everything in src/content. Components depend on these, never on the raw data. */
 
+/** The site's pages. Each has its own HTML entry (see vite.config.ts). */
+export type PageId = 'home' | 'about' | 'solutions';
+
+/**
+ * A link. `href` is either an in-page anchor ("#contact"), an absolute URL, or a
+ * page path relative to the deploy base ("" for home, "solutions/") — resolve it
+ * with `resolveHref` before rendering.
+ */
 export interface NavItem {
   label: string;
   href: string;
+  /** Set on links to a page, so the menu can mark the page you are on. */
+  page?: PageId;
 }
 
 /** Platforms the site links to; each has a mark in SocialIcon. */
@@ -67,7 +77,6 @@ export interface HeroContent {
   lead: [string, string];
   noiseWord: string;
   payoff: string;
-  subcopy: string;
   primaryCta: NavItem;
   secondaryCta: NavItem;
   question: string;
@@ -75,10 +84,13 @@ export interface HeroContent {
 }
 
 export interface TrustContent {
+  heading: string;
   label: string;
   tag: string;
   stages: string[];
   sectors: string[];
+  /** Closing lines under the tickers. */
+  notes: string[];
 }
 
 /**
@@ -118,6 +130,8 @@ export interface WhoContent {
   problem: string;
   answerLead: string;
   answer: string;
+  /** Optional onward link, e.g. from the home page to Inside Hiranmaye. */
+  link?: NavItem;
 }
 
 export interface StatementContent {
@@ -132,6 +146,8 @@ export interface ServicesContent {
   headingLines: [string, string];
   /** The last word of the heading, rendered in the serif accent. */
   headingAccent: string;
+  /** Onward link to the full Solutions page. */
+  link: NavItem;
 }
 
 export interface ProcessContent {
@@ -146,9 +162,103 @@ export interface FooterContent {
   prompt: string;
   promptSub: string;
   whatsappCta: string;
+  /** "About us" in the footer: a one-line promise and the short description. */
+  about: { kicker: string; promise: string; body: string };
   /** Accessible title of the embedded map, and the link to the full listing. */
   mapTitle: string;
   mapLink: string;
   wordmark: string;
   legal: NavItem[];
+}
+
+/** "Why us?" — the principles behind the work. */
+export interface WhyUsContent {
+  kicker: string;
+  heading: string;
+  headingAccent: string;
+  points: Array<{ title: string; body: string }>;
+}
+
+export interface QuoteContent {
+  text: string;
+  cite: string;
+}
+
+/** The dark title band that opens an inner page. */
+export interface PageHeroContent {
+  kicker: string;
+  title: string;
+  /** Words after the title, set in the gold serif accent. */
+  titleAccent?: string;
+  intro?: string;
+}
+
+export interface StoryContent {
+  kicker: string;
+  /** "We started with a question:" — the question that follows is set in the accent. */
+  lead: string;
+  question: string;
+  paragraphs: string[];
+}
+
+export interface VisionMissionContent {
+  vision: { label: string; text: string };
+  mission: { label: string; text: string };
+}
+
+export interface Person {
+  id: string;
+  name: string;
+  /** Only where the content gives one. */
+  role?: string;
+  /** Paragraphs; empty while a profile is still to come. */
+  bio: string[];
+}
+
+export interface TeamContent {
+  kicker: string;
+  heading: string;
+  founderLabel: string;
+  founder: Person;
+  teamLabel: string;
+  team: Person[];
+  boardLabel: string;
+  board: Person[];
+  /** Label for the disclosure that holds the rest of a long profile. */
+  moreLabel: string;
+}
+
+export interface PartnersContent {
+  label: string;
+  names: string[];
+}
+
+/** One of the services on the Solutions page. Only `id`, `name` and `paragraphs` are always present. */
+export interface Solution {
+  /** Also the anchor on the Solutions page: solutions/#<id>. */
+  id: string;
+  name: string;
+  headline?: string;
+  /** Used instead of a headline when the service opens with a quotation. */
+  quote?: QuoteContent;
+  paragraphs: string[];
+  /** Labelled detail pairs, e.g. "What we solve" / "What we do", or "Podcast" / "YouTube". */
+  details?: Array<{ label: string; text: string }>;
+  /** Named sub-services, e.g. SEO / AEO / GEO, each with a short promise. */
+  facets?: Array<{ name: string; promise: string; body: string }>;
+  outcome?: string;
+  /** A closing line set in italics, for services whose content ends on a tagline. */
+  closer?: string;
+  /** The call to action that closes the entry ("Build your growth blueprint"). */
+  cta?: string;
+}
+
+export interface SolutionsContent {
+  hero: PageHeroContent;
+  indexLabel: string;
+  outcomeLabel: string;
+  /** Call to action for entries the brief gives none. */
+  defaultCta: string;
+  /** Where every solution's call to action points. */
+  ctaHref: string;
 }

@@ -8,16 +8,52 @@
 
 .head {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  gap: 16px;
-  padding-block: 22px;
+  gap: 16px 32px;
+  padding-block: clamp(30px, 3.6vw, 48px) 22px;
   border-bottom: 1px solid rgba(16, 31, 54, 0.14);
 }
 
+.heading {
+  max-width: 24ch;
+  font-size: clamp(24px, 2.6vw, 38px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
 .label {
+  margin-top: 10px;
+  font-size: 15px;
+  color: rgba(16, 31, 54, 0.72);
+}
+
+.notes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 36px;
+  padding-block: 18px 22px;
+  border-top: 1px solid rgba(16, 31, 54, 0.14);
   font-size: 14px;
-  font-weight: 400;
+  line-height: 1.5;
+  color: rgba(16, 31, 54, 0.74);
+}
+
+.note {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.note::before {
+  content: '';
+  flex: none;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  transform: translateY(-2px);
 }
 
 .tag {

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import type { Client, ClientsContent } from '@/types/content';
+import type { Client, ClientsContent, PartnersContent } from '@/types/content';
 import { useMotion } from '@/hooks';
 import { clientsScene } from '@/motion/scenes';
 import { Container, Kicker } from '@/components/ui';
@@ -8,6 +8,8 @@ import styles from './Clients.module.css';
 export interface ClientsProps {
   content: ClientsContent;
   clients: Client[];
+  /** Shown under the logos where the page calls for it (Inside Hiranmaye). */
+  partners?: PartnersContent;
 }
 
 /**
@@ -15,7 +17,7 @@ export interface ClientsProps {
  * untouched, on a tile painted the colour the artwork was drawn on, so the file's
  * edge never shows.
  */
-export function Clients({ content, clients }: ClientsProps) {
+export function Clients({ content, clients, partners }: ClientsProps) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, clientsScene);
 
@@ -55,6 +57,19 @@ export function Clients({ content, clients }: ClientsProps) {
             </li>
           ))}
         </ul>
+
+        {partners ? (
+          <div className={styles.partners}>
+            <h3 className={styles.partnersLabel}>{partners.label}</h3>
+            <ul role="list" className={styles.partnerList}>
+              {partners.names.map((name) => (
+                <li key={name} className={styles.partner}>
+                  {name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </Container>
     </section>
   );

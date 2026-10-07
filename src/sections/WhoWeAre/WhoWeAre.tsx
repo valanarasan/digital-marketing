@@ -1,9 +1,10 @@
 import { useRef } from 'react';
 import type { WhoContent } from '@/types/content';
 import { cx } from '@/lib/cx';
+import { resolveHref } from '@/lib/href';
 import { useMotion } from '@/hooks';
 import { whoScene } from '@/motion/scenes';
-import { Container, Kicker, LotusMark } from '@/components/ui';
+import { Container, Kicker, LotusMark, TextLink } from '@/components/ui';
 import styles from './WhoWeAre.module.css';
 
 export interface WhoWeAreProps {
@@ -52,6 +53,11 @@ export function WhoWeAre({ content }: WhoWeAreProps) {
         <div className={styles.answerCell} data-anim="fade">
           <p className={styles.answerLead}>{content.answerLead}</p>
           <p>{content.answer}</p>
+          {content.link ? (
+            <TextLink className={styles.link} href={resolveHref(content.link.href)}>
+              {content.link.label}
+            </TextLink>
+          ) : null}
         </div>
       </Container>
     </section>

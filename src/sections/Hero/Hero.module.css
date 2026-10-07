@@ -134,7 +134,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.75fr) minmax(0, 1.15fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr);
   border-top: 1px solid var(--line-on-dark);
 }
 
@@ -152,12 +152,6 @@
 
 .column + .column {
   border-left: 1px solid var(--line-on-dark);
-}
-
-.subcopy {
-  font-size: 16px;
-  line-height: 1.7;
-  color: var(--text-muted-on-dark);
 }
 
 .actions {

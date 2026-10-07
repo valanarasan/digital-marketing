@@ -1,8 +1,9 @@
 import { useRef } from 'react';
 import type { Lever, LeverId, ServicesContent } from '@/types/content';
+import { resolveHref } from '@/lib/href';
 import { useMotion } from '@/hooks';
 import { servicesScene } from '@/motion/scenes';
-import { Accordion, Container, Kicker } from '@/components/ui';
+import { Accordion, Container, Kicker, TextLink } from '@/components/ui';
 import styles from './Services.module.css';
 
 export interface ServicesProps {
@@ -60,6 +61,9 @@ export function Services({ content, levers, openId, onToggle }: ServicesProps) {
               <MaskedWords text={content.headingAccent} className={styles.accent} />
             </span>
           </h2>
+          <TextLink className={styles.more} href={resolveHref(content.link.href)}>
+            {content.link.label}
+          </TextLink>
         </div>
         <Accordion
           items={items}

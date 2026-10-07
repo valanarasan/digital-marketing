@@ -1,0 +1,16 @@
+/* Size with --monogram-size on the element or a parent. */
+.monogram {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: var(--monogram-size, 56px);
+  aspect-ratio: 1;
+  border: 1px solid var(--color-gold-deep);
+  border-radius: 50%;
+  background: var(--color-white);
+  font-family: var(--font-serif);
+  font-size: calc(var(--monogram-size, 56px) * 0.36);
+  font-style: italic;
+  letter-spacing: 0.02em;
+  color: var(--color-navy);
+}

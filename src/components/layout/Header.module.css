@@ -79,9 +79,15 @@
   transition: transform 0.45s ease;
 }
 
-.link:hover::after {
+.link:hover::after,
+.link[aria-current='page']::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+.link[aria-current='page'] {
+  opacity: 1;
+  color: var(--color-gold);
 }
 
 .menuButton {
@@ -98,7 +104,8 @@
   display: none;
 }
 
-@media (max-width: 720px) {
+/* Four page links plus the call to action need about 960px before they fold away. */
+@media (max-width: 960px) {
   .links,
   .cta {
     display: none;
@@ -137,4 +144,8 @@
   font-family: var(--font-serif);
   font-size: 28px;
   border-bottom: 1px solid var(--line-on-dark);
+}
+
+.drawerLink[aria-current='page'] {
+  color: var(--color-gold);
 }

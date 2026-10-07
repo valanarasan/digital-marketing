@@ -8,6 +8,7 @@ import { Kicker } from './Kicker';
 import { LotusMark } from './LotusMark';
 import { MapEmbed } from './MapEmbed';
 import { Marquee } from './Marquee';
+import { Monogram } from './Monogram';
 import { SocialIcon } from './SocialIcon';
 import type { SocialIconName } from './SocialIcon';
 import { TextLink } from './TextLink';
@@ -186,5 +187,15 @@ describe('SocialIcon', () => {
   it('omits the class attribute when no class is passed', () => {
     const { container } = render(<SocialIcon name="whatsapp" />);
     expect(container.querySelector('svg')).not.toHaveAttribute('class');
+  });
+});
+
+describe('Monogram', () => {
+  it('shows the initials, hidden from assistive tech', () => {
+    const { container } = render(<Monogram name="Praveena Pradeep" className="m" />);
+    const mark = container.firstElementChild!;
+    expect(mark).toHaveTextContent('PP');
+    expect(mark).toHaveAttribute('aria-hidden', 'true');
+    expect(mark).toHaveClass('m');
   });
 });

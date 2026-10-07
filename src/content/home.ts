@@ -10,15 +10,20 @@ import type {
   StatementContent,
   TrustContent,
   WhoContent,
+  WhyUsContent,
 } from '@/types/content';
 
-/** Home page copy, taken from "Hiranmaye Digital Latest.docx". */
+/**
+ * Home page copy and the site-wide menu, from "final_website_content.pdf"
+ * (earlier copy came from "Hiranmaye Digital Latest.docx").
+ */
 
+/** The menu from the content brief. Resources & Insights joins once it has content. */
 export const navItems: NavItem[] = [
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Home', href: '', page: 'home' },
+  { label: 'Inside Hiranmaye', href: 'inside-hiranmaye/', page: 'about' },
+  { label: 'Solutions', href: 'solutions/', page: 'solutions' },
+  { label: 'Let’s Connect', href: '#contact' },
 ];
 
 export const navCta: NavItem = { label: 'Let’s talk growth', href: '#contact' };
@@ -28,9 +33,7 @@ export const hero: HeroContent = {
   location: 'Bengaluru, India',
   lead: ['Marketing that doesn’t', 'just create'],
   noiseWord: 'noise.',
-  payoff: 'It creates momentum.',
-  subcopy:
-    'HIRANMAYE DIGITAL helps ambitious businesses turn fragmented marketing into a cohesive growth engine. We combine strategic intelligence, creative firepower, AI-enabled systems and performance marketing to build brands that are easier to discover, harder to ignore and engineered to grow.',
+  payoff: 'It creates momentum!',
   primaryCta: { label: 'Let’s talk growth', href: '#contact' },
   secondaryCta: { label: 'Explore our capabilities', href: '#services' },
   question: 'What’s holding your growth back?',
@@ -70,10 +73,15 @@ export const problems: Problem[] = [
 ];
 
 export const trust: TrustContent = {
+  heading: 'From first launch to market leader, we grow with your ambition',
   label: 'Built for businesses at every stage of ambition.',
   tag: 'Stage × Sector',
   stages: ['Startups', 'Scale-ups', 'SMEs', 'Enterprises'],
   sectors: ['Manufacturing', 'Real Estate', 'Healthcare', 'Education', 'Professional Services'],
+  notes: [
+    'Serving Manufacturing, Real Estate, Healthcare, Education, Professional Services and more',
+    'Whatever your industry, the growth engine is the same: strategy, creativity, tech and performance',
+  ],
 };
 
 export const who: WhoContent = {
@@ -96,6 +104,7 @@ export const who: WhoContent = {
   answerLead: 'HIRANMAYE DIGITAL exists to bring the pieces together.',
   answer:
     'We connect business objectives with brand strategy, digital infrastructure, creative communication, paid media, search visibility and intelligent automation, so marketing stops functioning as a series of isolated activities and starts operating as a coordinated growth system.',
+  link: { label: 'Inside Hiranmaye', href: 'inside-hiranmaye/', page: 'about' },
 };
 
 export const statement: StatementContent = {
@@ -112,6 +121,7 @@ export const services: ServicesContent = {
   kicker: 'Our capabilities',
   headingLines: ['One Growth Partner.', 'Multiple Growth'],
   headingAccent: 'Levers.',
+  link: { label: 'Explore all solutions', href: 'solutions/', page: 'solutions' },
 };
 
 export const processIntro: ProcessContent = {
@@ -139,7 +149,7 @@ export const processSteps: ProcessStep[] = [
     id: 'activate',
     name: 'Activate',
     headline: 'Strategy leaves the presentation deck and enters the market.',
-    body: 'Campaigns, content, websites, advertising, automation and creative execution, activated with purpose.',
+    body: 'Campaigns, content, websites, advertising, automation and creative execution—activated with purpose.',
   },
   {
     id: 'optimise',
@@ -159,6 +169,12 @@ export const footer: FooterContent = {
   prompt: 'Let’s talk growth.',
   promptSub: 'Tell us where the business needs to go.',
   whatsappCta: 'Message us on WhatsApp',
+  about: {
+    kicker: 'About us',
+    promise:
+      'We build brands that are easier to discover, harder to ignore and engineered to grow!',
+    body: 'HIRANMAYE DIGITAL helps ambitious businesses turn fragmented marketing into a cohesive growth engine. We combine strategic intelligence, creative firepower, AI-enabled systems and performance marketing.',
+  },
   mapTitle: 'Map of the Hiranmaye Digital office in Banashankari 2nd Stage, Bengaluru',
   mapLink: 'Open in Google Maps',
   wordmark: 'Hiranmaye',
@@ -168,4 +184,36 @@ export const footer: FooterContent = {
   ],
 };
 
-export const footerNav: NavItem[] = [{ label: 'Home', href: '#top' }, ...navItems];
+export const footerNav: NavItem[] = navItems;
+
+export const whyUs: WhyUsContent = {
+  kicker: 'Why us',
+  heading: 'Why',
+  headingAccent: 'us?',
+  points: [
+    {
+      title: 'We start with the Business, not the Channel',
+      body: 'We don’t begin by asking whether you need Instagram, SEO or Google Ads. We begin by understanding where the business is and where it needs to go.',
+    },
+    {
+      title: 'We think in systems',
+      body: 'A campaign can create a spike. A system can create momentum.',
+    },
+    {
+      title: 'We respect evidence',
+      body: 'Opinions are useful. Data is accountable. We use both but we know which one gets the final vote.',
+    },
+    {
+      title: 'We use AI as leverage, not decoration',
+      body: 'AI is not a buzzword in our proposals. It is a practical layer of intelligence, automation and operational efficiency.',
+    },
+    {
+      title: 'We make complexity understandable',
+      body: 'You should never need a translator to understand your marketing report.',
+    },
+    {
+      title: 'We build for the long game',
+      body: 'Quick wins matter. But we are equally interested in what continues working after the campaign ends.',
+    },
+  ],
+};

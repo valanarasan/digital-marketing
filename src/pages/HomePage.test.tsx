@@ -10,7 +10,7 @@ describe('HomePage', () => {
     render(<HomePage />);
     const main = screen.getByRole('main');
     const ids = Array.from(main.querySelectorAll('section[id]')).map((section) => section.id);
-    expect(ids).toEqual(['top', 'clients', 'about', 'services', 'process']);
+    expect(ids).toEqual(['top', 'clients', 'about', 'services', 'process', 'why-us']);
     expect(document.getElementById('contact')?.tagName).toBe('FOOTER');
   });
 
@@ -47,7 +47,11 @@ describe('HomePage', () => {
 
 describe('App', () => {
   it('puts the skip link first, pointing at the hero headline', () => {
-    render(<App />);
+    render(
+      <App>
+        <HomePage />
+      </App>,
+    );
     const skip = screen.getByRole('link', { name: 'Skip to content' });
     expect(skip).toHaveAttribute('href', '#main-content');
     expect(document.getElementById('main-content')).toContainElement(
