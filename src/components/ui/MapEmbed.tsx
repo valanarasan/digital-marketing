@@ -20,7 +20,8 @@ export function MapEmbed({ src, title, className }: MapEmbedProps) {
         src={src}
         title={title}
         loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
       />
     </div>
   );

@@ -137,6 +137,8 @@ describe('MapEmbed', () => {
     expect(frame.tagName).toBe('IFRAME');
     expect(frame).toHaveAttribute('src', 'https://maps.google.com/maps?q=1,2&output=embed');
     expect(frame).toHaveAttribute('loading', 'lazy');
+    expect(frame).toHaveAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+    expect(frame).toHaveAttribute('allowfullscreen');
     expect(frame.parentElement).toHaveClass('m');
   });
 });

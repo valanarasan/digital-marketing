@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import type { Business, FooterContent, NavItem, SocialLink } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { resolveHref } from '@/lib/href';
-import { mapEmbedUrl } from '@/lib/maps';
 import { whatsappLink } from '@/lib/whatsapp';
 import { useMotion } from '@/hooks';
 import { footerScene } from '@/motion/scenes';
@@ -83,7 +82,7 @@ export function Footer({ content, business, nav }: FooterProps) {
               </address>
               <MapEmbed
                 className={styles.map}
-                src={mapEmbedUrl(business.office)}
+                src={business.office.embedUrl}
                 title={content.mapTitle}
               />
               <nav aria-label="Footer">

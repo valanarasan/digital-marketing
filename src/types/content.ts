@@ -24,12 +24,12 @@ export interface SocialLink {
   href: string;
 }
 
-/** The office pin and its public Google Maps listing. */
+/** The office's public Google Maps listing. */
 export interface OfficeLocation {
-  latitude: number;
-  longitude: number;
   /** Share link to the business listing on Google Maps. */
   mapsUrl: string;
+  /** The listing's "Embed a map" URL (Google Maps → Share → Embed a map), used as the iframe src. */
+  embedUrl: string;
 }
 
 export interface Business {

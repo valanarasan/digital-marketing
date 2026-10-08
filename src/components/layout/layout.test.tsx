@@ -119,7 +119,8 @@ describe('Footer', () => {
   it('shows the office on a map and links to the Google Maps listing', () => {
     render(<Footer content={footer} business={business} nav={footerNav} />);
     const map = screen.getByTitle(footer.mapTitle);
-    expect(map).toHaveAttribute('src', expect.stringContaining('q=12.9287471,77.5625986'));
+    expect(map).toHaveAttribute('src', business.office.embedUrl);
+    expect(business.office.embedUrl).toContain('2sHiranmaye%20Digital');
     expect(screen.getByRole('link', { name: footer.mapLink })).toHaveAttribute(
       'href',
       business.office.mapsUrl,
