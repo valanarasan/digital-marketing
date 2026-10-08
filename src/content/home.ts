@@ -37,6 +37,9 @@ export const hero: HeroContent = {
   primaryCta: { label: 'Let’s talk growth', href: '#contact' },
   secondaryCta: { label: 'Explore our capabilities', href: '#services' },
   question: 'What’s holding your growth back?',
+  wheelHint: 'Pick your biggest blocker and the wheel turns to where we’d start.',
+  blockerLabel: 'Your blocker',
+  startLabel: 'Start with',
   scrollCue: 'Scroll to explore',
 };
 

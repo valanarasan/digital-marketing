@@ -11,7 +11,7 @@ export interface SingleSelect<T extends string> {
 
 /**
  * At most one item open/active at a time — the behaviour shared by the hero's
- * growth check and the services accordion.
+ * growth wheel and the services accordion.
  */
 export function useSingleSelect<T extends string>(initial: T | null = null): SingleSelect<T> {
   const [selected, setSelected] = useState<T | null>(initial);

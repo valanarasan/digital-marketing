@@ -6,6 +6,7 @@ import type { ScrollSteps } from '@/motion/gsap';
 import { HomePage } from './HomePage';
 
 const leverButton = (name: string) => screen.getByRole('button', { name });
+const problemSlice = (name: string) => screen.getByRole('radio', { name });
 
 describe('HomePage', () => {
   it('renders every section in order inside main, with the footer after it', () => {
@@ -18,23 +19,22 @@ describe('HomePage', () => {
 
   it('starts with the first problem picked and its lever open', () => {
     render(<HomePage />);
-    expect(leverButton('Not Enough Leads')).toHaveAttribute('aria-pressed', 'true');
+    expect(problemSlice('Not Enough Leads')).toHaveAttribute('aria-checked', 'true');
     expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('opens the matching lever further down when a problem is picked', async () => {
     render(<HomePage />);
-    await userEvent.click(leverButton('Poor Website Conversion'));
-    expect(leverButton('Poor Website Conversion')).toHaveAttribute('aria-pressed', 'true');
+    await userEvent.click(problemSlice('Poor Website Conversion'));
+    expect(problemSlice('Poor Website Conversion')).toHaveAttribute('aria-checked', 'true');
     expect(leverButton('Get Chosen')).toHaveAttribute('aria-expanded', 'true');
     expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('un-picking a problem leaves the open lever alone', async () => {
+  it('spinning to the picked problem again keeps it picked', async () => {
     render(<HomePage />);
-    await userEvent.click(leverButton('Not Enough Leads'));
-    expect(leverButton('Not Enough Leads')).toHaveAttribute('aria-pressed', 'false');
-    expect(screen.getByText('Pick one to see where we would start.')).toBeInTheDocument();
+    await userEvent.click(problemSlice('Not Enough Leads'));
+    expect(problemSlice('Not Enough Leads')).toHaveAttribute('aria-checked', 'true');
     expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'true');
   });
 
@@ -48,7 +48,7 @@ describe('HomePage', () => {
 
   it('glides from the hero\'s "Start with" link to that lever', async () => {
     render(<HomePage />);
-    await userEvent.click(leverButton('High Ad Costs'));
+    await userEvent.click(problemSlice('High Ad Costs'));
     await userEvent.click(screen.getByRole('link', { name: 'Get Results' }));
     const steps = vi.mocked(createScrollSteps).mock.results[0].value as ScrollSteps;
     expect(steps.scrollToStep).toHaveBeenCalledWith(3);

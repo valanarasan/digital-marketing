@@ -1,6 +1,6 @@
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { createRef } from 'react';
+import { createRef, useState } from 'react';
 import { createScrollSteps, runScene } from '@/motion/gsap';
 import type { ScrollSteps } from '@/motion/gsap';
 import {
@@ -47,7 +47,7 @@ import { VisionMission } from './VisionMission';
 import { WhyUs } from './WhyUs';
 import { Hero } from './Hero';
 import { NoiseWord } from './Hero/NoiseWord';
-import { ProblemIndex } from './Hero/ProblemIndex';
+import { ProblemWheel } from './Hero/ProblemWheel';
 import { Process } from './Process';
 import { StepIcon } from './Process/StepIcon';
 import { Services } from './Services';
@@ -60,7 +60,7 @@ const sceneFor = (scene: unknown) =>
   vi.mocked(runScene).mock.calls.some(([, called]) => called === scene);
 
 describe('Hero', () => {
-  const renderHero = (selected: string | null = 'leads', onToggle = vi.fn(), onShow = vi.fn()) =>
+  const renderHero = (selected: string | null = 'leads', onSelect = vi.fn(), onShow = vi.fn()) =>
     render(
       <Hero
         header={<div data-testid="header" />}
@@ -68,7 +68,7 @@ describe('Hero', () => {
         problems={problems}
         levers={levers}
         selectedProblem={selected}
-        onToggleProblem={onToggle}
+        onSelectProblem={onSelect}
         onShowLever={onShow}
         contentId="main-content"
       />,
@@ -102,11 +102,11 @@ describe('Hero', () => {
     expect(sceneFor(heroScene)).toBe(true);
   });
 
-  it('forwards problem picks', async () => {
-    const onToggle = vi.fn();
-    renderHero(null, onToggle);
-    await userEvent.click(screen.getByRole('button', { name: /High Ad Costs/ }));
-    expect(onToggle).toHaveBeenCalledWith('ad-costs');
+  it('forwards picks from the growth wheel', async () => {
+    const onSelect = vi.fn();
+    renderHero(null, onSelect);
+    await userEvent.click(screen.getByRole('radio', { name: 'High Ad Costs' }));
+    expect(onSelect).toHaveBeenCalledWith('ad-costs');
   });
 
   it('hands the "Start with" link to the page instead of jumping to the anchor', async () => {
@@ -117,46 +117,156 @@ describe('Hero', () => {
   });
 });
 
-describe('ProblemIndex', () => {
+describe('ProblemWheel', () => {
   const props = {
     question: hero.question,
+    hint: hero.wheelHint,
+    blockerLabel: hero.blockerLabel,
+    startLabel: hero.startLabel,
     problems,
     levers,
-    onToggle: vi.fn(),
+    onSelect: vi.fn(),
     leverHref: '#services',
     onLeverClick: vi.fn(),
   };
+  const turn = (container: HTMLElement) =>
+    container.querySelector<HTMLElement>('[data-motion]')!.style.getPropertyValue('--turn');
+  const motion = (container: HTMLElement) =>
+    container.querySelector('[data-motion]')!.getAttribute('data-motion');
+  /** The wheel as the page uses it: the pick it reports comes straight back as the selection. */
+  function Picked({ onSelect }: { onSelect: (id: string) => void }) {
+    const [selectedId, setSelectedId] = useState<string | null>('leads');
+    return (
+      <ProblemWheel
+        {...props}
+        selectedId={selectedId}
+        onSelect={(id) => {
+          onSelect(id);
+          setSelectedId(id);
+        }}
+      />
+    );
+  }
 
-  it('lists the problems as toggle buttons under the question', () => {
-    render(<ProblemIndex {...props} selectedId="brand" />);
-    const list = screen.getByRole('list', { name: hero.question });
-    expect(within(list).getAllByRole('button')).toHaveLength(problems.length);
-    expect(screen.getByRole('button', { name: 'Weak Brand Presence' })).toHaveAttribute(
-      'aria-pressed',
+  it('offers the problems as a radio group named by the question, one slice each', () => {
+    render(<ProblemWheel {...props} selectedId="brand" />);
+    const group = screen.getByRole('radiogroup', { name: hero.question });
+    expect(within(group).getAllByRole('radio')).toHaveLength(problems.length);
+    expect(screen.getByRole('radio', { name: 'Weak Brand Presence' })).toHaveAttribute(
+      'aria-checked',
       'true',
     );
-    expect(screen.getByRole('button', { name: 'Not Enough Leads' })).toHaveAttribute(
-      'aria-pressed',
+    expect(screen.getByRole('radio', { name: 'Not Enough Leads' })).toHaveAttribute(
+      'aria-checked',
       'false',
     );
+    expect(screen.getByText(hero.wheelHint)).toBeInTheDocument();
   });
 
-  it('names the lever and its services for the selected problem', () => {
-    render(<ProblemIndex {...props} selectedId="brand" />);
+  it('makes only the picked slice tabbable, and labels each slice with its number', () => {
+    render(<ProblemWheel {...props} selectedId="conversion" />);
+    const tabbable = screen.getAllByRole('radio').filter((slice) => slice.tabIndex === 0);
+    expect(tabbable).toEqual([screen.getByRole('radio', { name: 'Poor Website Conversion' })]);
+    const label = screen.getByRole('radio', { name: 'Poor Website Conversion' })
+      .nextElementSibling as HTMLElement;
+    expect(label).toHaveAttribute('aria-hidden', 'true');
+    expect(label).toHaveTextContent('03Poor WebsiteConversion');
+  });
+
+  it('rests with the picked slice at the pointer (3 o’clock)', () => {
+    const { container } = render(<ProblemWheel {...props} selectedId="brand" />);
+    expect(turn(container)).toBe('18deg');
+  });
+
+  it('names the picked problem, its lever and that lever’s services', () => {
+    render(<ProblemWheel {...props} selectedId="brand" />);
+    expect(screen.getByText(hero.blockerLabel)).toBeInTheDocument();
+    expect(screen.getByText('Weak Brand Presence', { selector: 'p' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Get Noticed' })).toHaveAttribute('href', '#services');
+    const list = screen.getByRole('list', { name: 'Get Noticed services' });
     expect(
-      screen.getByText('Branding • Creative Design • Social Media • Outdoor Branding'),
-    ).toBeInTheDocument();
+      within(list)
+        .getAllByRole('listitem')
+        .map((item) => item.textContent),
+    ).toEqual(['Branding', 'Creative Design', 'Social Media', 'Outdoor Branding']);
   });
 
-  it('prompts for a pick when nothing is selected', () => {
-    render(<ProblemIndex {...props} selectedId={null} />);
-    expect(screen.getByText('Pick one to see where we would start.')).toBeInTheDocument();
+  it('rests between slices with nothing named when nothing is picked', () => {
+    const { container } = render(<ProblemWheel {...props} selectedId={null} />);
+    expect(turn(container)).toBe('54deg');
+    expect(screen.queryByText(hero.blockerLabel)).not.toBeInTheDocument();
+    expect(screen.getAllByRole('radio')[0]).toHaveAttribute('tabindex', '0');
+  });
+
+  it('spins at least a full turn to a clicked slice, and reports the pick', async () => {
+    const onSelect = vi.fn();
+    const { container } = render(<Picked onSelect={onSelect} />);
+    expect(turn(container)).toBe('90deg');
+    await userEvent.click(screen.getByRole('radio', { name: 'High Ad Costs' }));
+    expect(onSelect).toHaveBeenCalledWith('ad-costs');
+    expect(motion(container)).toBe('spin');
+    // High Ad Costs (04) rests at 90 − 216 ≡ 234°: 144° on, plus the full turn.
+    expect(turn(container)).toBe('594deg');
+  });
+
+  it('turns back to the page’s pick if the page does not take the click', async () => {
+    const { container } = render(<ProblemWheel {...props} selectedId="leads" />);
+    await userEvent.click(screen.getByRole('radio', { name: 'High Ad Costs' }));
+    expect(screen.getByRole('radio', { name: 'Not Enough Leads' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
+    expect(Number.parseFloat(turn(container)) % 360).toBe(90);
+  });
+
+  it('spins to a pick the page makes on its own, and holds still when it is cleared', () => {
+    const { container, rerender } = render(<ProblemWheel {...props} selectedId="leads" />);
+    rerender(<ProblemWheel {...props} selectedId="strategy" />);
+    expect(turn(container)).toBe('522deg');
+    rerender(<ProblemWheel {...props} selectedId={null} />);
+    expect(turn(container)).toBe('522deg');
+    expect(screen.queryByText(hero.blockerLabel)).not.toBeInTheDocument();
+  });
+
+  it('steps with the arrow keys, the short way round, moving focus with the pick', () => {
+    const onSelect = vi.fn();
+    const { container } = render(<Picked onSelect={onSelect} />);
+    const slice = (name: string) => screen.getByRole('radio', { name });
+
+    fireEvent.keyDown(slice('Not Enough Leads'), { key: 'ArrowDown' });
+    expect(onSelect).toHaveBeenLastCalledWith('brand');
+    expect(slice('Weak Brand Presence')).toHaveFocus();
+    expect(motion(container)).toBe('step');
+    expect(turn(container)).toBe('18deg');
+
+    fireEvent.keyDown(slice('Weak Brand Presence'), { key: 'ArrowRight' });
+    expect(onSelect).toHaveBeenLastCalledWith('conversion');
+    fireEvent.keyDown(slice('Poor Website Conversion'), { key: 'ArrowUp' });
+    expect(onSelect).toHaveBeenLastCalledWith('brand');
+    fireEvent.keyDown(slice('Weak Brand Presence'), { key: 'ArrowLeft' });
+    expect(onSelect).toHaveBeenLastCalledWith('leads');
+    fireEvent.keyDown(slice('Not Enough Leads'), { key: 'ArrowLeft' });
+    expect(onSelect).toHaveBeenLastCalledWith('strategy');
+    expect(slice('No Clear Strategy')).toHaveFocus();
+    fireEvent.keyDown(slice('No Clear Strategy'), { key: 'Home' });
+    expect(onSelect).toHaveBeenLastCalledWith('leads');
+    fireEvent.keyDown(slice('Not Enough Leads'), { key: 'End' });
+    expect(onSelect).toHaveBeenLastCalledWith('strategy');
+  });
+
+  it('leaves other keys alone', () => {
+    const onSelect = vi.fn();
+    render(<ProblemWheel {...props} selectedId="leads" onSelect={onSelect} />);
+    const handled = fireEvent.keyDown(screen.getByRole('radio', { name: 'Not Enough Leads' }), {
+      key: 'Enter',
+    });
+    expect(handled).toBe(true);
+    expect(onSelect).not.toHaveBeenCalled();
   });
 
   it('takes over the lever link: no jump to the anchor, the page is told which lever', () => {
     const onLeverClick = vi.fn();
-    render(<ProblemIndex {...props} selectedId="ad-costs" onLeverClick={onLeverClick} />);
+    render(<ProblemWheel {...props} selectedId="ad-costs" onLeverClick={onLeverClick} />);
     const link = screen.getByRole('link', { name: 'Get Results' });
     const click = new MouseEvent('click', { bubbles: true, cancelable: true });
     const outside = vi.fn();

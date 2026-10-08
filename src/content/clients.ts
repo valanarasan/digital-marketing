@@ -10,7 +10,9 @@ export const clientsIntro: ClientsContent = {
 
 /**
  * Each logo is the client's original file, byte for byte (only renamed for clean
- * URLs) — never recoloured, cropped or re-encoded. `tile` is the colour each file
+ * URLs) — never recoloured, cropped or re-encoded. The exception is KEJ: its PNG
+ * was small and pixel-doubled, so it is a vector trace of that file (same shapes,
+ * same proportions) and stays sharp at any size. `tile` is the colour each file
  * is drawn on (#fefefe for the three with a faintly off-white canvas); KEJ is
  * white lettering on transparency, so it sits on the site's ink.
  */
@@ -28,7 +30,7 @@ export const clients: Client[] = [
     id: 'kej',
     name: 'KEJ — Key Emerging Journey',
     sector: 'Coaching and development',
-    logo: 'clients/kej.png',
+    logo: 'clients/kej.svg',
     width: 670,
     height: 338,
     tile: '#0a1424',

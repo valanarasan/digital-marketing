@@ -5,7 +5,7 @@ with the copy from `final_website_content.pdf`. Three pages, each with its own U
 
 | Page | URL | What's on it |
 | --- | --- | --- |
-| Home | `/` | hero and growth check, trust strip, statement, services (opening lever by lever as you scroll), process, clients |
+| Home | `/` | hero with the growth wheel, trust strip, statement, services (opening lever by lever as you scroll), process, clients |
 | Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team and board, clients & partners |
 | Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
 
@@ -73,8 +73,10 @@ Design rules the code follows:
   see `brand/README.md`) and on the site as three cuts in `public/brand/`, always through
   `BrandLogo`. Never redraw the lotus or set the name in type.
 - **Client logos are the clients' own files.** `public/clients/` holds them byte for byte (only
-  renamed); never recompress, recolour or crop them. Each tile is painted the colour the logo
-  was drawn on (`tile` in `src/content/clients.ts`) so the file's edge never shows.
+  renamed); never recompress, recolour or crop them. The one exception is KEJ: its file was
+  only 670 px wide with a pixel-doubled script, so it was traced to `kej.svg` (same shapes,
+  white, same proportions) to stay sharp. Each tile is painted the colour the logo was drawn
+  on (`tile` in `src/content/clients.ts`) so the file's edge never shows.
 - **Reduced motion is respected everywhere.** With `prefers-reduced-motion: reduce`, no scene
   runs, Lenis stays off and CSS loops stop; the static layout is the real one.
 
@@ -84,6 +86,7 @@ Design rules the code follows:
 | --- | --- |
 | Hero | masthead rule draws, the logo's lotus fades up behind the headline, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
 | Hero (wide screens) | stays pinned while the next sections slide over it (`useStickyOffset`) |
+| Growth wheel (hero) | spins in once as the base row settles; a click spins it (at least a full turn) until that slice stops at the gold pointer, arrow keys step it; labels counter-turn so they stay upright (CSS transitions on `--turn`) |
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
 | Clients | heading and lead rise in; the logo tiles follow one after another |
 | Who we are | statement lights up word by word; the logo's lotus floats gently (CSS) |
@@ -95,8 +98,8 @@ Design rules the code follows:
 | Footer | the full logo rises into place |
 
 The services accordion follows the scroll: as the list passes the reading line, each lever opens
-in turn (`createScrollSteps` in `src/motion/gsap.ts`). The growth check in the hero is wired to
-it: picking a problem opens the lever that answers it, and the "Start with …" link glides down
+in turn (`createScrollSteps` in `src/motion/gsap.ts`). The growth wheel in the hero is wired to
+it: spinning to a problem opens the lever that answers it, and the "Start with …" link glides down
 to that lever, holding it open on the way. Clicking a lever still opens it directly.
 
 ## Deploy (GitHub Pages)

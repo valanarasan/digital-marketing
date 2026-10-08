@@ -26,7 +26,7 @@ import { MAIN_CONTENT_ID } from './ids';
 /**
  * Composition root for the home page: content in, sections out. The open lever
  * is shared state: scrolling through the services opens each lever in turn,
- * picking a problem in the hero opens the lever that answers it, and the hero's
+ * spinning the hero's wheel to a problem opens the lever that answers it, and the hero's
  * "Start with …" link glides down to that lever.
  */
 export function HomePage() {
@@ -34,11 +34,9 @@ export function HomePage() {
   const lever = useSingleSelect<LeverId>(problems[0].lever);
   const servicesRef = useRef<ServicesHandle>(null);
 
-  const toggleProblem = (id: string) => {
-    const choosing = !problem.isSelected(id);
-    problem.toggle(id);
-    const match = problems.find((candidate) => candidate.id === id);
-    if (choosing && match) lever.select(match.lever);
+  const selectProblem = (id: string) => {
+    problem.select(id);
+    lever.select(problems.find((candidate) => candidate.id === id)!.lever);
   };
 
   return (
@@ -50,7 +48,7 @@ export function HomePage() {
           problems={problems}
           levers={levers}
           selectedProblem={problem.selected}
-          onToggleProblem={toggleProblem}
+          onSelectProblem={selectProblem}
           onShowLever={(id) => servicesRef.current!.showLever(id)}
           contentId={MAIN_CONTENT_ID}
         />

@@ -6,7 +6,7 @@ import { useMotion, useStickyOffset } from '@/hooks';
 import { heroScene } from '@/motion/scenes';
 import { BrandLogo, ButtonLink, Container, TextLink } from '@/components/ui';
 import { NoiseWord } from './NoiseWord';
-import { ProblemIndex } from './ProblemIndex';
+import { ProblemWheel } from './ProblemWheel';
 import { Swoosh } from './Swoosh';
 import styles from './Hero.module.css';
 
@@ -17,8 +17,8 @@ export interface HeroProps {
   problems: Problem[];
   levers: Lever[];
   selectedProblem: string | null;
-  onToggleProblem: (id: string) => void;
-  /** The growth check's "Start with …" link: take the visitor to that lever, open. */
+  onSelectProblem: (id: string) => void;
+  /** The growth wheel's "Start with …" link: take the visitor to that lever, open. */
   onShowLever: (id: LeverId) => void;
   /** Id given to the headline block — the skip link's target. */
   contentId: string;
@@ -27,7 +27,7 @@ export interface HeroProps {
 /**
  * The Editorial hero: a magazine-cover layout on navy. "noise." glitches once and rests off-line,
  * "It creates momentum." sets large in gold italic over a travelling-light
- * underline, and the base row carries the calls to action and the growth check
+ * underline, and the base row carries the calls to action and the growth wheel
  * (the brief keeps the hero to tagline and CTA; the description lives in the
  * footer's About us). On wide screens it stays pinned while the page slides over it.
  */
@@ -37,7 +37,7 @@ export function Hero({
   problems,
   levers,
   selectedProblem,
-  onToggleProblem,
+  onSelectProblem,
   onShowLever,
   contentId,
 }: HeroProps) {
@@ -102,12 +102,15 @@ export function Hero({
             </p>
           </div>
           <div className={styles.column} data-anim="base">
-            <ProblemIndex
+            <ProblemWheel
               question={content.question}
+              hint={content.wheelHint}
+              blockerLabel={content.blockerLabel}
+              startLabel={content.startLabel}
               problems={problems}
               levers={levers}
               selectedId={selectedProblem}
-              onToggle={onToggleProblem}
+              onSelect={onSelectProblem}
               leverHref="#services"
               onLeverClick={onShowLever}
             />

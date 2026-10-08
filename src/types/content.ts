@@ -79,7 +79,11 @@ export interface HeroContent {
   payoff: string;
   primaryCta: NavItem;
   secondaryCta: NavItem;
+  /** The growth wheel: its question, how to use it, and the labels of its answer. */
   question: string;
+  wheelHint: string;
+  blockerLabel: string;
+  startLabel: string;
   scrollCue: string;
 }
 
