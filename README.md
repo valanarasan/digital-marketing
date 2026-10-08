@@ -5,7 +5,7 @@ with the copy from `final_website_content.pdf`. Three pages, each with its own U
 
 | Page | URL | What's on it |
 | --- | --- | --- |
-| Home | `/` | hero with the growth wheel, trust strip, statement, services (opening lever by lever as you scroll), process, clients |
+| Home | `/` | hero, growth check (the spin wheel), trust strip, statement, services (opening lever by lever as you scroll), process, clients |
 | Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team and board, clients & partners |
 | Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
 
@@ -86,7 +86,7 @@ Design rules the code follows:
 | --- | --- |
 | Hero | masthead rule draws, the logo's lotus fades up behind the headline, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
 | Hero (wide screens) | stays pinned while the next sections slide over it (`useStickyOffset`) |
-| Growth wheel (hero) | spins in once as the base row settles; a click spins it (at least a full turn) until that slice stops at the gold pointer, arrow keys step it; labels counter-turn so they stay upright (CSS transitions on `--turn`) |
+| Growth check | question and answer rise in; the wheel stays hidden until it scrolls into view, then spins in once; a click spins it (at least a full turn) until that slice stops at the gold pointer, arrow keys step it; labels counter-turn so they stay upright (CSS transitions on `--turn`) |
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
 | Clients | heading and lead rise in; the logo tiles follow one after another |
 | Who we are | statement lights up word by word; the logo's lotus floats gently (CSS) |
@@ -98,9 +98,10 @@ Design rules the code follows:
 | Footer | the full logo rises into place |
 
 The services accordion follows the scroll: as the list passes the reading line, each lever opens
-in turn (`createScrollSteps` in `src/motion/gsap.ts`). The growth wheel in the hero is wired to
-it: spinning to a problem opens the lever that answers it, and the "Start with …" link glides down
-to that lever, holding it open on the way. Clicking a lever still opens it directly.
+in turn (`createScrollSteps` in `src/motion/gsap.ts`). The growth wheel (the section after the
+hero) is wired to it: spinning to a problem opens the lever that answers it, and the
+"Start with …" link glides down to that lever, holding it open on the way. Clicking a lever
+still opens it directly.
 
 ## Deploy (GitHub Pages)
 

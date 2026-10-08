@@ -5,6 +5,7 @@ import { createScrollSteps, runScene } from '@/motion/gsap';
 import type { ScrollSteps } from '@/motion/gsap';
 import {
   clientsScene,
+  growthScene,
   heroScene,
   pageHeroScene,
   riseScene,
@@ -27,6 +28,7 @@ import {
   team,
   visionMission,
   whyUs,
+  growthCheck,
   hero,
   levers,
   problems,
@@ -47,7 +49,8 @@ import { VisionMission } from './VisionMission';
 import { WhyUs } from './WhyUs';
 import { Hero } from './Hero';
 import { NoiseWord } from './Hero/NoiseWord';
-import { ProblemWheel } from './Hero/ProblemWheel';
+import { GrowthCheck } from './GrowthCheck';
+import { ProblemWheel } from './GrowthCheck/ProblemWheel';
 import { Process } from './Process';
 import { StepIcon } from './Process/StepIcon';
 import { Services } from './Services';
@@ -60,19 +63,8 @@ const sceneFor = (scene: unknown) =>
   vi.mocked(runScene).mock.calls.some(([, called]) => called === scene);
 
 describe('Hero', () => {
-  const renderHero = (selected: string | null = 'leads', onSelect = vi.fn(), onShow = vi.fn()) =>
-    render(
-      <Hero
-        header={<div data-testid="header" />}
-        content={hero}
-        problems={problems}
-        levers={levers}
-        selectedProblem={selected}
-        onSelectProblem={onSelect}
-        onShowLever={onShow}
-        contentId="main-content"
-      />,
-    );
+  const renderHero = () =>
+    render(<Hero header={<div data-testid="header" />} content={hero} contentId="main-content" />);
 
   it('renders the full headline as one heading, with "noise." readable as a word', () => {
     renderHero();
@@ -102,16 +94,50 @@ describe('Hero', () => {
     expect(sceneFor(heroScene)).toBe(true);
   });
 
-  it('forwards picks from the growth wheel', async () => {
+  it('keeps to tagline and calls to action: the growth wheel has its own section', () => {
+    renderHero();
+    expect(screen.queryByRole('radiogroup')).not.toBeInTheDocument();
+  });
+});
+
+describe('GrowthCheck', () => {
+  const renderGrowth = (onSelect = vi.fn(), onShow = vi.fn()) =>
+    render(
+      <GrowthCheck
+        content={growthCheck}
+        problems={problems}
+        levers={levers}
+        selectedProblem="brand"
+        onSelectProblem={onSelect}
+        onShowLever={onShow}
+      />,
+    );
+  const question = `${growthCheck.heading} ${growthCheck.headingAccent}`;
+
+  it('is a section named by its question, which also names the wheel', () => {
+    renderGrowth();
+    const section = screen.getByRole('region', { name: question });
+    expect(section).toHaveAttribute('id', 'growth-check');
+    expect(screen.getByRole('heading', { level: 2, name: question })).toBeInTheDocument();
+    expect(within(section).getByRole('radiogroup', { name: question })).toBeInTheDocument();
+    expect(screen.getByText(growthCheck.kicker)).toBeInTheDocument();
+  });
+
+  it('runs the growth scene', () => {
+    renderGrowth();
+    expect(sceneFor(growthScene)).toBe(true);
+  });
+
+  it('forwards picks from the wheel', async () => {
     const onSelect = vi.fn();
-    renderHero(null, onSelect);
+    renderGrowth(onSelect);
     await userEvent.click(screen.getByRole('radio', { name: 'High Ad Costs' }));
     expect(onSelect).toHaveBeenCalledWith('ad-costs');
   });
 
   it('hands the "Start with" link to the page instead of jumping to the anchor', async () => {
     const onShow = vi.fn();
-    renderHero('brand', vi.fn(), onShow);
+    renderGrowth(vi.fn(), onShow);
     await userEvent.click(screen.getByRole('link', { name: 'Get Noticed' }));
     expect(onShow).toHaveBeenCalledWith('noticed');
   });
@@ -119,10 +145,8 @@ describe('Hero', () => {
 
 describe('ProblemWheel', () => {
   const props = {
-    question: hero.question,
-    hint: hero.wheelHint,
-    blockerLabel: hero.blockerLabel,
-    startLabel: hero.startLabel,
+    content: growthCheck,
+    headingId: 'growth-question',
     problems,
     levers,
     onSelect: vi.fn(),
@@ -150,7 +174,10 @@ describe('ProblemWheel', () => {
 
   it('offers the problems as a radio group named by the question, one slice each', () => {
     render(<ProblemWheel {...props} selectedId="brand" />);
-    const group = screen.getByRole('radiogroup', { name: hero.question });
+    expect(screen.getByRole('heading', { level: 2 })).toHaveAttribute('id', 'growth-question');
+    const group = screen.getByRole('radiogroup', {
+      name: `${growthCheck.heading} ${growthCheck.headingAccent}`,
+    });
     expect(within(group).getAllByRole('radio')).toHaveLength(problems.length);
     expect(screen.getByRole('radio', { name: 'Weak Brand Presence' })).toHaveAttribute(
       'aria-checked',
@@ -160,7 +187,7 @@ describe('ProblemWheel', () => {
       'aria-checked',
       'false',
     );
-    expect(screen.getByText(hero.wheelHint)).toBeInTheDocument();
+    expect(screen.getByText(growthCheck.hint)).toBeInTheDocument();
   });
 
   it('makes only the picked slice tabbable, and labels each slice with its number', () => {
@@ -180,7 +207,7 @@ describe('ProblemWheel', () => {
 
   it('names the picked problem, its lever and that lever’s services', () => {
     render(<ProblemWheel {...props} selectedId="brand" />);
-    expect(screen.getByText(hero.blockerLabel)).toBeInTheDocument();
+    expect(screen.getByText(growthCheck.blockerLabel)).toBeInTheDocument();
     expect(screen.getByText('Weak Brand Presence', { selector: 'p' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Get Noticed' })).toHaveAttribute('href', '#services');
     const list = screen.getByRole('list', { name: 'Get Noticed services' });
@@ -194,7 +221,7 @@ describe('ProblemWheel', () => {
   it('rests between slices with nothing named when nothing is picked', () => {
     const { container } = render(<ProblemWheel {...props} selectedId={null} />);
     expect(turn(container)).toBe('54deg');
-    expect(screen.queryByText(hero.blockerLabel)).not.toBeInTheDocument();
+    expect(screen.queryByText(growthCheck.blockerLabel)).not.toBeInTheDocument();
     expect(screen.getAllByRole('radio')[0]).toHaveAttribute('tabindex', '0');
   });
 
@@ -225,7 +252,7 @@ describe('ProblemWheel', () => {
     expect(turn(container)).toBe('522deg');
     rerender(<ProblemWheel {...props} selectedId={null} />);
     expect(turn(container)).toBe('522deg');
-    expect(screen.queryByText(hero.blockerLabel)).not.toBeInTheDocument();
+    expect(screen.queryByText(growthCheck.blockerLabel)).not.toBeInTheDocument();
   });
 
   it('steps with the arrow keys, the short way round, moving focus with the pick', () => {

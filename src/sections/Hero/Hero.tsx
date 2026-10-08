@@ -1,12 +1,10 @@
 import { useRef } from 'react';
 import type { ReactNode } from 'react';
-import type { HeroContent, Lever, LeverId, Problem } from '@/types/content';
-import { cx } from '@/lib/cx';
+import type { HeroContent } from '@/types/content';
 import { useMotion, useStickyOffset } from '@/hooks';
 import { heroScene } from '@/motion/scenes';
 import { BrandLogo, ButtonLink, Container, TextLink } from '@/components/ui';
 import { NoiseWord } from './NoiseWord';
-import { ProblemWheel } from './ProblemWheel';
 import { Swoosh } from './Swoosh';
 import styles from './Hero.module.css';
 
@@ -14,12 +12,6 @@ export interface HeroProps {
   /** The site header sits inside the hero and scrolls away with it. */
   header: ReactNode;
   content: HeroContent;
-  problems: Problem[];
-  levers: Lever[];
-  selectedProblem: string | null;
-  onSelectProblem: (id: string) => void;
-  /** The growth wheel's "Start with …" link: take the visitor to that lever, open. */
-  onShowLever: (id: LeverId) => void;
   /** Id given to the headline block — the skip link's target. */
   contentId: string;
 }
@@ -27,20 +19,12 @@ export interface HeroProps {
 /**
  * The Editorial hero: a magazine-cover layout on navy. "noise." glitches once and rests off-line,
  * "It creates momentum." sets large in gold italic over a travelling-light
- * underline, and the base row carries the calls to action and the growth wheel
- * (the brief keeps the hero to tagline and CTA; the description lives in the
- * footer's About us). On wide screens it stays pinned while the page slides over it.
+ * underline, and the base row carries the two calls to action — the brief keeps
+ * the hero to tagline and CTA (the description lives in the footer's About us;
+ * the growth wheel has its own section next). On wide screens it stays pinned
+ * while the page slides over it.
  */
-export function Hero({
-  header,
-  content,
-  problems,
-  levers,
-  selectedProblem,
-  onSelectProblem,
-  onShowLever,
-  contentId,
-}: HeroProps) {
+export function Hero({ header, content, contentId }: HeroProps) {
   const ref = useRef<HTMLElement>(null);
   const top = useStickyOffset(ref);
   useMotion(ref, heroScene);
@@ -92,29 +76,15 @@ export function Hero({
       </Container>
 
       <Container>
-        <div className={styles.base}>
-          <div className={cx(styles.column, styles.actions)} data-anim="base">
+        <div className={styles.base} data-anim="base">
+          <div className={styles.actions}>
             <ButtonLink href={content.primaryCta.href}>{content.primaryCta.label}</ButtonLink>
             <TextLink href={content.secondaryCta.href}>{content.secondaryCta.label}</TextLink>
-            <p className={styles.cue} aria-hidden="true">
-              <span className={styles.cueLine} />
-              {content.scrollCue}
-            </p>
           </div>
-          <div className={styles.column} data-anim="base">
-            <ProblemWheel
-              question={content.question}
-              hint={content.wheelHint}
-              blockerLabel={content.blockerLabel}
-              startLabel={content.startLabel}
-              problems={problems}
-              levers={levers}
-              selectedId={selectedProblem}
-              onSelect={onSelectProblem}
-              leverHref="#services"
-              onLeverClick={onShowLever}
-            />
-          </div>
+          <p className={styles.cue} aria-hidden="true">
+            <span className={styles.cueLine} />
+            {content.scrollCue}
+          </p>
         </div>
       </Container>
     </section>

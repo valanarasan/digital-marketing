@@ -1,0 +1,19 @@
+/* Navy, a step lighter than the hero it slides over, with a gold glow behind the wheel. */
+.section {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding-block: clamp(72px, 8vw, 124px);
+  border-top: 1px solid rgba(226, 176, 74, 0.5);
+  background:
+    radial-gradient(circle at 24% 50%, rgba(226, 176, 74, 0.14), transparent 34%), var(--color-navy);
+  color: var(--color-cream);
+}
+
+@media (max-width: 900px) {
+  .section {
+    background:
+      radial-gradient(circle at 50% 58%, rgba(226, 176, 74, 0.14), transparent 46%),
+      var(--color-navy);
+  }
+}

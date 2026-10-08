@@ -1,4 +1,5 @@
 export * from './Clients';
+export * from './GrowthCheck';
 export * from './Hero';
 export * from './PageHero';
 export * from './Process';

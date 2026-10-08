@@ -1,21 +1,17 @@
-import { useId, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { CSSProperties, KeyboardEvent } from 'react';
-import type { Lever, LeverId, Problem } from '@/types/content';
+import type { GrowthCheckContent, Lever, LeverId, Problem } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { leverForProblem } from '@/lib/levers';
-import { ArrowIcon, BrandLogo } from '@/components/ui';
+import { ArrowIcon, BrandLogo, Kicker } from '@/components/ui';
 import { labelSpot, restTurn, sliceClip, splitLabel, turnTo } from './wheel';
 import type { WheelMotion } from './wheel';
 import styles from './ProblemWheel.module.css';
 
 export interface ProblemWheelProps {
-  question: string;
-  /** One line under the question: how to use the wheel. */
-  hint: string;
-  /** "Your blocker" — over the picked problem. */
-  blockerLabel: string;
-  /** "Start with" — before the lever that answers it. */
-  startLabel: string;
+  content: GrowthCheckContent;
+  /** Id for the question heading, which also names the section and the wheel. */
+  headingId: string;
   problems: Problem[];
   levers: Lever[];
   selectedId: string | null;
@@ -43,10 +39,8 @@ const KEY_STEPS: Record<string, (index: number, count: number) => number> = {
  * counter-turn as the wheel spins, so they always read upright.
  */
 export function ProblemWheel({
-  question,
-  hint,
-  blockerLabel,
-  startLabel,
+  content,
+  headingId,
   problems,
   levers,
   selectedId,
@@ -54,7 +48,6 @@ export function ProblemWheel({
   leverHref,
   onLeverClick,
 }: ProblemWheelProps) {
-  const questionId = useId();
   const count = problems.length;
   const slices = useRef<Array<HTMLButtonElement | null>>([]);
   const indexOf = (id: string | null) => problems.findIndex((problem) => problem.id === id);
@@ -95,20 +88,22 @@ export function ProblemWheel({
 
   return (
     <div className={styles.growth}>
-      <div className={styles.copy}>
-        <p className={styles.question} id={questionId}>
-          {question}
-        </p>
-        <p className={styles.hint}>{hint}</p>
+      <div className={styles.copy} data-anim="rise">
+        <Kicker className={styles.kicker}>{content.kicker}</Kicker>
+        <h2 className={styles.question} id={headingId}>
+          {content.heading} <span className={styles.accent}>{content.headingAccent}</span>
+        </h2>
+        <p className={styles.hint}>{content.hint}</p>
       </div>
 
       <div
         className={styles.wheel}
+        data-anim="wheel"
         data-motion={wheel.motion}
         style={{ '--turn': `${wheel.turn}deg` } as CSSProperties}
       >
         <span className={styles.bezel} aria-hidden="true" />
-        <div className={styles.disc} role="radiogroup" aria-labelledby={questionId}>
+        <div className={styles.disc} role="radiogroup" aria-labelledby={headingId}>
           {problems.map((problem, index) => {
             const checked = index === selectedIndex;
             const [head, tail] = splitLabel(problem.label);
@@ -162,13 +157,13 @@ export function ProblemWheel({
         </svg>
       </div>
 
-      <div className={styles.answer} aria-live="polite">
+      <div className={styles.answer} aria-live="polite" data-anim="rise">
         {lever ? (
           <div key={selectedId} className={styles.reveal}>
-            <p className={styles.blocker}>{blockerLabel}</p>
+            <p className={styles.blocker}>{content.blockerLabel}</p>
             <p className={styles.problem}>{problems[selectedIndex].label}</p>
             <p className={styles.start}>
-              <span>{startLabel}</span>
+              <span>{content.startLabel}</span>
               <a
                 className={styles.lever}
                 href={leverHref}

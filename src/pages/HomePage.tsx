@@ -6,6 +6,7 @@ import {
   clientsIntro,
   footer,
   footerNav,
+  growthCheck,
   hero,
   levers,
   navCta,
@@ -19,15 +20,15 @@ import {
 } from '@/content';
 import { useSingleSelect } from '@/hooks';
 import { Footer, Header } from '@/components/layout';
-import { Clients, Hero, Process, Services, Statement, TrustStrip } from '@/sections';
+import { Clients, GrowthCheck, Hero, Process, Services, Statement, TrustStrip } from '@/sections';
 import type { ServicesHandle } from '@/sections';
 import { MAIN_CONTENT_ID } from './ids';
 
 /**
  * Composition root for the home page: content in, sections out. The open lever
  * is shared state: scrolling through the services opens each lever in turn,
- * spinning the hero's wheel to a problem opens the lever that answers it, and the hero's
- * "Start with …" link glides down to that lever.
+ * spinning the growth wheel to a problem opens the lever that answers it, and the
+ * wheel's "Start with …" link glides down to that lever.
  */
 export function HomePage() {
   const problem = useSingleSelect<string>(problems[0].id);
@@ -45,12 +46,15 @@ export function HomePage() {
         <Hero
           header={<Header nav={navItems} cta={navCta} current="home" />}
           content={hero}
+          contentId={MAIN_CONTENT_ID}
+        />
+        <GrowthCheck
+          content={growthCheck}
           problems={problems}
           levers={levers}
           selectedProblem={problem.selected}
           onSelectProblem={selectProblem}
           onShowLever={(id) => servicesRef.current!.showLever(id)}
-          contentId={MAIN_CONTENT_ID}
         />
         <TrustStrip content={trust} />
         <Statement content={statement} />

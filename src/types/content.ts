@@ -79,12 +79,21 @@ export interface HeroContent {
   payoff: string;
   primaryCta: NavItem;
   secondaryCta: NavItem;
-  /** The growth wheel: its question, how to use it, and the labels of its answer. */
-  question: string;
-  wheelHint: string;
-  blockerLabel: string;
-  startLabel: string;
   scrollCue: string;
+}
+
+/** "What's holding your growth back?" — the growth wheel's section. */
+export interface GrowthCheckContent {
+  kicker: string;
+  /** The question; its last words are set in the serif accent. */
+  heading: string;
+  headingAccent: string;
+  /** One line under the question: how to use the wheel. */
+  hint: string;
+  /** "Your blocker" — over the picked problem. */
+  blockerLabel: string;
+  /** "Start with" — before the lever that answers it. */
+  startLabel: string;
 }
 
 export interface TrustContent {

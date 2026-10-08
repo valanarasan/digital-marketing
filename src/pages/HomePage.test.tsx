@@ -13,7 +13,7 @@ describe('HomePage', () => {
     render(<HomePage />);
     const main = screen.getByRole('main');
     const ids = Array.from(main.querySelectorAll('section[id]')).map((section) => section.id);
-    expect(ids).toEqual(['top', 'services', 'process', 'clients']);
+    expect(ids).toEqual(['top', 'growth-check', 'services', 'process', 'clients']);
     expect(document.getElementById('contact')?.tagName).toBe('FOOTER');
   });
 
@@ -46,7 +46,7 @@ describe('HomePage', () => {
     expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'false');
   });
 
-  it('glides from the hero\'s "Start with" link to that lever', async () => {
+  it('glides from the growth wheel\'s "Start with" link to that lever', async () => {
     render(<HomePage />);
     await userEvent.click(problemSlice('High Ad Costs'));
     await userEvent.click(screen.getByRole('link', { name: 'Get Results' }));

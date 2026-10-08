@@ -126,43 +126,32 @@
   margin-top: 4px;
 }
 
+/* The calls to action, centred under the headline; the scroll cue sits at the far right. */
 .base {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.5fr);
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  padding-block: clamp(24px, 2.6vw, 34px) clamp(30px, 3.2vw, 44px);
   border-top: 1px solid var(--line-on-dark);
 }
 
-.column {
-  padding: 26px clamp(16px, 2.4vw, 36px) 28px;
-}
-
-.column:first-child {
-  padding-left: 0;
-}
-
-.column:last-child {
-  padding-right: 0;
-}
-
-.column + .column {
-  border-left: 1px solid var(--line-on-dark);
-}
-
 .actions {
+  grid-column: 2;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px 36px;
 }
 
 .cue {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-top: auto;
-  padding-top: 24px;
   font-size: 12px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -220,15 +209,10 @@
     grid-template-columns: 1fr;
   }
 
-  .column,
-  .column:first-child,
-  .column:last-child {
-    padding: 24px 0 28px;
-  }
-
-  .column + .column {
-    border-left: 0;
-    border-top: 1px solid var(--line-on-dark);
+  .actions {
+    grid-column: 1;
+    flex-direction: column;
+    gap: 14px;
   }
 
   .cue {

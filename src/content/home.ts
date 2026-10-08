@@ -1,5 +1,6 @@
 import type {
   FooterContent,
+  GrowthCheckContent,
   HeroContent,
   Lever,
   NavItem,
@@ -36,11 +37,16 @@ export const hero: HeroContent = {
   payoff: 'It creates momentum!',
   primaryCta: { label: 'Let’s talk growth', href: '#contact' },
   secondaryCta: { label: 'Explore our capabilities', href: '#services' },
-  question: 'What’s holding your growth back?',
-  wheelHint: 'Pick your biggest blocker and the wheel turns to where we’d start.',
+  scrollCue: 'Scroll to explore',
+};
+
+export const growthCheck: GrowthCheckContent = {
+  kicker: 'Growth check',
+  heading: 'What’s holding your',
+  headingAccent: 'growth back?',
+  hint: 'Pick your biggest blocker and the wheel turns to where we’d start.',
   blockerLabel: 'Your blocker',
   startLabel: 'Start with',
-  scrollCue: 'Scroll to explore',
 };
 
 export const levers: Lever[] = [
