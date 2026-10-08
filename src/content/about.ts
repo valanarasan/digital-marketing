@@ -59,7 +59,11 @@ export const visionMission: VisionMissionContent = {
   },
 };
 
-/** Roles appear only where the brief gives one; profiles without a bio show the name alone. */
+/**
+ * Roles appear only where the brief gives one; profiles without a bio show the name alone.
+ * Photos are the client's own, upscaled 2× (EDSR) and cropped to the card's frame — the founder
+ * 4:5, everyone else 5:4 (see photos/team/README.md). Without one, the initials stand in.
+ */
 export const team: TeamContent = {
   kicker: 'Inside Hiranmaye',
   heading: 'Our Team',
@@ -68,6 +72,7 @@ export const team: TeamContent = {
     id: 'vijayalakshmi-girish',
     name: 'Vijayalakshmi Girish',
     role: 'Founder Director',
+    photo: { src: 'team/vijayalakshmi-girish.webp', width: 900, height: 1125 },
     bio: [
       'Vijayalakshmi leads strategy, planning, finance and sales at Hiranmaye Digital. She brings 17 years in the IT industry and is Managing Director of Gavin Technologies Pvt Ltd, where she oversees operations, finance and people.',
       'Five years ago, alongside her IT company, she launched Hiranmaye E-Mart, a clothing store that began during the pandemic and continues to operate today. Running it taught her what it takes to grow a business through efficient operations, careful inventory management and personalised customer service.',
@@ -90,11 +95,18 @@ export const team: TeamContent = {
   ],
   boardLabel: 'Board Members',
   board: [
-    { id: 'saji-philip', name: 'Saji Philip', role: 'Board Member', bio: [] },
+    {
+      id: 'saji-philip',
+      name: 'Saji Philip',
+      role: 'Board Member',
+      bio: [],
+      photo: { src: 'team/saji-philip.webp', width: 900, height: 720 },
+    },
     {
       id: 'abhishek-mishra',
       name: 'Abhishek Mishra',
       role: 'Board Member',
+      photo: { src: 'team/abhishek-mishra.webp', width: 900, height: 720 },
       bio: [
         'Abhishek is a senior HR and Talent leader with nearly 21 years of experience across Talent Management, Leadership Development, HR Business Partnering, Consulting, Executive Coaching, and Organisational Change.',
         'He works closely with leadership teams as an advisor, mentor, sounding board, and problem-solving partner, helping them navigate complex people, talent, and organisational challenges with greater clarity.',

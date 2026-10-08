@@ -618,6 +618,25 @@ describe('Team', () => {
     expect(within(details).getByText(praveena.bio[3])).toBeInTheDocument();
   });
 
+  it('shows the photo where one has been supplied, and the initials otherwise', () => {
+    render(<Team content={team} />);
+    const withPhotos = [team.founder, ...team.team, ...team.board].filter((person) => person.photo);
+    expect(withPhotos.map((person) => person.name)).toEqual([
+      'Vijayalakshmi Girish',
+      'Saji Philip',
+      'Abhishek Mishra',
+    ]);
+    for (const person of withPhotos) {
+      const photo = screen.getByRole('img', { name: `Portrait of ${person.name}` });
+      expect(photo).toHaveAttribute('src', `/${person.photo!.src}`);
+      expect(photo).toHaveAttribute('width', String(person.photo!.width));
+      expect(photo).toHaveAttribute('loading', 'lazy');
+    }
+    const veena = screen.getByRole('heading', { name: 'Veena Prasad' }).closest('article')!;
+    expect(within(veena).queryByRole('img')).not.toBeInTheDocument();
+    expect(veena).toHaveTextContent('VP');
+  });
+
   it('shows a name-only card while a profile is still to come', () => {
     render(<Team content={team} />);
     const card = screen.getByRole('heading', { name: 'Harshitha Girish' }).closest('article')!;

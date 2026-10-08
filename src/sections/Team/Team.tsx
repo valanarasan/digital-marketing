@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import type { Person, TeamContent } from '@/types/content';
+import { cx } from '@/lib/cx';
 import { useMotion } from '@/hooks';
 import { riseScene } from '@/motion/scenes';
 import { Container, Kicker, Monogram } from '@/components/ui';
@@ -9,30 +10,49 @@ export interface TeamProps {
   content: TeamContent;
 }
 
-/** One profile: monogram, name, role where given, and the bio — the first paragraph open, the rest behind a disclosure. */
+/** The person's photo filling its frame, or their initials on a soft panel until one arrives. */
+function Portrait({ person, className }: { person: Person; className: string }) {
+  const { photo } = person;
+  return (
+    <div className={cx(styles.portrait, className)}>
+      {photo ? (
+        <img
+          src={`${import.meta.env.BASE_URL}${photo.src}`}
+          alt={`Portrait of ${person.name}`}
+          width={photo.width}
+          height={photo.height}
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <Monogram name={person.name} className={styles.portraitMark} />
+      )}
+    </div>
+  );
+}
+
+/** One profile: portrait, name, role where given, and the bio — the first paragraph open, the rest behind a disclosure. */
 function PersonCard({ person, moreLabel }: { person: Person; moreLabel: string }) {
   const [first, ...rest] = person.bio;
 
   return (
     <article className={styles.card} data-anim="rise">
-      <div className={styles.cardHead}>
-        <Monogram name={person.name} />
-        <div>
-          <h4 className={styles.name}>{person.name}</h4>
-          {person.role ? <p className={styles.role}>{person.role}</p> : null}
-        </div>
+      <Portrait person={person} className={styles.cardPortrait} />
+      <div className={styles.cardBody}>
+        <h4 className={styles.name}>{person.name}</h4>
+        {person.role ? <p className={styles.role}>{person.role}</p> : null}
+        {first ? <p className={styles.bio}>{first}</p> : null}
+        {rest.length > 0 ? (
+          <details className={styles.more}>
+            <summary className={styles.summary}>{moreLabel}</summary>
+            {rest.map((paragraph) => (
+              <p key={paragraph} className={styles.bio}>
+                {paragraph}
+              </p>
+            ))}
+          </details>
+        ) : null}
       </div>
-      {first ? <p className={styles.bio}>{first}</p> : null}
-      {rest.length > 0 ? (
-        <details className={styles.more}>
-          <summary className={styles.summary}>{moreLabel}</summary>
-          {rest.map((paragraph) => (
-            <p key={paragraph} className={styles.bio}>
-              {paragraph}
-            </p>
-          ))}
-        </details>
-      ) : null}
     </article>
   );
 }
@@ -54,7 +74,7 @@ export function Team({ content }: TeamProps) {
         <div className={styles.founder} data-anim="rise">
           <div className={styles.founderSide}>
             <h3 className={styles.groupTitle}>{content.founderLabel}</h3>
-            <Monogram name={founder.name} className={styles.founderMark} />
+            <Portrait person={founder} className={styles.founderPortrait} />
             <h4 className={styles.founderName}>{founder.name}</h4>
             <p className={styles.role}>{founder.role}</p>
           </div>

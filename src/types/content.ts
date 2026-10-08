@@ -216,6 +216,15 @@ export interface VisionMissionContent {
   mission: { label: string; text: string };
 }
 
+/** A portrait under public/, already cropped to the frame it is shown in. */
+export interface PersonPhoto {
+  /** Path under public/, without a leading slash (resolved against the deploy base). */
+  src: string;
+  /** The file's pixel size, so the page reserves the right space before it loads. */
+  width: number;
+  height: number;
+}
+
 export interface Person {
   id: string;
   name: string;
@@ -223,6 +232,8 @@ export interface Person {
   role?: string;
   /** Paragraphs; empty while a profile is still to come. */
   bio: string[];
+  /** Where a photo has been supplied; otherwise the person's initials stand in. */
+  photo?: PersonPhoto;
 }
 
 export interface TeamContent {

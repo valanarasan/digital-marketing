@@ -77,6 +77,9 @@ Design rules the code follows:
   only 670 px wide with a pixel-doubled script, so it was traced to `kej.svg` (same shapes,
   white, same proportions) to stay sharp. Each tile is painted the colour the logo was drawn
   on (`tile` in `src/content/clients.ts`) so the file's edge never shows.
+- **Team photos are the client's photos, never retouched.** Upscaled 2× (EDSR) and cropped to
+  the card frames; masters and the method are in `photos/team/` (see its README), the site's
+  copies in `public/team/`. A person without a `photo` in `src/content/about.ts` shows initials.
 - **Reduced motion is respected everywhere.** With `prefers-reduced-motion: reduce`, no scene
   runs, Lenis stays off and CSS loops stop; the static layout is the real one.
 
