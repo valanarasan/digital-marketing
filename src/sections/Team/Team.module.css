@@ -26,7 +26,7 @@
   color: var(--color-gold-deep);
 }
 
-/* The founder: a large card, name on the left, the bio in full on the right. */
+/* The founder: a large card, the portrait on the left; name, role and bio beside it, centred on it. */
 .founder {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
@@ -74,9 +74,13 @@
   border-bottom: 1px solid var(--line-on-light);
 }
 
+.founderText {
+  align-self: center;
+}
+
 .founderName {
-  margin: 24px 0 0;
-  font-size: clamp(26px, 2.4vw, 36px);
+  margin: 0;
+  font-size: clamp(28px, 2.8vw, 42px);
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: -0.03em;
@@ -93,6 +97,9 @@
   display: grid;
   gap: 18px;
   align-content: start;
+  margin-top: clamp(20px, 2.4vw, 32px);
+  padding-top: clamp(20px, 2.4vw, 32px);
+  border-top: 1px solid var(--line-on-light);
 }
 
 .founderBio p {

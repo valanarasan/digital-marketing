@@ -245,6 +245,9 @@ export interface TeamContent {
   team: Person[];
   boardLabel: string;
   board: Person[];
+  /** Independent advisors: outside the board, listed in their own group. */
+  advisorLabel: string;
+  advisors: Person[];
   /** Label for the disclosure that holds the rest of a long profile. */
   moreLabel: string;
 }

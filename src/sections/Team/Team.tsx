@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { Fragment, useRef } from 'react';
 import type { Person, TeamContent } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { useMotion } from '@/hooks';
@@ -57,11 +57,16 @@ function PersonCard({ person, moreLabel }: { person: Person; moreLabel: string }
   );
 }
 
-/** Our Team: the founder in full, then the team and the board as cards. */
+/** Our Team: the founder in full, then the team, the board and the advisors as cards. */
 export function Team({ content }: TeamProps) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, riseScene);
   const { founder } = content;
+  const groups = [
+    { label: content.teamLabel, people: content.team },
+    { label: content.boardLabel, people: content.board },
+    { label: content.advisorLabel, people: content.advisors },
+  ];
 
   return (
     <section ref={ref} id="team" className={styles.team} aria-labelledby="team-title">
@@ -75,33 +80,30 @@ export function Team({ content }: TeamProps) {
           <div className={styles.founderSide}>
             <h3 className={styles.groupTitle}>{content.founderLabel}</h3>
             <Portrait person={founder} className={styles.founderPortrait} />
+          </div>
+          <div className={styles.founderText}>
             <h4 className={styles.founderName}>{founder.name}</h4>
             <p className={styles.role}>{founder.role}</p>
-          </div>
-          <div className={styles.founderBio}>
-            {founder.bio.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            <div className={styles.founderBio}>
+              {founder.bio.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
           </div>
         </div>
 
-        <h3 className={styles.groupTitle}>{content.teamLabel}</h3>
-        <ul role="list" className={styles.people}>
-          {content.team.map((person) => (
-            <li key={person.id}>
-              <PersonCard person={person} moreLabel={content.moreLabel} />
-            </li>
-          ))}
-        </ul>
-
-        <h3 className={styles.groupTitle}>{content.boardLabel}</h3>
-        <ul role="list" className={styles.people}>
-          {content.board.map((person) => (
-            <li key={person.id}>
-              <PersonCard person={person} moreLabel={content.moreLabel} />
-            </li>
-          ))}
-        </ul>
+        {groups.map((group) => (
+          <Fragment key={group.label}>
+            <h3 className={styles.groupTitle}>{group.label}</h3>
+            <ul role="list" className={styles.people}>
+              {group.people.map((person) => (
+                <li key={person.id}>
+                  <PersonCard person={person} moreLabel={content.moreLabel} />
+                </li>
+              ))}
+            </ul>
+          </Fragment>
+        ))}
       </Container>
     </section>
   );

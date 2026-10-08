@@ -6,7 +6,7 @@ with the copy from `final_website_content.pdf`. Three pages, each with its own U
 | Page | URL | What's on it |
 | --- | --- | --- |
 | Home | `/` | hero, growth check (the spin wheel), trust strip, statement, services (opening lever by lever as you scroll), process, clients |
-| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team and board, clients & partners |
+| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team, board and advisor, clients & partners |
 | Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
 
 Every page ends with the same footer (contact, About us, map, socials). A fresh repo, separate
@@ -119,6 +119,6 @@ gate, then a build with `VITE_BASE=/<repo>/`, and publishes `dist/`. Set the rep
 - Privacy Policy and Terms links in the footer point to `#` until those pages exist.
 - Resources & Insights is in the content brief's menu but has no content yet, so it is not in
   the menu; add it to `navItems` in `src/content/home.ts` once the page exists.
-- Team: photos (initials stand in for now), bios for Harshitha Girish, Saji Philip and Veena
-  Prasad, and roles for Praveena Pradeep and Harshitha Girish are still to come.
+- Team: photos of Praveena Pradeep and Veena Prasad (initials stand in for now), a bio for
+  Veena Prasad, and roles for Praveena Pradeep and Harshitha Girish are still to come.
 - Content Marketing has no outcome line in the brief yet.

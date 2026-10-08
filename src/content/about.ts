@@ -10,8 +10,8 @@ import type {
 
 /**
  * Inside Hiranmaye (the About page), from "final_website_content.pdf", Page 2 and
- * Our Team. The founder bio is the second, edited version in the brief; the
- * LinkedIn "About" and headline options there are for LinkedIn, not the site.
+ * Our Team, plus the profiles the client supplied later. The LinkedIn "About" and
+ * headline options in the brief are for LinkedIn, not the site.
  */
 
 export const aboutHero: PageHeroContent = {
@@ -60,9 +60,11 @@ export const visionMission: VisionMissionContent = {
 };
 
 /**
- * Roles appear only where the brief gives one; profiles without a bio show the name alone.
- * Photos are the client's own, upscaled 2× (EDSR) and cropped to the card's frame — the founder
- * 4:5, everyone else 5:4 (see photos/team/README.md). Without one, the initials stand in.
+ * Short bios (8 Oct 2026), condensed from the brief and the profiles the client supplied —
+ * every fact is theirs, nothing added. Roles appear only where given; a profile without a
+ * bio shows the name alone. Photos are the client's own, upscaled 2× (EDSR) and cropped to
+ * the frame — the founder 4:5, everyone else 5:4 (see photos/team/README.md). Without one,
+ * the initials stand in.
  */
 export const team: TeamContent = {
   kicker: 'Inside Hiranmaye',
@@ -74,9 +76,8 @@ export const team: TeamContent = {
     role: 'Founder Director',
     photo: { src: 'team/vijayalakshmi-girish.webp', width: 900, height: 1125 },
     bio: [
-      'Vijayalakshmi leads strategy, planning, finance and sales at Hiranmaye Digital. She brings 17 years in the IT industry and is Managing Director of Gavin Technologies Pvt Ltd, where she oversees operations, finance and people.',
-      'Five years ago, alongside her IT company, she launched Hiranmaye E-Mart, a clothing store that began during the pandemic and continues to operate today. Running it taught her what it takes to grow a business through efficient operations, careful inventory management and personalised customer service.',
-      'A graduate of Bangalore University, she has handled the accounts of both companies. That financial discipline shapes how Hiranmaye Digital works: every rupee of marketing spend should have a reason and a return.',
+      'Vijayalakshmi leads strategy, planning, finance and sales at Hiranmaye Digital. She brings 17 years in the IT industry and is Managing Director of Gavin Technologies Pvt Ltd.',
+      'She also launched Hiranmaye E-Mart, a clothing store started during the pandemic, and has handled the accounts of both businesses. That discipline shapes how we work: every rupee of marketing spend should have a reason and a return.',
     ],
   },
   teamLabel: 'Team',
@@ -85,36 +86,42 @@ export const team: TeamContent = {
       id: 'praveena-pradeep',
       name: 'Praveena Pradeep',
       bio: [
-        'Praveena works closely with businesses to build their brands and strengthen their presence in the digital space. Her work spans digital marketing strategy, social media, content, branding and campaign planning, with a strong focus on understanding what each business actually needs to grow.',
-        'Her interest in marketing comes from working closely with different businesses and seeing the challenges they face when trying to reach the right audience. She believes that good marketing starts with understanding the business, its customers and its goals before deciding what to communicate and where.',
-        'Over time, Praveena has worked on a range of digital marketing projects, from developing social media strategies and content plans to shaping brand communication and executing digital campaigns. She enjoys being involved in both the creative and strategic sides of the work and believes the best ideas come from combining the two.',
-        'Her approach is straightforward: create marketing that feels genuine, communicates clearly and serves a purpose. For Praveena, success is not just about how a brand looks online, but about how effectively its marketing helps the business connect with people and move forward.',
+        'Praveena helps businesses build their brands and strengthen their digital presence, across strategy, social media, content, branding and campaign planning. She starts with the business, its customers and its goals, and makes marketing that feels genuine, communicates clearly and serves a purpose.',
       ],
     },
-    { id: 'harshitha-girish', name: 'Harshitha Girish', bio: [] },
+    {
+      id: 'harshitha-girish',
+      name: 'Harshitha Girish',
+      photo: { src: 'team/harshitha-girish.webp', width: 900, height: 720 },
+      bio: [
+        'Harshitha is a marketing and business professional and an Associate Partner at Restless Dreamers, where she leads curriculum, sales strategy and student training. She has worked with The LIT School, Snapchat and Under25 across customer acquisition, marketing strategy, content and creator-led businesses. She holds a BBA in Marketing from Christ (Deemed to be) University and is pursuing an MSc in International Business at the University of Birmingham.',
+      ],
+    },
   ],
   boardLabel: 'Board Members',
   board: [
-    {
-      id: 'saji-philip',
-      name: 'Saji Philip',
-      role: 'Board Member',
-      bio: [],
-      photo: { src: 'team/saji-philip.webp', width: 900, height: 720 },
-    },
     {
       id: 'abhishek-mishra',
       name: 'Abhishek Mishra',
       role: 'Board Member',
       photo: { src: 'team/abhishek-mishra.webp', width: 900, height: 720 },
       bio: [
-        'Abhishek is a senior HR and Talent leader with nearly 21 years of experience across Talent Management, Leadership Development, HR Business Partnering, Consulting, Executive Coaching, and Organisational Change.',
-        'He works closely with leadership teams as an advisor, mentor, sounding board, and problem-solving partner, helping them navigate complex people, talent, and organisational challenges with greater clarity.',
-        'His experience spans talent and leadership strategy, culture and change, capability building, organisational transitions, and the people dimensions of business growth, including Global Capability Centres (GCCs).',
-        'Combining strong business understanding with deep people expertise and behavioural insight, Abhishek brings an independent and practical perspective to help leaders understand challenges clearly, explore possibilities, and make informed decisions.',
+        'Abhishek is a senior HR and talent leader with nearly 21 years across talent management, leadership development, HR business partnering, consulting and executive coaching. He advises leadership teams on people, talent and organisational change, including in Global Capability Centres (GCCs).',
       ],
     },
     { id: 'veena-prasad', name: 'Veena Prasad', role: 'Board Member', bio: [] },
+  ],
+  advisorLabel: 'Advisor',
+  advisors: [
+    {
+      id: 'saji-philip',
+      name: 'Saji Philip',
+      role: 'Independent External Advisor',
+      photo: { src: 'team/saji-philip.webp', width: 900, height: 720 },
+      bio: [
+        'Saji is a global Solar and Battery Energy Storage Systems (BESS) leader with over 25 years across energy, infrastructure, global trade, project development and go-to-market strategy. His work across RedAmber, Yellow Gold Energy and SAEL Energy Solutions spans the clean-energy value chain, with markets in the Middle East, Europe, South Asia and Africa. He brings Hiranmaye Digital a global, commercial view of growth.',
+      ],
+    },
   ],
   moreLabel: 'Read full profile',
 };
