@@ -2,6 +2,7 @@ import { useId, useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { NavItem, PageHeroContent } from '@/types/content';
 import { resolveHref } from '@/lib/href';
+import { EVENTS } from '@/lib/events';
 import { useMotion } from '@/hooks';
 import { pageHeroScene } from '@/motion/scenes';
 import { BrandLogo, Container, Kicker } from '@/components/ui';
@@ -58,7 +59,11 @@ export function PageHero({ header, content, contentId, index, indexLabel }: Page
             <ul role="list" className={styles.index}>
               {index.map((item) => (
                 <li key={item.href}>
-                  <a className={styles.indexLink} href={resolveHref(item.href)}>
+                  <a
+                    className={styles.indexLink}
+                    href={resolveHref(item.href)}
+                    data-track-event={EVENTS.SOLUTIONS_INDEX_LINK_CLICKED}
+                  >
                     {item.label}
                   </a>
                 </li>

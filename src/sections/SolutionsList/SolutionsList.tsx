@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { Solution, SolutionsContent } from '@/types/content';
 import { resolveHref } from '@/lib/href';
+import { EVENTS } from '@/lib/events';
 import { useMotion } from '@/hooks';
 import { riseScene } from '@/motion/scenes';
 import { Container, TextLink } from '@/components/ui';
@@ -63,7 +64,11 @@ function SolutionBody({ solution, content }: { solution: Solution; content: Solu
 
       {solution.closer ? <p className={styles.closer}>{solution.closer}</p> : null}
 
-      <TextLink className={styles.cta} href={resolveHref(content.ctaHref)}>
+      <TextLink
+        className={styles.cta}
+        href={resolveHref(content.ctaHref)}
+        data-track-event={EVENTS.SOLUTION_CTA_CLICKED}
+      >
         {solution.cta ?? content.defaultCta}
       </TextLink>
     </div>

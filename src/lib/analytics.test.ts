@@ -70,14 +70,22 @@ describe('analytics', () => {
 
   it('tracks page views', () => {
     initAnalytics({ token: 'test-token' });
-    trackPageView('Home Page', { custom: 123 });
+    trackPageView('home', { custom: 123 });
     expect(mixpanel.track).toHaveBeenCalledWith(
-      'Page View',
+      'Home Page Viewed',
       expect.objectContaining({
-        page_name: 'Home Page',
+        page_id: 'home',
         custom: 123,
       }),
     );
+  });
+
+  it('sends a separate page-view event per page', () => {
+    initAnalytics({ token: 'test-token' });
+    trackPageView('solutions');
+    trackPageView('about');
+    expect(mixpanel.track).toHaveBeenCalledWith('Solutions Page Viewed', expect.anything());
+    expect(mixpanel.track).toHaveBeenCalledWith('About Page Viewed', expect.anything());
   });
 
   it('tracks button clicks explicitly', () => {
@@ -145,6 +153,27 @@ describe('analytics', () => {
           href: 'https://example.com/learn-more',
           is_external: true,
         }),
+      );
+
+      cleanup();
+    });
+
+    it('sends the named event for elements with data-track-event', () => {
+      initAnalytics({ token: 'test-token' });
+      const cleanup = setupAutoClickTracking();
+
+      const link = document.createElement('a');
+      link.href = 'mailto:hi@example.com';
+      link.innerText = 'hi@example.com';
+      link.setAttribute('data-track-event', 'Footer Email Clicked');
+      document.body.appendChild(link);
+
+      link.click();
+
+      expect(mixpanel.track).toHaveBeenCalledTimes(1);
+      expect(mixpanel.track).toHaveBeenCalledWith(
+        'Footer Email Clicked',
+        expect.objectContaining({ label: 'hi@example.com', link_type: 'email' }),
       );
 
       cleanup();

@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { HeroContent } from '@/types/content';
+import { EVENTS } from '@/lib/events';
 import { useMotion, useStickyOffset } from '@/hooks';
 import { heroScene } from '@/motion/scenes';
 import { BrandLogo, ButtonLink, Container, TextLink } from '@/components/ui';
@@ -78,8 +79,18 @@ export function Hero({ header, content, contentId }: HeroProps) {
       <Container>
         <div className={styles.base} data-anim="base">
           <div className={styles.actions}>
-            <ButtonLink href={content.primaryCta.href}>{content.primaryCta.label}</ButtonLink>
-            <TextLink href={content.secondaryCta.href}>{content.secondaryCta.label}</TextLink>
+            <ButtonLink
+              href={content.primaryCta.href}
+              data-track-event={EVENTS.HERO_PRIMARY_CTA_CLICKED}
+            >
+              {content.primaryCta.label}
+            </ButtonLink>
+            <TextLink
+              href={content.secondaryCta.href}
+              data-track-event={EVENTS.HERO_SECONDARY_CTA_CLICKED}
+            >
+              {content.secondaryCta.label}
+            </TextLink>
           </div>
           <p className={styles.cue} aria-hidden="true">
             <span className={styles.cueLine} />

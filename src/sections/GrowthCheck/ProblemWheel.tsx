@@ -3,6 +3,8 @@ import type { CSSProperties, KeyboardEvent } from 'react';
 import type { GrowthCheckContent, Lever, LeverId, Problem } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { leverForProblem } from '@/lib/levers';
+import { EVENTS } from '@/lib/events';
+import { track } from '@/lib/analytics';
 import { ArrowIcon, BrandLogo, Kicker } from '@/components/ui';
 import { labelSpot, restTurn, sliceClip, splitLabel, turnTo } from './wheel';
 import type { WheelMotion } from './wheel';
@@ -73,6 +75,11 @@ export function ProblemWheel({
   const choose = (index: number, motion: WheelMotion) => {
     const { id } = problems[index];
     setWheel({ id, turn: turnTo(wheel.turn, index, count, motion), motion });
+    track(motion === 'spin' ? EVENTS.GROWTH_WHEEL_SPUN : EVENTS.GROWTH_BLOCKER_SELECTED, {
+      problem_id: id,
+      problem_label: problems[index].label,
+      method: motion === 'step' ? 'keyboard' : motion === 'spin' ? 'spin' : 'click',
+    });
     onSelect(id);
   };
 
@@ -185,6 +192,10 @@ export function ProblemWheel({
                   // Keep the click from the smooth-scroll anchor handler too: the page scrolls to the lever.
                   event.preventDefault();
                   event.stopPropagation();
+                  track(EVENTS.GROWTH_LEVER_LINK_CLICKED, {
+                    lever_id: lever.id,
+                    problem_id: selectedId,
+                  });
                   onLeverClick(lever.id);
                 }}
               >

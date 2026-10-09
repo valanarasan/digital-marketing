@@ -1,9 +1,15 @@
 import mixpanel from 'mixpanel-browser';
 
+import type { PageId } from '@/types/content';
+import { PAGE_VIEW_EVENTS, TRACK_ATTR } from './events';
+
 let initialized = false;
 let clickListenerAttached = false;
+let removeClickListener: () => void = () => {};
 
 export interface InitAnalyticsOptions {
+  /** The page being loaded; decides which "<Page> Viewed" event is sent. */
+  page?: PageId;
   token?: string;
   apiHost?: string;
   debug?: boolean;
@@ -39,7 +45,7 @@ export function initAnalytics(options: InitAnalyticsOptions = {}): void {
     persistence: 'localStorage',
     // Respect the browser's Do Not Track setting.
     loaded: () => {
-      trackPageView();
+      trackPageView(options.page);
     },
   });
 
@@ -47,6 +53,13 @@ export function initAnalytics(options: InitAnalyticsOptions = {}): void {
 
   // Setup click listeners for buttons and links
   setupAutoClickTracking();
+}
+
+function linkType(href: string): 'email' | 'phone' | 'anchor' | 'url' {
+  if (href.startsWith('mailto:')) return 'email';
+  if (href.startsWith('tel:')) return 'phone';
+  if (href.startsWith('#')) return 'anchor';
+  return 'url';
 }
 
 /**
@@ -68,6 +81,7 @@ export function setupAutoClickTracking(): () => void {
       if (!clickable) return;
 
       const tagName = clickable.tagName.toLowerCase();
+      const namedEvent = clickable.getAttribute(TRACK_ATTR);
       const role = clickable.getAttribute('role');
       const isLink = tagName === 'a';
       const isButton = tagName === 'button' || role === 'button' || tagName === 'input';
@@ -91,15 +105,21 @@ export function setupAutoClickTracking(): () => void {
         url: window.location.origin + window.location.pathname,
       };
 
-      if (isLink) {
+      if (namedEvent) {
+        // Named interaction (see events.ts): one meaningful event per button or link.
+        const href = clickable.getAttribute('href');
+        track(namedEvent, {
+          label: clickable.getAttribute('aria-label') || label,
+          href: href || undefined,
+          link_type: href ? linkType(href) : undefined,
+          is_external: href ? /^https?:\/\//i.test(href) : undefined,
+          page_path: window.location.pathname,
+        });
+      } else if (isLink) {
         const href = clickable.getAttribute('href');
         properties.href = href || undefined;
         properties.is_external = href ? /^https?:\/\//i.test(href) : false;
-        properties.link_type = href?.startsWith('mailto:')
-          ? 'email'
-          : href?.startsWith('tel:')
-            ? 'phone'
-            : 'url';
+        properties.link_type = href ? linkType(href) : undefined;
         track('Link Click', {
           link_label: label,
           ...properties,
@@ -118,10 +138,11 @@ export function setupAutoClickTracking(): () => void {
   document.addEventListener('click', handleClick, { capture: true, passive: true });
   clickListenerAttached = true;
 
-  return () => {
+  removeClickListener = () => {
     document.removeEventListener('click', handleClick, { capture: true });
     clickListenerAttached = false;
   };
+  return removeClickListener;
 }
 
 /**
@@ -139,27 +160,18 @@ export function track(eventName: string, properties?: Record<string, unknown>): 
 }
 
 /**
- * Explicitly tracks a page view with optional custom properties.
+ * Tracks the page view as the page's own event ("Home Page Viewed", …).
  */
-export function trackPageView(pageName?: string, properties?: Record<string, unknown>): void {
-  if (!initialized) return;
-  try {
-    const pageTitle = pageName || document.title;
-    const path = typeof window !== 'undefined' ? window.location.pathname : '';
-    const url =
-      typeof window !== 'undefined' ? window.location.origin + window.location.pathname : '';
-
-    mixpanel.track('Page View', {
-      page_name: pageTitle,
-      page_path: path,
-      url,
-      ...properties,
-    });
-  } catch (error) {
-    if (import.meta.env.DEV) {
-      console.error('[Mixpanel pageview error]', error);
-    }
-  }
+export function trackPageView(page?: PageId, properties?: Record<string, unknown>): void {
+  track(page ? PAGE_VIEW_EVENTS[page] : 'Page Viewed', {
+    page_id: page,
+    page_title: typeof document !== 'undefined' ? document.title : undefined,
+    page_path: typeof window !== 'undefined' ? window.location.pathname : undefined,
+    url:
+      typeof window !== 'undefined' ? window.location.origin + window.location.pathname : undefined,
+    referrer: typeof document !== 'undefined' ? document.referrer || undefined : undefined,
+    ...properties,
+  });
 }
 
 /**
@@ -207,6 +219,7 @@ export function resetAnalytics(): void {
  * Helper to reset initialization state (primarily for unit testing).
  */
 export function _resetInternalStateForTesting(): void {
+  removeClickListener();
   initialized = false;
   clickListenerAttached = false;
 }

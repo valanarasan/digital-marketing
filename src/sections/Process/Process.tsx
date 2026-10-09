@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { ProcessContent, ProcessStep } from '@/types/content';
 import { cx } from '@/lib/cx';
+import { EVENTS } from '@/lib/events';
 import { useMotion } from '@/hooks';
 import { processScene } from '@/motion/scenes';
 import { ArrowIcon, Container, FlowerStar } from '@/components/ui';
@@ -51,7 +52,11 @@ export function Process({ intro, steps }: ProcessProps) {
               <p className={styles.body}>{step.body}</p>
             </article>
           ))}
-          <a className={styles.cta} href={intro.cta.href}>
+          <a
+            className={styles.cta}
+            href={intro.cta.href}
+            data-track-event={EVENTS.PROCESS_CTA_CLICKED}
+          >
             <FlowerStar className={styles.ctaStar} />
             <span className={styles.ctaLabel}>
               {intro.cta.label}
