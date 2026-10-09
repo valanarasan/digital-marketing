@@ -7,6 +7,7 @@ colour changes or background edits.
 | Person | Supplied | Master here | On the site (`public/team/`) |
 | --- | --- | --- | --- |
 | Vijayalakshmi Girish (founder) | 912 × 1600 | 1824 × 2280, head to waist | `vijayalakshmi-girish.webp`, 900 × 1125 (4:5) |
+| Praveena Pradeep (team) | 3024 × 4032 | 1512 × 2016 (half size; the original is already sharp enough, no upscale needed) — card crop taken from the original | `praveena-pradeep.webp`, 900 × 720 (5:4) |
 | Harshitha Girish (team) | 972 × 1164 | 1600 × 1280, cropped 5:4 before upscaling | `harshitha-girish.webp`, 900 × 720 (5:4) |
 | Saji Philip (advisor) | 800 × 800 | 1600 × 1600 | `saji-philip.webp`, 900 × 720 (5:4) |
 | Abhishek Mishra (board) | 670 × 576 | 1340 × 1152 | `abhishek-mishra.webp`, 900 × 720 (5:4) |

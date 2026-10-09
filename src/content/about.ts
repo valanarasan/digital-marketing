@@ -85,6 +85,7 @@ export const team: TeamContent = {
     {
       id: 'praveena-pradeep',
       name: 'Praveena Pradeep',
+      photo: { src: 'team/praveena-pradeep.webp', width: 900, height: 720 },
       bio: [
         'Praveena helps businesses build their brands and strengthen their digital presence, across strategy, social media, content, branding and campaign planning. She starts with the business, its customers and its goals, and makes marketing that feels genuine, communicates clearly and serves a purpose.',
       ],
@@ -109,7 +110,6 @@ export const team: TeamContent = {
         'Abhishek is a senior HR and talent leader with nearly 21 years across talent management, leadership development, HR business partnering, consulting and executive coaching. He advises leadership teams on people, talent and organisational change, including in Global Capability Centres (GCCs).',
       ],
     },
-    { id: 'veena-prasad', name: 'Veena Prasad', role: 'Board Member', bio: [] },
   ],
   advisorLabel: 'Advisor',
   advisors: [

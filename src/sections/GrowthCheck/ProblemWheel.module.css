@@ -65,7 +65,7 @@
 }
 
 .wheel[data-motion='turn'] {
-  --spin-duration: 3.5s;
+  --spin-duration: 1.4s;
 }
 
 .wheel[data-motion='step'] {

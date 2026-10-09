@@ -119,6 +119,5 @@ gate, then a build with `VITE_BASE=/<repo>/`, and publishes `dist/`. Set the rep
 - Privacy Policy and Terms links in the footer point to `#` until those pages exist.
 - Resources & Insights is in the content brief's menu but has no content yet, so it is not in
   the menu; add it to `navItems` in `src/content/home.ts` once the page exists.
-- Team: photos of Praveena Pradeep and Veena Prasad (initials stand in for now), a bio for
-  Veena Prasad, and roles for Praveena Pradeep and Harshitha Girish are still to come.
+- Team: roles for Praveena Pradeep and Harshitha Girish are still to come.
 - Content Marketing has no outcome line in the brief yet.

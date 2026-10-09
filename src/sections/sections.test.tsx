@@ -656,29 +656,29 @@ describe('Team', () => {
     expect(within(details).getByText('Third.')).toBeInTheDocument();
   });
 
-  it('shows the photo where one has been supplied, and the initials otherwise', () => {
+  it('shows everyone on the page with their photo', () => {
     render(<Team content={team} />);
-    const withPhotos = everyone.filter((person) => person.photo);
-    expect(withPhotos.map((person) => person.name)).toEqual([
+    expect(everyone.map((person) => person.name)).toEqual([
       'Vijayalakshmi Girish',
+      'Praveena Pradeep',
       'Harshitha Girish',
       'Abhishek Mishra',
       'Saji Philip',
     ]);
-    for (const person of withPhotos) {
+    for (const person of everyone) {
       const photo = screen.getByRole('img', { name: `Portrait of ${person.name}` });
       expect(photo).toHaveAttribute('src', `/${person.photo!.src}`);
       expect(photo).toHaveAttribute('width', String(person.photo!.width));
       expect(photo).toHaveAttribute('loading', 'lazy');
     }
-    const veena = screen.getByRole('heading', { name: 'Veena Prasad' }).closest('article')!;
-    expect(within(veena).queryByRole('img')).not.toBeInTheDocument();
-    expect(veena).toHaveTextContent('VP');
   });
 
-  it('shows the name and role alone while a profile is still to come', () => {
-    render(<Team content={team} />);
-    const card = screen.getByRole('heading', { name: 'Veena Prasad' }).closest('article')!;
+  it('shows initials, name and role alone while a photo and profile are still to come', () => {
+    const newcomer = { id: 'new', name: 'New Member', role: 'Board Member', bio: [] };
+    render(<Team content={{ ...team, board: [newcomer] }} />);
+    const card = screen.getByRole('heading', { name: newcomer.name }).closest('article')!;
+    expect(within(card).queryByRole('img')).not.toBeInTheDocument();
+    expect(card).toHaveTextContent('NM');
     expect(Array.from(card.querySelectorAll('p')).map((p) => p.textContent)).toEqual([
       'Board Member',
     ]);
