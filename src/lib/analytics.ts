@@ -16,42 +16,29 @@ export function initAnalytics(options: InitAnalyticsOptions = {}): void {
   if (typeof window === 'undefined') return;
   if (initialized) return;
 
-  const token =
-    options.token ??
-    (typeof import.meta !== 'undefined' && import.meta.env
-      ? import.meta.env.VITE_MIXPANEL_TOKEN
-      : undefined) ??
-    '';
+  const env = import.meta.env;
+  const token = options.token ?? env.VITE_MIXPANEL_TOKEN ?? '';
 
   if (!token) {
-    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
-      console.warn(
-        '[Mixpanel] VITE_MIXPANEL_TOKEN is not set. Set it in .env to enable tracking.',
-      );
+    if (env.DEV) {
+      console.warn('[Mixpanel] VITE_MIXPANEL_TOKEN is not set. Set it in .env to enable tracking.');
     }
     return;
   }
 
-  const apiHost =
-    options.apiHost ??
-    (typeof import.meta !== 'undefined' && import.meta.env
-      ? import.meta.env.VITE_MIXPANEL_API_HOST
-      : undefined) ??
-    'https://api-eu.mixpanel.com';
-
-  const isDebug =
-    options.debug ?? (typeof import.meta !== 'undefined' && Boolean(import.meta.env?.DEV));
+  // Must match the project's data residency: EU (default), US is https://api.mixpanel.com
+  const apiHost = options.apiHost ?? env.VITE_MIXPANEL_API_HOST ?? 'https://api-eu.mixpanel.com';
 
   mixpanel.init(token, {
     api_host: apiHost,
-    debug: isDebug,
-    track_pageview: true,
-    autocapture: true,
+    debug: options.debug ?? Boolean(env.DEV),
+    // Page views and clicks are tracked by our own events below; disable
+    // Mixpanel's built-in versions to avoid double-counting.
+    track_pageview: false,
+    autocapture: false,
     persistence: 'localStorage',
-    ignore_dnt: true,
-    batch_requests: false,
+    // Respect the browser's Do Not Track setting.
     loaded: () => {
-      // Send explicit Page View as soon as Mixpanel client is loaded
       trackPageView();
     },
   });
@@ -97,18 +84,22 @@ export function setupAutoClickTracking(): () => void {
         element_tag: tagName,
         element_text: clickable.innerText?.trim().slice(0, 100) || undefined,
         element_id: clickable.id || undefined,
-        element_classes: clickable.className ? String(clickable.className) : undefined,
         aria_label: clickable.getAttribute('aria-label') || undefined,
         track_name: clickable.getAttribute('data-track-name') || undefined,
         page_path: window.location.pathname,
         page_title: document.title,
-        url: window.location.href,
+        url: window.location.origin + window.location.pathname,
       };
 
       if (isLink) {
         const href = clickable.getAttribute('href');
         properties.href = href || undefined;
         properties.is_external = href ? /^https?:\/\//i.test(href) : false;
+        properties.link_type = href?.startsWith('mailto:')
+          ? 'email'
+          : href?.startsWith('tel:')
+            ? 'phone'
+            : 'url';
         track('Link Click', {
           link_label: label,
           ...properties,
@@ -141,7 +132,7 @@ export function track(eventName: string, properties?: Record<string, unknown>): 
   try {
     mixpanel.track(eventName, properties);
   } catch (error) {
-    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+    if (import.meta.env.DEV) {
       console.error('[Mixpanel track error]', error);
     }
   }
@@ -155,7 +146,8 @@ export function trackPageView(pageName?: string, properties?: Record<string, unk
   try {
     const pageTitle = pageName || document.title;
     const path = typeof window !== 'undefined' ? window.location.pathname : '';
-    const url = typeof window !== 'undefined' ? window.location.href : '';
+    const url =
+      typeof window !== 'undefined' ? window.location.origin + window.location.pathname : '';
 
     mixpanel.track('Page View', {
       page_name: pageTitle,
@@ -164,7 +156,7 @@ export function trackPageView(pageName?: string, properties?: Record<string, unk
       ...properties,
     });
   } catch (error) {
-    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+    if (import.meta.env.DEV) {
       console.error('[Mixpanel pageview error]', error);
     }
   }
@@ -191,7 +183,7 @@ export function identifyUser(userId: string, traits?: Record<string, unknown>): 
       mixpanel.people.set(traits);
     }
   } catch (error) {
-    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+    if (import.meta.env.DEV) {
       console.error('[Mixpanel identify error]', error);
     }
   }
@@ -205,7 +197,7 @@ export function resetAnalytics(): void {
   try {
     mixpanel.reset();
   } catch (error) {
-    if (typeof import.meta !== 'undefined' && import.meta.env?.DEV) {
+    if (import.meta.env.DEV) {
       console.error('[Mixpanel reset error]', error);
     }
   }

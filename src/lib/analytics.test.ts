@@ -49,11 +49,9 @@ describe('analytics', () => {
       expect.objectContaining({
         api_host: 'https://api-eu.mixpanel.com',
         debug: true,
-        track_pageview: true,
-        autocapture: true,
+        track_pageview: false,
+        autocapture: false,
         persistence: 'localStorage',
-        ignore_dnt: true,
-        batch_requests: false,
       }),
     );
   });
