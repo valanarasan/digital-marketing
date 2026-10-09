@@ -47,13 +47,13 @@ describe('analytics', () => {
     expect(mixpanel.init).toHaveBeenCalledWith(
       'test-token',
       expect.objectContaining({
+        api_host: 'https://api-eu.mixpanel.com',
         debug: true,
-        track_pageview: 'full-url',
+        track_pageview: true,
+        autocapture: true,
         persistence: 'localStorage',
         ignore_dnt: true,
         batch_requests: false,
-        record_sessions_percent: 100,
-        record_heatmap_data: true,
       }),
     );
   });

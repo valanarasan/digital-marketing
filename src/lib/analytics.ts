@@ -5,6 +5,7 @@ let clickListenerAttached = false;
 
 export interface InitAnalyticsOptions {
   token?: string;
+  apiHost?: string;
   debug?: boolean;
 }
 
@@ -31,22 +32,33 @@ export function initAnalytics(options: InitAnalyticsOptions = {}): void {
     return;
   }
 
+  const apiHost =
+    options.apiHost ??
+    (typeof import.meta !== 'undefined' && import.meta.env
+      ? import.meta.env.VITE_MIXPANEL_API_HOST
+      : undefined) ??
+    'https://api-eu.mixpanel.com';
+
+  const isDebug =
+    options.debug ?? (typeof import.meta !== 'undefined' && Boolean(import.meta.env?.DEV));
+
   mixpanel.init(token, {
-    debug: options.debug ?? (typeof import.meta !== 'undefined' && Boolean(import.meta.env?.DEV)),
-    track_pageview: 'full-url',
+    api_host: apiHost,
+    debug: isDebug,
+    track_pageview: true,
+    autocapture: true,
     persistence: 'localStorage',
-    ignore_dnt: true, // Prevents browser Do-Not-Track from silently discarding events
-    batch_requests: false, // Flushes events immediately for real-time reporting
-    record_sessions_percent: 100,
-    record_heatmap_data: true,
+    ignore_dnt: true,
+    batch_requests: false,
+    loaded: () => {
+      // Send explicit Page View as soon as Mixpanel client is loaded
+      trackPageView();
+    },
   });
 
   initialized = true;
 
-  // Track initial page view event explicitly so it immediately shows up in Mixpanel Events feed
-  trackPageView();
-
-  // Setup click listeners for all interactive elements
+  // Setup click listeners for buttons and links
   setupAutoClickTracking();
 }
 
@@ -145,7 +157,6 @@ export function trackPageView(pageName?: string, properties?: Record<string, unk
     const path = typeof window !== 'undefined' ? window.location.pathname : '';
     const url = typeof window !== 'undefined' ? window.location.href : '';
 
-    // Track custom "Page View" event for immediate display in Mixpanel Events stream
     mixpanel.track('Page View', {
       page_name: pageTitle,
       page_path: path,
