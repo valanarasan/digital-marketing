@@ -34,9 +34,11 @@ const KEY_STEPS: Record<string, (index: number, count: number) => number> = {
 
 /**
  * "What's holding your growth back?" as a wheel. Each slice is a growth
- * blocker; picking one spins the wheel until that slice stops at the gold
- * pointer, and the lever that answers it is named beside the wheel. The labels
- * counter-turn as the wheel spins, so they always read upright.
+ * blocker; picking one turns the wheel (within one rotation) until that slice
+ * stops at the gold pointer, and the lever that answers it is named beside the
+ * wheel. The lotus in the hub spins it properly — a full turn or more — onto a
+ * blocker at random. The labels counter-turn as the wheel moves, so they always
+ * read upright.
  */
 export function ProblemWheel({
   content,
@@ -58,13 +60,13 @@ export function ProblemWheel({
     motion: 'spin' as WheelMotion,
   }));
 
-  // The page may change the pick on its own; spin to it then too.
+  // The page may change the pick on its own; turn to it then too.
   if (wheel.id !== selectedId) {
     const index = indexOf(selectedId);
     setWheel({
       id: selectedId,
-      turn: index < 0 ? wheel.turn : turnTo(wheel.turn, index, count, 'spin'),
-      motion: 'spin',
+      turn: index < 0 ? wheel.turn : turnTo(wheel.turn, index, count, 'turn'),
+      motion: 'turn',
     });
   }
 
@@ -84,6 +86,12 @@ export function ProblemWheel({
 
   const selectedIndex = indexOf(selectedId);
   const tabbable = Math.max(selectedIndex, 0);
+
+  /** The lotus: a real spin, at least one full turn, landing on a different blocker at random. */
+  const spin = () => {
+    const offset = 1 + Math.floor(Math.random() * (count - 1));
+    choose((tabbable + offset) % count, 'spin');
+  };
   const lever = leverForProblem(problems, levers, selectedId);
 
   return (
@@ -120,7 +128,7 @@ export function ProblemWheel({
                 tabIndex={index === tabbable ? 0 : -1}
                 className={cx(styles.slice, checked && styles.checked)}
                 style={{ clipPath: sliceClip(index, count) }}
-                onClick={() => choose(index, 'spin')}
+                onClick={() => choose(index, 'turn')}
                 onKeyDown={(event) => onKeyDown(event, index)}
               />,
               <span
@@ -149,9 +157,15 @@ export function ProblemWheel({
             ))}
           </svg>
         </div>
-        <span className={styles.hub} aria-hidden="true">
+        <button
+          type="button"
+          className={styles.hub}
+          aria-label={content.spinLabel}
+          title={content.spinLabel}
+          onClick={spin}
+        >
           <BrandLogo variant="mark" decorative />
-        </span>
+        </button>
         <svg className={styles.pointer} viewBox="0 0 30 24" aria-hidden="true" focusable="false">
           <path d="M1 12 25.6 2.3Q29 1 29 4.6v14.8q0 3.6-3.4 2.3Z" />
         </svg>

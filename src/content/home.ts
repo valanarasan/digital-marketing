@@ -47,6 +47,7 @@ export const growthCheck: GrowthCheckContent = {
   hint: 'Pick your biggest blocker and the wheel turns to where we’d start.',
   blockerLabel: 'Your blocker',
   startLabel: 'Start with',
+  spinLabel: 'Spin the wheel',
 };
 
 export const levers: Lever[] = [

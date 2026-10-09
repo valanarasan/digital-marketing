@@ -94,6 +94,8 @@ export interface GrowthCheckContent {
   blockerLabel: string;
   /** "Start with" — before the lever that answers it. */
   startLabel: string;
+  /** Names the lotus button in the wheel's hub, which spins it onto a blocker at random. */
+  spinLabel: string;
 }
 
 export interface TrustContent {

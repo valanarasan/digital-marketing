@@ -225,15 +225,35 @@ describe('ProblemWheel', () => {
     expect(screen.getAllByRole('radio')[0]).toHaveAttribute('tabindex', '0');
   });
 
-  it('spins at least a full turn to a clicked slice, and reports the pick', async () => {
+  it('turns forward to a clicked slice, within one rotation, and reports the pick', async () => {
     const onSelect = vi.fn();
     const { container } = render(<Picked onSelect={onSelect} />);
     expect(turn(container)).toBe('90deg');
     await userEvent.click(screen.getByRole('radio', { name: 'High Ad Costs' }));
     expect(onSelect).toHaveBeenCalledWith('ad-costs');
+    expect(motion(container)).toBe('turn');
+    // High Ad Costs (04) rests at 90 − 216 ≡ 234°: just the 144° on, no extra turn.
+    expect(turn(container)).toBe('234deg');
+  });
+
+  it('spins at least a full turn from the lotus, onto a different blocker at random', async () => {
+    const onSelect = vi.fn();
+    const random = vi.spyOn(Math, 'random');
+    const { container } = render(<Picked onSelect={onSelect} />);
+    const lotus = screen.getByRole('button', { name: growthCheck.spinLabel });
+
+    random.mockReturnValue(0.5); // 1 + ⌊0.5 × 4⌋ = 3 slices on from Not Enough Leads
+    await userEvent.click(lotus);
+    expect(onSelect).toHaveBeenLastCalledWith('ad-costs');
     expect(motion(container)).toBe('spin');
-    // High Ad Costs (04) rests at 90 − 216 ≡ 234°: 144° on, plus the full turn.
-    expect(turn(container)).toBe('594deg');
+    expect(turn(container)).toBe('594deg'); // 144° on, plus the full turn
+
+    random.mockReturnValue(0); // the smallest move is still to another blocker
+    await userEvent.click(lotus);
+    expect(onSelect).toHaveBeenLastCalledWith('strategy');
+    random.mockReturnValue(0.999); // and the largest never comes back round to the same one
+    await userEvent.click(lotus);
+    expect(onSelect).toHaveBeenLastCalledWith('ad-costs'); // 4 on from No Clear Strategy
   });
 
   it('turns back to the page’s pick if the page does not take the click', async () => {
@@ -246,12 +266,12 @@ describe('ProblemWheel', () => {
     expect(Number.parseFloat(turn(container)) % 360).toBe(90);
   });
 
-  it('spins to a pick the page makes on its own, and holds still when it is cleared', () => {
+  it('turns to a pick the page makes on its own, and holds still when it is cleared', () => {
     const { container, rerender } = render(<ProblemWheel {...props} selectedId="leads" />);
     rerender(<ProblemWheel {...props} selectedId="strategy" />);
-    expect(turn(container)).toBe('522deg');
+    expect(turn(container)).toBe('162deg');
     rerender(<ProblemWheel {...props} selectedId={null} />);
-    expect(turn(container)).toBe('522deg');
+    expect(turn(container)).toBe('162deg');
     expect(screen.queryByText(growthCheck.blockerLabel)).not.toBeInTheDocument();
   });
 

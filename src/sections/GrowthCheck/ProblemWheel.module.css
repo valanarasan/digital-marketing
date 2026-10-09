@@ -64,6 +64,10 @@
   transition: opacity 0.6s ease;
 }
 
+.wheel[data-motion='turn'] {
+  --spin-duration: 3.5s;
+}
+
 .wheel[data-motion='step'] {
   --spin-duration: 0.6s;
 }
@@ -238,14 +242,45 @@
     0 0 0 5px rgba(10, 20, 36, 0.9),
     0 0 0 6px rgba(226, 176, 74, 0.25),
     0 10px 26px rgba(0, 0, 0, 0.55);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
   transform: translate(-50%, -50%);
-  pointer-events: none;
+  transition: box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
 }
 
+/* The lotus is the spin button: it brightens on hover and dips when pressed. */
 .hub img {
   display: block;
   width: 62%;
   height: auto;
+  transition: transform 0.3s var(--ease-soft);
+}
+
+@media (hover: hover) {
+  .hub:hover {
+    box-shadow:
+      0 0 0 1px var(--color-gold),
+      0 0 0 5px rgba(10, 20, 36, 0.9),
+      0 0 0 6px rgba(226, 176, 74, 0.5),
+      0 10px 26px rgba(0, 0, 0, 0.55);
+  }
+
+  .hub:hover img {
+    transform: scale(1.08);
+  }
+}
+
+.hub:active img {
+  transform: scale(0.94);
+}
+
+.hub:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 8px;
 }
 
 /* The gold flapper at 3 o'clock: the slice it touches is the pick. */
@@ -374,6 +409,10 @@
   /* The answer lands as the wheel slows to a stop. */
   .reveal {
     animation: reveal 0.6s var(--ease-out) 1s backwards;
+  }
+
+  .wheel[data-motion='turn'] + .answer .reveal {
+    animation-delay: 0.7s;
   }
 
   .wheel[data-motion='step'] + .answer .reveal {

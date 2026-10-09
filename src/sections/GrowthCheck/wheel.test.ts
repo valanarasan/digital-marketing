@@ -13,6 +13,12 @@ describe('growth wheel geometry', () => {
     expect(turnTo(-30, 0, 5, 'spin')).toBe(450);
   });
 
+  it('turns forward to a slice, never more than one rotation', () => {
+    expect(turnTo(90, 0, 5, 'turn')).toBe(90);
+    expect(turnTo(90, 1, 5, 'turn')).toBe(378);
+    expect(turnTo(90, 4, 5, 'turn')).toBe(162);
+  });
+
   it('steps the short way round', () => {
     expect(turnTo(90, 1, 5, 'step')).toBe(18);
     expect(turnTo(90, 4, 5, 'step')).toBe(162);

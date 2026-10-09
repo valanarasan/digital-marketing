@@ -5,8 +5,13 @@
  */
 export const POINTER_ANGLE = 90;
 
-/** "spin": at least one full turn, like a prize wheel. "step": the short way round (arrow keys). */
-export type WheelMotion = 'spin' | 'step';
+/**
+ * How the wheel moves to a slice:
+ * - "spin": at least one full turn, like a prize wheel (the lotus button);
+ * - "turn": forward to the slice, never more than one rotation (clicking a slice);
+ * - "step": the short way round (arrow keys).
+ */
+export type WheelMotion = 'spin' | 'turn' | 'step';
 
 const mod = (value: number, base: number) => ((value % base) + base) % base;
 
@@ -28,6 +33,7 @@ export function restTurn(index: number, count: number): number {
 export function turnTo(turn: number, index: number, count: number, motion: WheelMotion): number {
   const delta = mod(restTurn(index, count) - turn, 360);
   if (motion === 'spin') return turn + delta + 360;
+  if (motion === 'turn') return turn + delta;
   return turn + (delta > 180 ? delta - 360 : delta);
 }
 

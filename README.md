@@ -89,7 +89,7 @@ Design rules the code follows:
 | --- | --- |
 | Hero | masthead rule draws, the logo's lotus fades up behind the headline, headline rises, "momentum" wipes in, underline draws with a travelling light; "noise." glitches once, then rests slightly out of line (CSS) |
 | Hero (wide screens) | stays pinned while the next sections slide over it (`useStickyOffset`) |
-| Growth check | question and answer rise in; the wheel stays hidden until it scrolls into view, then spins in once; a click spins it (at least a full turn) until that slice stops at the gold pointer, arrow keys step it; labels counter-turn so they stay upright (CSS transitions on `--turn`) |
+| Growth check | question and answer rise in; the wheel stays hidden until it scrolls into view, then spins in once; clicking a slice turns it forward (within one rotation, 1.4 s) until that slice stops at the gold pointer, the lotus in the hub spins it properly (a full turn or more, 1.8 s) onto a blocker at random, arrow keys step it; labels counter-turn so they stay upright (CSS transitions on `--turn`) |
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
 | Clients | heading and lead rise in; the logo tiles follow one after another |
 | Who we are | statement lights up word by word; the logo's lotus floats gently (CSS) |
