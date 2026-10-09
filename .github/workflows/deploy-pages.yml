@@ -39,6 +39,7 @@ jobs:
           # Project site: served from /<repo>/. Set this repo variable to "/"
           # once a custom domain (e.g. hiranmayedigital.com) is attached.
           VITE_BASE: ${{ vars.VITE_BASE || format('/{0}/', github.event.repository.name) }}
+          VITE_MIXPANEL_TOKEN: ${{ secrets.VITE_MIXPANEL_TOKEN || vars.VITE_MIXPANEL_TOKEN }}
 
       - uses: actions/configure-pages@v5
 
