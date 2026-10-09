@@ -48,8 +48,10 @@ describe('analytics', () => {
       'test-token',
       expect.objectContaining({
         debug: true,
-        track_pageview: true,
+        track_pageview: 'full-url',
         persistence: 'localStorage',
+        ignore_dnt: true,
+        batch_requests: false,
         record_sessions_percent: 100,
         record_heatmap_data: true,
       }),
@@ -71,7 +73,8 @@ describe('analytics', () => {
   it('tracks page views', () => {
     initAnalytics({ token: 'test-token' });
     trackPageView('Home Page', { custom: 123 });
-    expect(mixpanel.track_pageview).toHaveBeenCalledWith(
+    expect(mixpanel.track).toHaveBeenCalledWith(
+      'Page View',
       expect.objectContaining({
         page_name: 'Home Page',
         custom: 123,

@@ -33,13 +33,20 @@ export function initAnalytics(options: InitAnalyticsOptions = {}): void {
 
   mixpanel.init(token, {
     debug: options.debug ?? (typeof import.meta !== 'undefined' && Boolean(import.meta.env?.DEV)),
-    track_pageview: true,
+    track_pageview: 'full-url',
     persistence: 'localStorage',
+    ignore_dnt: true, // Prevents browser Do-Not-Track from silently discarding events
+    batch_requests: false, // Flushes events immediately for real-time reporting
     record_sessions_percent: 100,
     record_heatmap_data: true,
   });
 
   initialized = true;
+
+  // Track initial page view event explicitly so it immediately shows up in Mixpanel Events feed
+  trackPageView();
+
+  // Setup click listeners for all interactive elements
   setupAutoClickTracking();
 }
 
@@ -83,6 +90,7 @@ export function setupAutoClickTracking(): () => void {
         track_name: clickable.getAttribute('data-track-name') || undefined,
         page_path: window.location.pathname,
         page_title: document.title,
+        url: window.location.href,
       };
 
       if (isLink) {
@@ -134,9 +142,14 @@ export function trackPageView(pageName?: string, properties?: Record<string, unk
   if (!initialized) return;
   try {
     const pageTitle = pageName || document.title;
-    mixpanel.track_pageview({
+    const path = typeof window !== 'undefined' ? window.location.pathname : '';
+    const url = typeof window !== 'undefined' ? window.location.href : '';
+
+    // Track custom "Page View" event for immediate display in Mixpanel Events stream
+    mixpanel.track('Page View', {
       page_name: pageTitle,
-      page_path: typeof window !== 'undefined' ? window.location.pathname : '',
+      page_path: path,
+      url,
       ...properties,
     });
   } catch (error) {
