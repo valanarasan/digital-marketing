@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { business, inquiry } from '@/content';
 import { EVENTS } from '@/lib/events';
@@ -10,7 +10,9 @@ import { SocialIcon } from './SocialIcon';
 import styles from './ContactCta.module.css';
 
 export interface ContactCtaProps {
-  label: string;
+  label?: string;
+  /** Custom button content; with it the trigger is a plain link carrying only `className`. */
+  children?: ReactNode;
   variant?: 'solid' | 'pill';
   className?: string;
   /** Analytics event for the button itself; the choices inside send their own. */
@@ -24,7 +26,14 @@ export interface ContactCtaProps {
  * instead of scrolling away. It stays a real link to the contact footer, so it
  * still works if the script has not loaded.
  */
-export function ContactCta({ label, variant, className, trackEvent, onOpen }: ContactCtaProps) {
+export function ContactCta({
+  label,
+  children,
+  variant,
+  className,
+  trackEvent,
+  onOpen,
+}: ContactCtaProps) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -81,17 +90,30 @@ export function ContactCta({ label, variant, className, trackEvent, onOpen }: Co
 
   return (
     <>
-      <ButtonLink
-        ref={triggerRef}
-        variant={variant}
-        href="#contact"
-        className={className}
-        aria-haspopup="dialog"
-        data-track-event={trackEvent}
-        onClick={show}
-      >
-        {label}
-      </ButtonLink>
+      {children ? (
+        <a
+          ref={triggerRef}
+          href="#contact"
+          className={className}
+          aria-haspopup="dialog"
+          data-track-event={trackEvent}
+          onClick={show}
+        >
+          {children}
+        </a>
+      ) : (
+        <ButtonLink
+          ref={triggerRef}
+          variant={variant}
+          href="#contact"
+          className={className}
+          aria-haspopup="dialog"
+          data-track-event={trackEvent}
+          onClick={show}
+        >
+          {label}
+        </ButtonLink>
+      )}
       {open
         ? createPortal(
             <div className={styles.backdrop} onClick={close}>

@@ -4,7 +4,7 @@ import { cx } from '@/lib/cx';
 import { EVENTS } from '@/lib/events';
 import { useMotion } from '@/hooks';
 import { processScene } from '@/motion/scenes';
-import { ArrowIcon, Container, FlowerStar } from '@/components/ui';
+import { ArrowIcon, ContactCta, Container, FlowerStar } from '@/components/ui';
 import { StepIcon } from './StepIcon';
 import styles from './Process.module.css';
 
@@ -52,17 +52,13 @@ export function Process({ intro, steps }: ProcessProps) {
               <p className={styles.body}>{step.body}</p>
             </article>
           ))}
-          <a
-            className={styles.cta}
-            href={intro.cta.href}
-            data-track-event={EVENTS.PROCESS_CTA_CLICKED}
-          >
+          <ContactCta className={styles.cta} trackEvent={EVENTS.PROCESS_CTA_CLICKED}>
             <FlowerStar className={styles.ctaStar} />
             <span className={styles.ctaLabel}>
               {intro.cta.label}
               <ArrowIcon className={styles.ctaArrow} />
             </span>
-          </a>
+          </ContactCta>
         </div>
       </Container>
     </section>

@@ -50,7 +50,7 @@ export function startSmoothScroll(): () => void {
 /** Scrolls to a page offset — through Lenis when it runs, natively otherwise — then calls `done`. */
 export function scrollToY(y: number, done: () => void): void {
   if (smooth) {
-    smooth.scrollTo(y, { onComplete: done });
+    smooth.scrollTo(y, { duration: ANCHOR_DURATION, easing: easeInOutCubic, onComplete: done });
     return;
   }
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

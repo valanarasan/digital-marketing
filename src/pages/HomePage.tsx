@@ -26,19 +26,14 @@ import { MAIN_CONTENT_ID } from './ids';
 
 /**
  * Composition root for the home page: content in, sections out. The open lever
- * is shared state: scrolling through the services opens each lever in turn,
- * spinning the growth wheel to a problem opens the lever that answers it, and the
- * wheel's "Start with …" link glides down to that lever.
+ * and the picked problem are independent: scrolling through the services opens each
+ * lever in turn, spinning the growth wheel only changes the problem, and the wheel's
+ * "Start with …" link is the one bridge, gliding down to the lever that answers it.
  */
 export function HomePage() {
   const problem = useSingleSelect<string>(problems[0].id);
-  const lever = useSingleSelect<LeverId>(problems[0].lever);
+  const lever = useSingleSelect<LeverId>(levers[0].id);
   const servicesRef = useRef<ServicesHandle>(null);
-
-  const selectProblem = (id: string) => {
-    problem.select(id);
-    lever.select(problems.find((candidate) => candidate.id === id)!.lever);
-  };
 
   return (
     <>
@@ -47,13 +42,16 @@ export function HomePage() {
           header={<Header nav={navItems} cta={navCta} current="home" />}
           content={hero}
           contentId={MAIN_CONTENT_ID}
+          // Glide to the first lever: landing on the section's top edge would already be
+          // partway through the scroll steps, and open the fourth.
+          onExplore={() => servicesRef.current!.showLever(levers[0].id)}
         />
         <GrowthCheck
           content={growthCheck}
           problems={problems}
           levers={levers}
           selectedProblem={problem.selected}
-          onSelectProblem={selectProblem}
+          onSelectProblem={problem.select}
           onShowLever={(id) => servicesRef.current!.showLever(id)}
         />
         <TrustStrip content={trust} />

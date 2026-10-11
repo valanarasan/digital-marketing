@@ -15,6 +15,8 @@ export interface HeroProps {
   content: HeroContent;
   /** Id given to the headline block — the skip link's target. */
   contentId: string;
+  /** Replaces the secondary link's own jump: the page takes the visitor to the first lever itself. */
+  onExplore?: () => void;
 }
 
 /**
@@ -25,7 +27,7 @@ export interface HeroProps {
  * the growth wheel has its own section next). On wide screens it stays pinned
  * while the page slides over it.
  */
-export function Hero({ header, content, contentId }: HeroProps) {
+export function Hero({ header, content, contentId, onExplore }: HeroProps) {
   const ref = useRef<HTMLElement>(null);
   const top = useStickyOffset(ref);
   useMotion(ref, heroScene);
@@ -86,6 +88,11 @@ export function Hero({ header, content, contentId }: HeroProps) {
             <TextLink
               href={content.secondaryCta.href}
               data-track-event={EVENTS.HERO_SECONDARY_CTA_CLICKED}
+              onClick={(event) => {
+                if (!onExplore) return;
+                event.preventDefault();
+                onExplore();
+              }}
             >
               {content.secondaryCta.label}
             </TextLink>

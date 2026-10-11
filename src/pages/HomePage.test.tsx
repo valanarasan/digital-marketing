@@ -17,18 +17,18 @@ describe('HomePage', () => {
     expect(document.getElementById('contact')?.tagName).toBe('FOOTER');
   });
 
-  it('starts with the first problem picked and its lever open', () => {
+  it('starts with the first problem picked and the first lever open', () => {
     render(<HomePage />);
     expect(problemSlice('Not Enough Leads')).toHaveAttribute('aria-checked', 'true');
     expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('opens the matching lever further down when a problem is picked', async () => {
+  it('leaves the open lever alone when a problem is picked', async () => {
     render(<HomePage />);
     await userEvent.click(problemSlice('Poor Website Conversion'));
     expect(problemSlice('Poor Website Conversion')).toHaveAttribute('aria-checked', 'true');
-    expect(leverButton('Get Chosen')).toHaveAttribute('aria-expanded', 'true');
-    expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'false');
+    expect(leverButton('Get Chosen')).toHaveAttribute('aria-expanded', 'false');
+    expect(leverButton('Get Found')).toHaveAttribute('aria-expanded', 'true');
   });
 
   it('spinning to the picked problem again keeps it picked', async () => {
