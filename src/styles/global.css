@@ -12,6 +12,12 @@ body {
   overflow-x: clip;
 }
 
+/* The page is prerendered for crawlers and link previews; hold it back until the client app has
+   taken over, so the entrance animations never flash the finished layout first. */
+#root[data-prerendered] {
+  visibility: hidden;
+}
+
 ::selection {
   background: var(--color-gold);
   color: var(--color-ink);

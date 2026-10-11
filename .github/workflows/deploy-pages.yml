@@ -34,11 +34,13 @@ jobs:
           npm run test
 
       - name: Build
-        run: npx vite build
+        run: npm run build:site
         env:
           # Project site: served from /<repo>/. Set this repo variable to "/"
           # once a custom domain (e.g. hiranmayedigital.com) is attached.
           VITE_BASE: ${{ vars.VITE_BASE || format('/{0}/', github.event.repository.name) }}
+          # Public URL for canonical links, social previews and the sitemap.
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL || format('https://{0}.github.io/{1}', github.repository_owner, github.event.repository.name) }}
 
       - uses: actions/configure-pages@v5
 

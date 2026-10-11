@@ -33,7 +33,27 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
     const trigger = triggerRef.current;
     dialogRef.current?.querySelector<HTMLElement>('a, button')?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false);
+      if (event.key === 'Escape') {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      // Keep Tab inside the dialog: it is modal, so the page behind must not take focus.
+      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>('a[href], button');
+      if (!focusable?.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement;
+      if (!dialogRef.current?.contains(active)) {
+        event.preventDefault();
+        first.focus();
+      } else if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => {

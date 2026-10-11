@@ -45,6 +45,18 @@ describe('Header', () => {
     expect(screen.queryByRole('dialog')).toBeNull();
   });
 
+  it('keeps Tab inside the contact popup', async () => {
+    render(<Header nav={navItems} cta={navCta} current="home" />);
+    await userEvent.click(screen.getAllByRole('link', { name: navCta.label })[0]);
+    const dialog = screen.getByRole('dialog');
+    const links = within(dialog).getAllByRole('link');
+    links[links.length - 1].focus();
+    await userEvent.tab();
+    expect(dialog).toContainElement(document.activeElement as HTMLElement);
+    await userEvent.tab({ shift: true });
+    expect(dialog).toContainElement(document.activeElement as HTMLElement);
+  });
+
   it('opens and closes the drawer from the menu button', async () => {
     render(<Header nav={navItems} cta={navCta} current="home" />);
     const button = screen.getByRole('button', { name: 'Menu' });

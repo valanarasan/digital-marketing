@@ -27,7 +27,10 @@ jobs:
           npm run test
 
       - name: Build
-        run: npx vite build
+        run: npm run build:site
+        env:
+          # Public URL for canonical links, social previews and the sitemap.
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
 
       - name: Add web.config for IIS
         run: cp deploy/web.config dist/web.config

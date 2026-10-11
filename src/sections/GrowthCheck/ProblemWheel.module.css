@@ -200,7 +200,7 @@
 }
 
 .checked + .label .number {
-  color: rgba(10, 20, 36, 0.66);
+  color: rgba(10, 20, 36, 0.78);
 }
 
 .checked:focus-visible + .label {
