@@ -21,6 +21,30 @@ describe('Header', () => {
     );
   });
 
+  it('asks how to get in touch when the call to action is clicked', async () => {
+    render(<Header nav={navItems} cta={navCta} current="home" />);
+    await userEvent.click(screen.getAllByRole('link', { name: navCta.label })[0]);
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByRole('link', { name: /Email/ })).toHaveAttribute(
+      'href',
+      expect.stringContaining(`mailto:${business.email}?subject=`),
+    );
+    expect(within(dialog).getByRole('link', { name: /WhatsApp/ })).toHaveAttribute(
+      'href',
+      expect.stringContaining('?text='),
+    );
+    expect(within(dialog).getByRole('link', { name: /Instagram/ })).toHaveAttribute(
+      'href',
+      expect.stringContaining('instagram.com'),
+    );
+    expect(within(dialog).getByRole('link', { name: /WhatsApp/ })).toHaveAttribute(
+      'href',
+      expect.stringContaining('wa.me/'),
+    );
+    fireEvent.keyDown(window, { key: 'Escape' });
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
   it('opens and closes the drawer from the menu button', async () => {
     render(<Header nav={navItems} cta={navCta} current="home" />);
     const button = screen.getByRole('button', { name: 'Menu' });
@@ -55,10 +79,7 @@ describe('Header', () => {
     const home = within(primary).getByRole('link', { name: 'Home' });
     expect(home).not.toHaveAttribute('aria-current');
     expect(home).toHaveAttribute('href', '/');
-    expect(within(primary).getByRole('link', { name: 'Let’s Connect' })).toHaveAttribute(
-      'href',
-      '#contact',
-    );
+    expect(within(primary).queryByRole('link', { name: 'Let’s Connect' })).toBeNull();
     const logoLink = screen.getByRole('link', { name: 'Hiranmaye Digital — home' });
     expect(logoLink).toHaveAttribute('href', '/');
     expect(logoLink.querySelector('img')).toHaveAttribute('src', '/brand/logo-name.svg');

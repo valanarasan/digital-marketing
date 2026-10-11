@@ -24,7 +24,6 @@ export const navItems: NavItem[] = [
   { label: 'Home', href: '', page: 'home' },
   { label: 'Inside Hiranmaye', href: 'inside-hiranmaye/', page: 'about' },
   { label: 'Solutions', href: 'solutions/', page: 'solutions' },
-  { label: 'Let’s Connect', href: '#contact' },
 ];
 
 export const navCta: NavItem = { label: 'Let’s talk growth', href: '#contact' };
@@ -192,7 +191,8 @@ export const footer: FooterContent = {
   ],
 };
 
-export const footerNav: NavItem[] = navItems;
+/** The footer keeps its own "Let’s Connect" link; the header folds it into the CTA. */
+export const footerNav: NavItem[] = [...navItems, { label: 'Let’s Connect', href: '#contact' }];
 
 export const whyUs: WhyUsContent = {
   kicker: 'Why us',

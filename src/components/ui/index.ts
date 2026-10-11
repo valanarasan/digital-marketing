@@ -3,6 +3,7 @@ export * from './ArrowIcon';
 export * from './BrandLogo';
 export * from './ButtonLink';
 export * from './Container';
+export * from './ContactCta';
 export * from './FlowerStar';
 export * from './Kicker';
 export * from './MapEmbed';

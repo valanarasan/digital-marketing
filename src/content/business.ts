@@ -39,3 +39,10 @@ export const business: Business = {
     { network: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/hiranmayedigital' },
   ],
 };
+
+/** The opening message prefilled in the contact popup's email and WhatsApp, and copied for Instagram. */
+export const inquiry = {
+  subject: 'Enquiry from the Hiranmaye Digital website',
+  message:
+    'Hi Hiranmaye Digital, I found you through your website and would like to talk about growing my business. Could we set up a quick call?',
+};

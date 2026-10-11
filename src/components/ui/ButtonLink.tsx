@@ -1,9 +1,9 @@
-import type { AnchorHTMLAttributes, ReactNode } from 'react';
+import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { cx } from '@/lib/cx';
 import { ArrowIcon } from './ArrowIcon';
 import styles from './ButtonLink.module.css';
 
-export interface ButtonLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+export interface ButtonLinkProps extends ComponentPropsWithRef<'a'> {
   children: ReactNode;
   /** `solid` is the gold call to action; `pill` the quieter outlined header link. */
   variant?: 'solid' | 'pill';

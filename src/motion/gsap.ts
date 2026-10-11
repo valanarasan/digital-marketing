@@ -13,6 +13,9 @@ export function runScene(root: HTMLElement, scene: MotionScene): () => void {
   return () => context.revert();
 }
 
+const ANCHOR_DURATION = 1.5;
+const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
 /** The running Lenis instance, so programmatic scrolls glide like everything else. */
 let smooth: Lenis | null = null;
 
@@ -21,7 +24,12 @@ let smooth: Lenis | null = null;
  * scroll position never disagree. Anchor links (#about, #services…) glide too.
  */
 export function startSmoothScroll(): () => void {
-  const lenis = new Lenis({ lerp: 0.12, wheelMultiplier: 0.95, anchors: true });
+  const lenis = new Lenis({
+    lerp: 0.12,
+    wheelMultiplier: 0.95,
+    // Anchor jumps (Let's grow / Connect) are timed, not lerped, so long trips stay slow.
+    anchors: { duration: ANCHOR_DURATION, easing: easeInOutCubic },
+  });
   smooth = lenis;
   const tick = (time: number) => lenis.raf(time * 1000);
 

@@ -18,6 +18,11 @@ export const EVENTS = {
   MOBILE_MENU_TOGGLED: 'Mobile Menu Toggled',
   MOBILE_NAV_LINK_CLICKED: 'Mobile Nav Link Clicked',
 
+  // Contact popup — the channel a visitor picked
+  CONTACT_EMAIL_CHOSEN: 'Contact Email Chosen',
+  CONTACT_INSTAGRAM_CHOSEN: 'Contact Instagram Chosen',
+  CONTACT_WHATSAPP_CHOSEN: 'Contact WhatsApp Chosen',
+
   // Home page sections
   HERO_PRIMARY_CTA_CLICKED: 'Hero Primary CTA Clicked',
   HERO_SECONDARY_CTA_CLICKED: 'Hero Secondary CTA Clicked',

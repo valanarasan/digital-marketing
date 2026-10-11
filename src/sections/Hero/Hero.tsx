@@ -4,7 +4,7 @@ import type { HeroContent } from '@/types/content';
 import { EVENTS } from '@/lib/events';
 import { useMotion, useStickyOffset } from '@/hooks';
 import { heroScene } from '@/motion/scenes';
-import { BrandLogo, ButtonLink, Container, TextLink } from '@/components/ui';
+import { BrandLogo, ContactCta, Container, TextLink } from '@/components/ui';
 import { NoiseWord } from './NoiseWord';
 import { Swoosh } from './Swoosh';
 import styles from './Hero.module.css';
@@ -79,12 +79,10 @@ export function Hero({ header, content, contentId }: HeroProps) {
       <Container>
         <div className={styles.base} data-anim="base">
           <div className={styles.actions}>
-            <ButtonLink
-              href={content.primaryCta.href}
-              data-track-event={EVENTS.HERO_PRIMARY_CTA_CLICKED}
-            >
-              {content.primaryCta.label}
-            </ButtonLink>
+            <ContactCta
+              label={content.primaryCta.label}
+              trackEvent={EVENTS.HERO_PRIMARY_CTA_CLICKED}
+            />
             <TextLink
               href={content.secondaryCta.href}
               data-track-event={EVENTS.HERO_SECONDARY_CTA_CLICKED}

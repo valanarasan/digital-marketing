@@ -4,7 +4,7 @@ import { cx } from '@/lib/cx';
 import { resolveHref } from '@/lib/href';
 import { EVENTS } from '@/lib/events';
 import { track } from '@/lib/analytics';
-import { BrandLogo, ButtonLink, Container } from '@/components/ui';
+import { BrandLogo, Container, ContactCta } from '@/components/ui';
 import styles from './Header.module.css';
 
 export interface HeaderProps {
@@ -62,14 +62,12 @@ export function Header({ nav, cta, current }: HeaderProps) {
               </li>
             ))}
           </ul>
-          <ButtonLink
+          <ContactCta
             variant="pill"
-            href={resolveHref(cta.href)}
+            label={cta.label}
             className={styles.cta}
-            data-track-event={EVENTS.HEADER_CTA_CLICKED}
-          >
-            {cta.label}
-          </ButtonLink>
+            trackEvent={EVENTS.HEADER_CTA_CLICKED}
+          />
           <button
             type="button"
             className={styles.menuButton}
@@ -87,7 +85,7 @@ export function Header({ nav, cta, current }: HeaderProps) {
 
       <div id={drawerId} className={cx(styles.drawer, open && styles.drawerOpen)} inert={!open}>
         <ul role="list" className={styles.drawerLinks}>
-          {[...nav, cta].map((item) => (
+          {nav.map((item) => (
             <li key={item.label}>
               <a
                 className={styles.drawerLink}
@@ -100,6 +98,15 @@ export function Header({ nav, cta, current }: HeaderProps) {
               </a>
             </li>
           ))}
+          <li>
+            <ContactCta
+              variant="pill"
+              label={cta.label}
+              className={styles.drawerCta}
+              trackEvent={EVENTS.MOBILE_NAV_LINK_CLICKED}
+              onOpen={close}
+            />
+          </li>
         </ul>
       </div>
     </header>
