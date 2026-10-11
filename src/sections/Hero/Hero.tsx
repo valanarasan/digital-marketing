@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import type { ReactNode } from 'react';
 import type { HeroContent } from '@/types/content';
-import { EVENTS } from '@/lib/events';
 import { useMotion, useStickyOffset } from '@/hooks';
 import { heroScene } from '@/motion/scenes';
 import { BrandLogo, ContactCta, Container, TextLink } from '@/components/ui';
@@ -81,13 +80,9 @@ export function Hero({ header, content, contentId, onExplore }: HeroProps) {
       <Container>
         <div className={styles.base} data-anim="base">
           <div className={styles.actions}>
-            <ContactCta
-              label={content.primaryCta.label}
-              trackEvent={EVENTS.HERO_PRIMARY_CTA_CLICKED}
-            />
+            <ContactCta label={content.primaryCta.label} />
             <TextLink
               href={content.secondaryCta.href}
-              data-track-event={EVENTS.HERO_SECONDARY_CTA_CLICKED}
               onClick={(event) => {
                 if (!onExplore) return;
                 event.preventDefault();

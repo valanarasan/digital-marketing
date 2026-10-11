@@ -2,8 +2,6 @@ import { useImperativeHandle, useRef } from 'react';
 import type { Ref } from 'react';
 import type { Lever, LeverId, ServicesContent } from '@/types/content';
 import { resolveHref } from '@/lib/href';
-import { EVENTS } from '@/lib/events';
-import { track } from '@/lib/analytics';
 import { useMotion, useScrollSteps } from '@/hooks';
 import { servicesScene } from '@/motion/scenes';
 import { Accordion, Container, Kicker, TextLink } from '@/components/ui';
@@ -91,11 +89,7 @@ export function Services({ content, levers, openId, onToggle, onStep, ref }: Ser
               <MaskedWords text={content.headingAccent} className={styles.accent} />
             </span>
           </h2>
-          <TextLink
-            className={styles.more}
-            href={resolveHref(content.link.href)}
-            data-track-event={EVENTS.SERVICES_LEARN_MORE_CLICKED}
-          >
+          <TextLink className={styles.more} href={resolveHref(content.link.href)}>
             {content.link.label}
           </TextLink>
         </div>
@@ -103,13 +97,7 @@ export function Services({ content, levers, openId, onToggle, onStep, ref }: Ser
           <Accordion
             items={items}
             openId={openId}
-            onToggle={(id) => {
-              track(EVENTS.SERVICE_LEVER_TOGGLED, {
-                lever_id: id,
-                action: id === openId ? 'closed' : 'opened',
-              });
-              onToggle(id as LeverId);
-            }}
+            onToggle={(id) => onToggle(id as LeverId)}
             itemAnim="stair"
           />
         </div>

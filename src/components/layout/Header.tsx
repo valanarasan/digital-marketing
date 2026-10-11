@@ -2,8 +2,6 @@ import { useEffect, useId, useState } from 'react';
 import type { NavItem, PageId } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { resolveHref } from '@/lib/href';
-import { EVENTS } from '@/lib/events';
-import { track } from '@/lib/analytics';
 import { BrandLogo, Container, ContactCta } from '@/components/ui';
 import styles from './Header.module.css';
 
@@ -38,12 +36,7 @@ export function Header({ nav, cta, current }: HeaderProps) {
   return (
     <header className={styles.header}>
       <Container className={styles.inner}>
-        <a
-          className={styles.logo}
-          href={resolveHref('')}
-          aria-label="Hiranmaye Digital — home"
-          data-track-event={EVENTS.HEADER_LOGO_CLICKED}
-        >
+        <a className={styles.logo} href={resolveHref('')} aria-label="Hiranmaye Digital — home">
           <BrandLogo variant="name" className={styles.brand} decorative />
         </a>
 
@@ -53,7 +46,6 @@ export function Header({ nav, cta, current }: HeaderProps) {
               <li key={item.href}>
                 <a
                   className={styles.link}
-                  data-track-event={EVENTS.HEADER_NAV_LINK_CLICKED}
                   href={resolveHref(item.href)}
                   aria-current={ariaCurrent(item)}
                 >
@@ -62,21 +54,13 @@ export function Header({ nav, cta, current }: HeaderProps) {
               </li>
             ))}
           </ul>
-          <ContactCta
-            variant="pill"
-            label={cta.label}
-            className={styles.cta}
-            trackEvent={EVENTS.HEADER_CTA_CLICKED}
-          />
+          <ContactCta variant="pill" label={cta.label} className={styles.cta} />
           <button
             type="button"
             className={styles.menuButton}
             aria-expanded={open}
             aria-controls={drawerId}
-            onClick={() => {
-              track(EVENTS.MOBILE_MENU_TOGGLED, { menu_state: open ? 'closed' : 'opened' });
-              setOpen((current) => !current);
-            }}
+            onClick={() => setOpen((current) => !current)}
           >
             {open ? 'Close' : 'Menu'}
           </button>
@@ -89,7 +73,6 @@ export function Header({ nav, cta, current }: HeaderProps) {
             <li key={item.label}>
               <a
                 className={styles.drawerLink}
-                data-track-event={EVENTS.MOBILE_NAV_LINK_CLICKED}
                 href={resolveHref(item.href)}
                 aria-current={ariaCurrent(item)}
                 onClick={close}
@@ -103,7 +86,6 @@ export function Header({ nav, cta, current }: HeaderProps) {
               variant="pill"
               label={cta.label}
               className={styles.drawerCta}
-              trackEvent={EVENTS.MOBILE_NAV_LINK_CLICKED}
               onOpen={close}
             />
           </li>

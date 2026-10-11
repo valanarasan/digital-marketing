@@ -2,8 +2,6 @@ import { useEffect, useId, useRef, useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { business, inquiry } from '@/content';
-import { EVENTS } from '@/lib/events';
-import type { EventName } from '@/lib/events';
 import { whatsappLink } from '@/lib/whatsapp';
 import { ButtonLink } from './ButtonLink';
 import { SocialIcon } from './SocialIcon';
@@ -15,8 +13,6 @@ export interface ContactCtaProps {
   children?: ReactNode;
   variant?: 'solid' | 'pill';
   className?: string;
-  /** Analytics event for the button itself; the choices inside send their own. */
-  trackEvent: EventName;
   /** Called when the popup opens, e.g. to fold the mobile menu away behind it. */
   onOpen?: () => void;
 }
@@ -26,14 +22,7 @@ export interface ContactCtaProps {
  * instead of scrolling away. It stays a real link to the contact footer, so it
  * still works if the script has not loaded.
  */
-export function ContactCta({
-  label,
-  children,
-  variant,
-  className,
-  trackEvent,
-  onOpen,
-}: ContactCtaProps) {
+export function ContactCta({ label, children, variant, className, onOpen }: ContactCtaProps) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -67,7 +56,6 @@ export function ContactCta({
       label: 'Email',
       detail: business.email,
       href: `mailto:${business.email}?subject=${encodeURIComponent(inquiry.subject)}&body=${encodeURIComponent(inquiry.message)}`,
-      event: EVENTS.CONTACT_EMAIL_CHOSEN,
       icon: <MailIcon className={styles.icon} />,
     },
     {
@@ -75,7 +63,6 @@ export function ContactCta({
       label: 'Instagram',
       detail: 'Message copied — just paste it',
       href: instagram?.href ?? '',
-      event: EVENTS.CONTACT_INSTAGRAM_CHOSEN,
       icon: <SocialIcon name="instagram" className={styles.icon} />,
     },
     {
@@ -83,7 +70,6 @@ export function ContactCta({
       label: 'WhatsApp',
       detail: business.phoneDisplay,
       href: whatsappLink(business.phoneDigits, inquiry.message),
-      event: EVENTS.CONTACT_WHATSAPP_CHOSEN,
       icon: <SocialIcon name="whatsapp" className={styles.icon} />,
     },
   ];
@@ -96,7 +82,6 @@ export function ContactCta({
           href="#contact"
           className={className}
           aria-haspopup="dialog"
-          data-track-event={trackEvent}
           onClick={show}
         >
           {children}
@@ -108,7 +93,6 @@ export function ContactCta({
           href="#contact"
           className={className}
           aria-haspopup="dialog"
-          data-track-event={trackEvent}
           onClick={show}
         >
           {label}
@@ -137,7 +121,6 @@ export function ContactCta({
                       <a
                         className={styles.choice}
                         href={choice.href}
-                        data-track-event={choice.event}
                         {...(choice.key === 'email'
                           ? {}
                           : { target: '_blank', rel: 'noopener noreferrer' })}

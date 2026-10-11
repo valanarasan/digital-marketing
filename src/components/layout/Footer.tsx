@@ -2,7 +2,6 @@ import { useRef } from 'react';
 import type { Business, FooterContent, NavItem, SocialLink } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { resolveHref } from '@/lib/href';
-import { EVENTS } from '@/lib/events';
 import { whatsappLink } from '@/lib/whatsapp';
 import { useMotion } from '@/hooks';
 import { footerScene } from '@/motion/scenes';
@@ -33,13 +32,7 @@ export function Footer({ content, business, nav }: FooterProps) {
           <div className={styles.ask}>
             <p className={styles.prompt}>{content.prompt}</p>
             <p>{content.promptSub}</p>
-            <a
-              className={styles.pill}
-              href={whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              data-track-event={EVENTS.FOOTER_WHATSAPP_CLICKED}
-            >
+            <a className={styles.pill} href={whatsapp} target="_blank" rel="noopener noreferrer">
               {content.whatsappCta}
             </a>
 
@@ -57,11 +50,6 @@ export function Footer({ content, business, nav }: FooterProps) {
                   <a
                     className={cx(styles.underline, styles.social)}
                     href={social.href}
-                    data-track-event={
-                      social.network === 'whatsapp'
-                        ? EVENTS.FOOTER_WHATSAPP_CLICKED
-                        : EVENTS.FOOTER_SOCIAL_CLICKED
-                    }
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -72,21 +60,13 @@ export function Footer({ content, business, nav }: FooterProps) {
               ))}
             </ul>
 
-            <a
-              className={styles.mail}
-              href={`mailto:${business.email}`}
-              data-track-event={EVENTS.FOOTER_EMAIL_CLICKED}
-            >
+            <a className={styles.mail} href={`mailto:${business.email}`}>
               {business.email}
             </a>
 
             <div className={styles.columns}>
               <address className={styles.address}>
-                <a
-                  className={styles.phone}
-                  href={`tel:+${business.phoneDigits}`}
-                  data-track-event={EVENTS.FOOTER_PHONE_CLICKED}
-                >
+                <a className={styles.phone} href={`tel:+${business.phoneDigits}`}>
                   {business.phoneDisplay}
                 </a>
                 <span>{business.address}</span>
@@ -94,7 +74,6 @@ export function Footer({ content, business, nav }: FooterProps) {
                 <a
                   className={cx(styles.underline, styles.mapLink)}
                   href={business.office.mapsUrl}
-                  data-track-event={EVENTS.FOOTER_MAP_LINK_CLICKED}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -110,11 +89,7 @@ export function Footer({ content, business, nav }: FooterProps) {
                 <ul role="list" className={styles.nav}>
                   {nav.map((item) => (
                     <li key={item.href}>
-                      <a
-                        className={styles.underline}
-                        href={resolveHref(item.href)}
-                        data-track-event={EVENTS.FOOTER_NAV_LINK_CLICKED}
-                      >
+                      <a className={styles.underline} href={resolveHref(item.href)}>
                         {item.label}
                       </a>
                     </li>
@@ -136,9 +111,7 @@ export function Footer({ content, business, nav }: FooterProps) {
           <ul role="list" className={styles.legalLinks}>
             {content.legal.map((item) => (
               <li key={item.label}>
-                <a href={item.href} data-track-event={EVENTS.FOOTER_LEGAL_LINK_CLICKED}>
-                  {item.label}
-                </a>
+                <a href={item.href}>{item.label}</a>
               </li>
             ))}
           </ul>
