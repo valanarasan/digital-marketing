@@ -111,7 +111,7 @@ export function Footer({ content, business, nav }: FooterProps) {
           <ul role="list" className={styles.legalLinks}>
             {content.legal.map((item) => (
               <li key={item.label}>
-                <a href={item.href}>{item.label}</a>
+                <a href={resolveHref(item.href)}>{item.label}</a>
               </li>
             ))}
           </ul>

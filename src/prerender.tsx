@@ -2,7 +2,9 @@ import { renderToString } from 'react-dom/server';
 import { App } from './App';
 import { AboutPage } from './pages/AboutPage';
 import { HomePage } from './pages/HomePage';
+import { PrivacyPage } from './pages/PrivacyPage';
 import { SolutionsPage } from './pages/SolutionsPage';
+import { TermsPage } from './pages/TermsPage';
 
 /**
  * Build-time entry: the static HTML each page ships with, so crawlers, link previews and
@@ -12,6 +14,8 @@ export const pages = {
   '': <HomePage />,
   'inside-hiranmaye': <AboutPage />,
   solutions: <SolutionsPage />,
+  'privacy-policy': <PrivacyPage />,
+  'terms-and-conditions': <TermsPage />,
 };
 
 export function renderPage(path: keyof typeof pages): string {

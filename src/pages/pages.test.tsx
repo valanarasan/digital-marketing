@@ -2,7 +2,9 @@ import { render, screen, within } from '@testing-library/react';
 import { App } from '@/App';
 import { solutions, team } from '@/content';
 import { AboutPage } from './AboutPage';
+import { PrivacyPage } from './PrivacyPage';
 import { SolutionsPage } from './SolutionsPage';
+import { TermsPage } from './TermsPage';
 
 const currentLink = () =>
   within(screen.getByRole('navigation', { name: 'Primary' })).getByRole('link', {
@@ -51,5 +53,20 @@ describe('SolutionsPage', () => {
     expect(document.getElementById('main-content')).toContainElement(
       screen.getByRole('heading', { level: 1 }),
     );
+  });
+});
+
+describe('legal pages', () => {
+  it('sets the privacy policy out in numbered sections', () => {
+    render(<PrivacyPage />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Privacy Policy.');
+    expect(screen.getAllByRole('heading', { level: 2 }).length).toBeGreaterThan(5);
+    expect(screen.getByRole('heading', { name: /Your rights/ })).toBeInTheDocument();
+  });
+
+  it('sets the terms out in numbered sections', () => {
+    render(<TermsPage />);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Terms & Conditions.');
+    expect(screen.getByRole('heading', { name: /Governing law/ })).toBeInTheDocument();
   });
 });

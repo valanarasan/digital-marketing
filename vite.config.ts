@@ -22,7 +22,13 @@ const siteUrl = (
   nodeEnv.VITE_SITE_URL || 'https://valanarasana.github.io/digital-marketing'
 ).replace(/\/$/, '');
 
-const pagePaths = ['', 'inside-hiranmaye/', 'solutions/'];
+const pagePaths = [
+  '',
+  'inside-hiranmaye/',
+  'solutions/',
+  'privacy-policy/',
+  'terms-and-conditions/',
+];
 
 /** The studio as a local business, from the same details the footer shows. */
 const businessJsonLd = {
@@ -116,6 +122,8 @@ export default defineConfig({
         home: page('./index.html'),
         'inside-hiranmaye': page('./inside-hiranmaye/index.html'),
         solutions: page('./solutions/index.html'),
+        'privacy-policy': page('./privacy-policy/index.html'),
+        'terms-and-conditions': page('./terms-and-conditions/index.html'),
       },
     },
   },

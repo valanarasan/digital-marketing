@@ -1,6 +1,7 @@
 export * from './Clients';
 export * from './GrowthCheck';
 export * from './Hero';
+export * from './LegalDocument';
 export * from './PageHero';
 export * from './Process';
 export * from './Quote';

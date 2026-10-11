@@ -186,8 +186,8 @@ export const footer: FooterContent = {
   mapTitle: 'Map of the Hiranmaye Digital office in Banashankari 2nd Stage, Bengaluru',
   mapLink: 'Open in Google Maps',
   legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms', href: '#' },
+    { label: 'Privacy Policy', href: 'privacy-policy/' },
+    { label: 'Terms', href: 'terms-and-conditions/' },
   ],
 };
 

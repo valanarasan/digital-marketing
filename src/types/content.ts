@@ -1,7 +1,7 @@
 /** Shapes for everything in src/content. Components depend on these, never on the raw data. */
 
 /** The site's pages. Each has its own HTML entry (see vite.config.ts). */
-export type PageId = 'home' | 'about' | 'solutions';
+export type PageId = 'home' | 'about' | 'solutions' | 'privacy' | 'terms';
 
 /**
  * A link. `href` is either an in-page anchor ("#contact"), an absolute URL, or a
@@ -287,4 +287,20 @@ export interface SolutionsContent {
   defaultCta: string;
   /** Where every solution's call to action points. */
   ctaHref: string;
+}
+
+/** A paragraph, or a bulleted list when given an array. */
+export type LegalBlock = string | string[];
+
+export interface LegalSection {
+  heading: string;
+  blocks: LegalBlock[];
+}
+
+/** A legal page (privacy policy, terms): the page hero plus numbered sections of plain text. */
+export interface LegalDocumentContent {
+  hero: PageHeroContent;
+  /** "Last updated 11 October 2026". */
+  updated: string;
+  sections: LegalSection[];
 }
