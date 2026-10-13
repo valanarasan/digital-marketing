@@ -1,0 +1,8 @@
+/* TEAM */
+Designer & developer: Arasan
+LinkedIn: https://www.linkedin.com/in/valan-arasan/
+Contact: avalanarasan@gmail.com
+
+/* SITE */
+Built for: Hiranmaye Digital
+Stack: React, TypeScript, Vite, GSAP

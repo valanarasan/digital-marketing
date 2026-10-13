@@ -181,6 +181,16 @@ export interface FooterContent {
   mapTitle: string;
   mapLink: string;
   legal: NavItem[];
+  /** Who designed and built the site, credited in the bottom bar. */
+  credit: SiteCredit;
+}
+
+export interface SiteCredit {
+  /** "Designed & built by". */
+  prefix: string;
+  name: string;
+  linkedinUrl: string;
+  email: string;
 }
 
 /** "Why us?" — the principles behind the work. */

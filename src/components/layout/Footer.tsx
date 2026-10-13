@@ -108,6 +108,20 @@ export function Footer({ content, business, nav }: FooterProps) {
           <span>
             © {year} {business.name}. All rights reserved.
           </span>
+          <p className={styles.credit}>
+            {content.credit.prefix} {content.credit.name}
+            <span aria-hidden="true"> · </span>
+            <a
+              href={content.credit.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${content.credit.name} on LinkedIn (opens in a new tab)`}
+            >
+              LinkedIn
+            </a>
+            <span aria-hidden="true"> · </span>
+            <a href={`mailto:${content.credit.email}`}>Email</a>
+          </p>
           <ul role="list" className={styles.legalLinks}>
             {content.legal.map((item) => (
               <li key={item.label}>
