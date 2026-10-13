@@ -31,7 +31,8 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
   useEffect(() => {
     if (!open) return;
     const trigger = triggerRef.current;
-    dialogRef.current?.querySelector<HTMLElement>('a, button')?.focus();
+    // Focus the dialog itself, so no control looks pre-selected until the visitor tabs to one.
+    dialogRef.current?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setOpen(false);
@@ -47,7 +48,7 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
       if (!dialogRef.current?.contains(active)) {
         event.preventDefault();
         first.focus();
-      } else if (event.shiftKey && active === first) {
+      } else if (event.shiftKey && (active === first || active === dialogRef.current)) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && active === last) {
@@ -134,6 +135,7 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
                 ref={dialogRef}
                 className={styles.dialog}
                 role="dialog"
+                tabIndex={-1}
                 aria-modal="true"
                 aria-labelledby={titleId}
               >

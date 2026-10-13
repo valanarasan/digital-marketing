@@ -21,6 +21,10 @@
   animation: rise 0.3s var(--ease-out) both;
 }
 
+.dialog:focus {
+  outline: none;
+}
+
 .title {
   margin: 0 28px 18px 0;
   font-family: var(--font-serif);
@@ -47,8 +51,7 @@
     color 0.25s ease;
 }
 
-.close:hover,
-.close:focus-visible {
+.close:hover {
   background: var(--color-gold);
   color: var(--color-ink);
 }
