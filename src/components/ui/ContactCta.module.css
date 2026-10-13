@@ -46,6 +46,7 @@
   font-size: 26px;
   line-height: 1;
   color: var(--color-gold);
+  cursor: pointer;
   transition:
     background-color 0.25s ease,
     color 0.25s ease;
