@@ -58,12 +58,16 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
     window.addEventListener('keydown', onKeyDown);
     return () => {
       window.removeEventListener('keydown', onKeyDown);
-      if (trigger?.isConnected) trigger.focus();
+      // Hand focus back without scrolling: the page must stay where the visitor is.
+      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
     };
   }, [open]);
 
   const show = (event: MouseEvent) => {
+    // Not just preventDefault: smooth scroll listens for anchor clicks on window and would
+    // still glide down to #contact behind the popup.
     event.preventDefault();
+    event.stopPropagation();
     onOpen?.();
     setOpen(true);
   };
@@ -120,14 +124,18 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
       )}
       {open
         ? createPortal(
-            <div className={styles.backdrop} onClick={close}>
+            <div
+              className={styles.backdrop}
+              onClick={(event) => {
+                if (event.target === event.currentTarget) close();
+              }}
+            >
               <div
                 ref={dialogRef}
                 className={styles.dialog}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby={titleId}
-                onClick={(event) => event.stopPropagation()}
               >
                 <button type="button" className={styles.close} aria-label="Close" onClick={close}>
                   ×
