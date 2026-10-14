@@ -10,6 +10,8 @@ export const business: Business = {
   email: 'hiranmayemarketing@gmail.com',
   phoneDisplay: '+91 99006 68383',
   phoneDigits: '919900668383',
+  phoneSecondaryDisplay: '+91 63810 78392',
+  phoneSecondaryDigits: '916381078392',
   address:
     '1053, 30th Main Road, Siddanna Layout, Banashankari 2nd Stage, Bengaluru, Karnataka 560070',
   city: 'Bengaluru, India',

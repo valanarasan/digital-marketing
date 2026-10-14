@@ -10,3 +10,6 @@ dist-ssr
 .env.local
 .env.*.local
 coverage
+
+# Editor settings
+.idea/

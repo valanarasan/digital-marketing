@@ -9,7 +9,6 @@ import {
   footerNav,
   navCta,
   navItems,
-  partners,
   quote,
   story,
   team,
@@ -21,7 +20,7 @@ import { Footer, Header } from '@/components/layout';
 import { Clients, PageHero, Quote, Story, Team, VisionMission, WhoWeAre, WhyUs } from '@/sections';
 import { MAIN_CONTENT_ID } from './ids';
 
-/** Inside Hiranmaye: who we are, our story, why us, vision and mission, the team, clients and partners. */
+/** Inside Hiranmaye: who we are, our story, why us, vision and mission, the team and advisors, and clients. */
 export function AboutPage() {
   return (
     <>
@@ -39,7 +38,7 @@ export function AboutPage() {
         <Quote content={quote} />
         <VisionMission content={visionMission} />
         <Team content={team} />
-        <Clients content={clientsIntro} clients={clients} partners={partners} />
+        <Clients content={clientsIntro} clients={clients} />
       </main>
       <Footer content={footer} business={business} nav={footerNav} />
     </>

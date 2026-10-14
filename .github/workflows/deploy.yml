@@ -30,7 +30,7 @@ jobs:
         run: npm run build:site
         env:
           # Public URL for canonical links, social previews and the sitemap.
-          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
+          VITE_SITE_URL: ${{ vars.VITE_SITE_URL || 'https://hiranmayedigital.com' }}
 
       - name: Add web.config for IIS
         run: cp deploy/web.config dist/web.config

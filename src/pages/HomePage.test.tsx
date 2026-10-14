@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { App } from '@/App';
 import { createScrollSteps } from '@/motion/gsap';
 import type { ScrollSteps } from '@/motion/gsap';
+import { hero } from '@/content';
 import { HomePage } from './HomePage';
 
 const leverButton = (name: string) => screen.getByRole('button', { name });
@@ -52,6 +53,13 @@ describe('HomePage', () => {
     await userEvent.click(screen.getByRole('link', { name: 'Get Results' }));
     const steps = vi.mocked(createScrollSteps).mock.results[0].value as ScrollSteps;
     expect(steps.scrollToStep).toHaveBeenCalledWith(3);
+  });
+
+  it('glides from "Explore our capabilities" to the first lever', async () => {
+    render(<HomePage />);
+    await userEvent.click(screen.getByRole('link', { name: hero.secondaryCta.label }));
+    const steps = vi.mocked(createScrollSteps).mock.results[0].value as ScrollSteps;
+    expect(steps.scrollToStep).toHaveBeenCalledWith(0);
   });
 
   it('lets the services accordion be driven on its own', async () => {

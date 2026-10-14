@@ -69,6 +69,9 @@ export function Footer({ content, business, nav }: FooterProps) {
                 <a className={styles.phone} href={`tel:+${business.phoneDigits}`}>
                   {business.phoneDisplay}
                 </a>
+                <a className={styles.phone} href={`tel:+${business.phoneSecondaryDigits}`}>
+                  {business.phoneSecondaryDisplay}
+                </a>
                 <span>{business.address}</span>
                 <span>{business.hours}</span>
                 <a

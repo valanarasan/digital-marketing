@@ -1,8 +1,8 @@
 name: Deploy to GitHub Pages
 
+# Manual only. Production is hiranmayedigital.com on HostingRaja (deploy.yml); an automatic
+# GitHub Pages copy would be a second public version of the site for search engines to index.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

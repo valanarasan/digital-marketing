@@ -18,9 +18,7 @@ const page = (path: string) => decodeURIComponent(new URL(path, import.meta.url)
  * Where the site is published. Canonical links, social previews, the sitemap and the structured
  * data all need absolute URLs; set VITE_SITE_URL once a custom domain is attached.
  */
-const siteUrl = (
-  nodeEnv.VITE_SITE_URL || 'https://valanarasana.github.io/digital-marketing'
-).replace(/\/$/, '');
+const siteUrl = (nodeEnv.VITE_SITE_URL || 'https://hiranmayedigital.com').replace(/\/$/, '');
 
 const pagePaths = [
   '',
@@ -41,7 +39,7 @@ const businessJsonLd = {
   logo: `${siteUrl}/apple-touch-icon.png`,
   image: `${siteUrl}/og-image.png`,
   email: business.email,
-  telephone: `+${business.phoneDigits}`,
+  telephone: [`+${business.phoneDigits}`, `+${business.phoneSecondaryDigits}`],
   address: {
     '@type': 'PostalAddress',
     streetAddress: '1053, 30th Main Road, Siddanna Layout, Banashankari 2nd Stage',

@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Accordion } from './Accordion';
 import { BrandLogo } from './BrandLogo';
@@ -12,7 +12,8 @@ import { Monogram } from './Monogram';
 import { SocialIcon } from './SocialIcon';
 import type { SocialIconName } from './SocialIcon';
 import { TextLink } from './TextLink';
-import { business } from '@/content';
+import { business, inquiry } from '@/content';
+import { ContactCta } from './ContactCta';
 
 describe('Accordion', () => {
   const items = [
@@ -210,5 +211,90 @@ describe('Monogram', () => {
     expect(mark).toHaveTextContent('PP');
     expect(mark).toHaveAttribute('aria-hidden', 'true');
     expect(mark).toHaveClass('m');
+  });
+});
+
+describe('ContactCta', () => {
+  const open = async () => {
+    render(<ContactCta label="Let’s talk" />);
+    await userEvent.click(screen.getByRole('link', { name: 'Let’s talk' }));
+    return screen.getByRole('dialog');
+  };
+  const setClipboard = (clipboard: unknown) =>
+    Object.defineProperty(navigator, 'clipboard', { value: clipboard, configurable: true });
+
+  it('pulls focus back into the popup if it has left it', async () => {
+    const dialog = await open();
+    (document.activeElement as HTMLElement).blur();
+    expect(dialog).not.toContainElement(document.activeElement as HTMLElement);
+    fireEvent.keyDown(window, { key: 'Tab' });
+    expect(document.activeElement).toBe(within(dialog).getByRole('button', { name: 'Close' }));
+  });
+
+  it('wraps Shift+Tab from the popup itself to its last control, and leaves the middle alone', async () => {
+    const dialog = await open();
+    expect(document.activeElement).toBe(dialog);
+    const links = within(dialog).getAllByRole('link');
+    const backward = fireEvent.keyDown(window, { key: 'Tab', shiftKey: true });
+    expect(backward).toBe(false);
+    expect(document.activeElement).toBe(links[links.length - 1]);
+    links[1].focus();
+    expect(fireEvent.keyDown(window, { key: 'Tab' })).toBe(true);
+    expect(fireEvent.keyDown(window, { key: 'Tab', shiftKey: true })).toBe(true);
+    expect(document.activeElement).toBe(links[1]);
+  });
+
+  it('ignores other keys', async () => {
+    await open();
+    expect(fireEvent.keyDown(window, { key: 'Enter' })).toBe(true);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('leaves out Instagram when there is no Instagram profile', async () => {
+    const socials = business.socials;
+    business.socials = socials.filter((social) => social.network !== 'instagram');
+    try {
+      const dialog = await open();
+      expect(within(dialog).queryByRole('link', { name: /Instagram/ })).toBeNull();
+      expect(within(dialog).getAllByRole('link')).toHaveLength(2);
+    } finally {
+      business.socials = socials;
+    }
+  });
+
+  it('closes on a click on the backdrop, but not on a click inside the popup', async () => {
+    const dialog = await open();
+    fireEvent.click(dialog);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    fireEvent.click(dialog.parentElement!);
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('copies the message for Instagram, which cannot be prefilled, then closes', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    setClipboard({ writeText });
+    fireEvent.click(within(await open()).getByRole('link', { name: /Instagram/ }));
+    expect(writeText).toHaveBeenCalledWith(inquiry.message);
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('still closes when the clipboard refuses', async () => {
+    setClipboard({ writeText: vi.fn().mockRejectedValue(new Error('denied')) });
+    fireEvent.click(within(await open()).getByRole('link', { name: /Instagram/ }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('still closes when there is no clipboard at all', async () => {
+    setClipboard(undefined);
+    fireEvent.click(within(await open()).getByRole('link', { name: /Instagram/ }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+  });
+
+  it('copies nothing for email and WhatsApp, which carry the message themselves', async () => {
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    setClipboard({ writeText });
+    fireEvent.click(within(await open()).getByRole('link', { name: /Email/ }));
+    expect(screen.queryByRole('dialog')).toBeNull();
+    expect(writeText).not.toHaveBeenCalled();
   });
 });

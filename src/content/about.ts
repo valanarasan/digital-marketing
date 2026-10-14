@@ -1,7 +1,6 @@
 import type {
   NavItem,
   PageHeroContent,
-  PartnersContent,
   QuoteContent,
   StoryContent,
   TeamContent,
@@ -29,7 +28,7 @@ export const aboutIndex: NavItem[] = [
   { label: 'Why us', href: '#why-us' },
   { label: 'Vision & Mission', href: '#vision' },
   { label: 'Our Team', href: '#team' },
-  { label: 'Clients & Partners', href: '#clients' },
+  { label: 'Clients', href: '#clients' },
 ];
 
 export const story: StoryContent = {
@@ -80,38 +79,19 @@ export const team: TeamContent = {
       'She also launched Hiranmaye E-Mart, a clothing store started during the pandemic, and has handled the accounts of both businesses. That discipline shapes how we work: every rupee of marketing spend should have a reason and a return.',
     ],
   },
-  teamLabel: 'Team',
-  team: [
+  directorsLabel: 'Director',
+  directors: [
     {
       id: 'praveena-pradeep',
       name: 'Praveena Pradeep',
+      role: 'Director',
       photo: { src: 'team/praveena-pradeep.webp', width: 900, height: 720 },
       bio: [
         'Praveena helps businesses build their brands and strengthen their digital presence, across strategy, social media, content, branding and campaign planning. She starts with the business, its customers and its goals, and makes marketing that feels genuine, communicates clearly and serves a purpose.',
       ],
     },
-    {
-      id: 'harshitha-girish',
-      name: 'Harshitha Girish',
-      photo: { src: 'team/harshitha-girish.webp', width: 900, height: 720 },
-      bio: [
-        'Harshitha is a marketing and business professional and an Associate Partner at Restless Dreamers, where she leads curriculum, sales strategy and student training. She has worked with The LIT School, Snapchat and Under25 across customer acquisition, marketing strategy, content and creator-led businesses. She holds a BBA in Marketing from Christ (Deemed to be) University and is pursuing an MSc in International Business at the University of Birmingham.',
-      ],
-    },
   ],
-  boardLabel: 'Board Members',
-  board: [
-    {
-      id: 'abhishek-mishra',
-      name: 'Abhishek Mishra',
-      role: 'Board Member',
-      photo: { src: 'team/abhishek-mishra.webp', width: 900, height: 720 },
-      bio: [
-        'Abhishek is a senior HR and talent leader with nearly 21 years across talent management, leadership development, HR business partnering, consulting and executive coaching. He advises leadership teams on people, talent and organisational change, including in Global Capability Centres (GCCs).',
-      ],
-    },
-  ],
-  advisorLabel: 'Advisor',
+  advisorLabel: 'Advisors',
   advisors: [
     {
       id: 'saji-philip',
@@ -122,11 +102,24 @@ export const team: TeamContent = {
         'Saji is a global Solar and Battery Energy Storage Systems (BESS) leader with over 25 years across energy, infrastructure, global trade, project development and go-to-market strategy. His work across RedAmber, Yellow Gold Energy and SAEL Energy Solutions spans the clean-energy value chain, with markets in the Middle East, Europe, South Asia and Africa. He brings Hiranmaye Digital a global, commercial view of growth.',
       ],
     },
+    {
+      id: 'abhishek-mishra',
+      name: 'Abhishek Mishra',
+      role: 'Independent External Advisor',
+      photo: { src: 'team/abhishek-mishra.webp', width: 900, height: 720 },
+      bio: [
+        'Abhishek is a senior HR and talent leader with nearly 21 years across talent management, leadership development, HR business partnering, consulting and executive coaching. He advises leadership teams on people, talent and organisational change, including in Global Capability Centres (GCCs).',
+      ],
+    },
+    {
+      id: 'harshitha-girish',
+      name: 'Harshitha Girish',
+      role: 'Independent External Advisor',
+      photo: { src: 'team/harshitha-girish.webp', width: 900, height: 720 },
+      bio: [
+        'Harshitha is a marketing and business professional and an Associate Partner at Restless Dreamers, where she leads curriculum, sales strategy and student training. She has worked with The LIT School, Snapchat and Under25 across customer acquisition, marketing strategy, content and creator-led businesses. She holds a BBA in Marketing from Christ (Deemed to be) University and is pursuing an MSc in International Business at the University of Birmingham.',
+      ],
+    },
   ],
   moreLabel: 'Read full profile',
-};
-
-export const partners: PartnersContent = {
-  label: 'Our Partners',
-  names: ['Jeeva'],
 };

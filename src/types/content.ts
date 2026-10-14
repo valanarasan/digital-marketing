@@ -38,6 +38,9 @@ export interface Business {
   phoneDisplay: string;
   /** Digits only, with country code — used for tel: and wa.me links. */
   phoneDigits: string;
+  /** A second number, shown beside the first in the footer. */
+  phoneSecondaryDisplay: string;
+  phoneSecondaryDigits: string;
   address: string;
   city: string;
   hours: string;
@@ -253,20 +256,13 @@ export interface TeamContent {
   heading: string;
   founderLabel: string;
   founder: Person;
-  teamLabel: string;
-  team: Person[];
-  boardLabel: string;
-  board: Person[];
-  /** Independent advisors: outside the board, listed in their own group. */
+  directorsLabel: string;
+  directors: Person[];
+  /** Independent external advisors, listed in their own group. */
   advisorLabel: string;
   advisors: Person[];
   /** Label for the disclosure that holds the rest of a long profile. */
   moreLabel: string;
-}
-
-export interface PartnersContent {
-  label: string;
-  names: string[];
 }
 
 /** One of the services on the Solutions page. Only `id`, `name` and `paragraphs` are always present. */

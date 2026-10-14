@@ -3,7 +3,7 @@ import { business } from './business';
 
 const UPDATED = 'Last updated 11 October 2026';
 
-const contactBlock = `${business.name}, ${business.address}. Email ${business.email} or call ${business.phoneDisplay}.`;
+const contactBlock = `${business.name}, ${business.address}. Email ${business.email} or call ${business.phoneDisplay} or ${business.phoneSecondaryDisplay}.`;
 
 /**
  * Privacy policy, written for this site as it is built today: no accounts, no forms and no

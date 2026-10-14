@@ -1,13 +1,15 @@
 # Hiranmaye Digital — site v2
 
 The Hiranmaye Digital site: the approved **Editorial hero** and **Midnight Gold** sections,
-with the copy from `final_website_content.pdf`. Three pages, each with its own URL:
+with the copy from `final_website_content.pdf`. Five pages, each with its own URL:
 
 | Page | URL | What's on it |
 | --- | --- | --- |
 | Home | `/` | hero, growth check (the spin wheel), trust strip, statement, services (opening lever by lever as you scroll), process, clients |
-| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team, board and advisor, clients & partners |
+| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team (founder, director, advisors), clients |
 | Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
+| Privacy Policy | `/privacy-policy/` | how personal data is handled |
+| Terms & Conditions | `/terms-and-conditions/` | the terms for using the site |
 
 Every page ends with the same footer (contact, About us, map, socials). A fresh repo, separate
 from the first site in `../Site`.
@@ -22,6 +24,9 @@ npm run preview      # serve dist/
 ```
 
 Node 22 (see `.nvmrc`).
+
+More: [docs/TECHNICAL.md](docs/TECHNICAL.md) (developers) and
+[docs/SITE-OVERVIEW.md](docs/SITE-OVERVIEW.md) (non-technical overview).
 
 | Script | What it does |
 | --- | --- |
@@ -102,21 +107,22 @@ Design rules the code follows:
 
 The services accordion follows the scroll: as the list passes the reading line, each lever opens
 in turn (`createScrollSteps` in `src/motion/gsap.ts`). The growth wheel (the section after the
-hero) is wired to it: spinning to a problem opens the lever that answers it, and the
-"Start with …" link glides down to that lever, holding it open on the way. Clicking a lever
-still opens it directly.
+hero) is independent of it: picking a problem only changes the wheel. Its "Start with …" link is
+the one bridge: it glides down to the matching lever, holding it open on the way. Clicking a
+lever still opens it directly.
 
 ## Deploy (GitHub Pages)
 
-`.github/workflows/deploy.yml` runs on every push to `main`: typecheck, lint and the coverage
-gate, then a build with `VITE_BASE=/<repo>/`, and publishes `dist/`. Set the repo variable
-`VITE_BASE` to `/` once a custom domain is attached. In the repo settings, Pages → Source:
-**GitHub Actions**.
+`.github/workflows/deploy-pages.yml` runs on every push to `main`: typecheck, lint and tests,
+then `npm run build:site` with `VITE_BASE=/<repo>/` and `VITE_SITE_URL`, and publishes `dist/`.
+Set the repo variables `VITE_BASE` to `/` and `VITE_SITE_URL` to the domain once a custom domain
+is attached. In the repo settings, Pages → Source: **GitHub Actions**. `deploy.yml` is a manual
+FTP deploy to an IIS host. Details: [docs/TECHNICAL.md](docs/TECHNICAL.md).
 
 ## Before launch
 
 - Confirm the LinkedIn and Facebook URLs in `src/content/business.ts` (inferred from the handles).
-- Privacy Policy and Terms links in the footer point to `#` until those pages exist.
+- Privacy Policy and Terms are an unreviewed template (`src/content/legal.ts`); have them checked.
 - Resources & Insights is in the content brief's menu but has no content yet, so it is not in
   the menu; add it to `navItems` in `src/content/home.ts` once the page exists.
 - Team: roles for Praveena Pradeep and Harshitha Girish are still to come.

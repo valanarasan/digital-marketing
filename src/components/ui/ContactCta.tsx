@@ -40,15 +40,16 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
       }
       if (event.key !== 'Tab') return;
       // Keep Tab inside the dialog: it is modal, so the page behind must not take focus.
-      const focusable = dialogRef.current?.querySelectorAll<HTMLElement>('a[href], button');
-      if (!focusable?.length) return;
+      // The dialog is mounted while open and always holds the close button.
+      const dialog = dialogRef.current!;
+      const focusable = dialog.querySelectorAll<HTMLElement>('a[href], button');
       const first = focusable[0];
       const last = focusable[focusable.length - 1];
       const active = document.activeElement;
-      if (!dialogRef.current?.contains(active)) {
+      if (!dialog.contains(active)) {
         event.preventDefault();
         first.focus();
-      } else if (event.shiftKey && (active === first || active === dialogRef.current)) {
+      } else if (event.shiftKey && (active === first || active === dialog)) {
         event.preventDefault();
         last.focus();
       } else if (!event.shiftKey && active === last) {
@@ -75,6 +76,7 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
   const close = () => setOpen(false);
 
   const instagram = business.socials.find((social) => social.network === 'instagram');
+  // A channel without an address (say, no Instagram profile in business.ts) is left out.
   const choices = [
     {
       key: 'email',
@@ -97,7 +99,7 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
       href: whatsappLink(business.phoneDigits, inquiry.message),
       icon: <SocialIcon name="whatsapp" className={styles.icon} />,
     },
-  ];
+  ].filter((choice) => choice.href);
 
   return (
     <>

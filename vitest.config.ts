@@ -29,6 +29,7 @@ export default defineConfig({
         // Type-only modules: erased at compile time, nothing to execute.
         'src/types/**',
         'src/vite-env.d.ts',
+        'src/motion/types.ts',
         // Data, not behaviour. The components that render it verify it.
         'src/content/**',
         // Barrel files: re-exports with no logic of their own.
@@ -44,6 +45,9 @@ export default defineConfig({
         'src/main.tsx',
         'src/mount.tsx',
         'src/entries/**',
+        // Build-time only: Node renders each page to HTML with it during `build:site`, and the
+        // build fails if it breaks. The pages it renders are tested.
+        'src/prerender.tsx',
       ],
       thresholds: {
         lines: 100,

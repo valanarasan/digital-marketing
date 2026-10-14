@@ -57,14 +57,13 @@ function PersonCard({ person, moreLabel }: { person: Person; moreLabel: string }
   );
 }
 
-/** Our Team: the founder in full, then the team, the board and the advisors as cards. */
+/** Our Team: the founder in full, then the directors and the advisors as cards. */
 export function Team({ content }: TeamProps) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, riseScene);
   const { founder } = content;
   const groups = [
-    { label: content.teamLabel, people: content.team },
-    { label: content.boardLabel, people: content.board },
+    { label: content.directorsLabel, people: content.directors },
     { label: content.advisorLabel, people: content.advisors },
   ];
 

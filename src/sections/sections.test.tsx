@@ -20,7 +20,6 @@ import {
   aboutIndex,
   clients,
   clientsIntro,
-  partners,
   quote,
   solutions,
   solutionsPage,
@@ -92,6 +91,22 @@ describe('Hero', () => {
   it('runs the hero scene', () => {
     renderHero();
     expect(sceneFor(heroScene)).toBe(true);
+  });
+
+  it('hands "Explore our capabilities" to the page when it asks, instead of jumping', async () => {
+    const onExplore = vi.fn();
+    render(<Hero header={<div />} content={hero} contentId="main-content" onExplore={onExplore} />);
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    screen.getByRole('link', { name: hero.secondaryCta.label }).dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
+    expect(onExplore).toHaveBeenCalledTimes(1);
+  });
+
+  it('lets "Explore our capabilities" jump as a plain link when the page does not take it', () => {
+    renderHero();
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    screen.getByRole('link', { name: hero.secondaryCta.label }).dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(false);
   });
 
   it('keeps to tagline and calls to action: the growth wheel has its own section', () => {
@@ -515,19 +530,6 @@ describe('StepIcon', () => {
   );
 });
 
-describe('Clients partners', () => {
-  it('lists the partners under the logos when given, and leaves them out otherwise', () => {
-    const { unmount } = render(
-      <Clients content={clientsIntro} clients={clients} partners={partners} />,
-    );
-    expect(screen.getByRole('heading', { name: partners.label })).toBeInTheDocument();
-    expect(screen.getByText('Jeeva')).toBeInTheDocument();
-    unmount();
-    render(<Clients content={clientsIntro} clients={clients} />);
-    expect(screen.queryByText('Jeeva')).not.toBeInTheDocument();
-  });
-});
-
 describe('WhyUs', () => {
   it('numbers the six principles under one heading', () => {
     render(<WhyUs content={whyUs} />);
@@ -612,40 +614,45 @@ describe('VisionMission', () => {
 });
 
 describe('Team', () => {
-  const everyone = [team.founder, ...team.team, ...team.board, ...team.advisors];
+  const everyone = [team.founder, ...team.directors, ...team.advisors];
 
-  it('introduces the founder in full, then the team, the board and the advisors', () => {
+  it('introduces the founder in full, then the directors and the advisors', () => {
     render(<Team content={team} />);
     expect(screen.getByRole('heading', { level: 2, name: team.heading })).toBeInTheDocument();
     expect(
       screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent),
-    ).toEqual([team.founderLabel, team.teamLabel, team.boardLabel, team.advisorLabel]);
+    ).toEqual([team.founderLabel, team.directorsLabel, team.advisorLabel]);
     for (const person of everyone) {
       expect(screen.getByRole('heading', { name: person.name })).toBeInTheDocument();
       for (const paragraph of person.bio) {
         expect(screen.getByText(paragraph)).toBeInTheDocument();
       }
     }
-    expect(screen.getAllByText('Board Member')).toHaveLength(team.board.length);
+    const praveena = screen.getByRole('heading', { name: 'Praveena Pradeep' }).closest('article')!;
+    expect(praveena).toHaveTextContent('Director');
+    expect(screen.getAllByText('Independent External Advisor')).toHaveLength(team.advisors.length);
   });
 
-  it('lists Saji Philip as an independent advisor, not on the board', () => {
-    render(<Team content={team} />);
-    expect(team.board.map((person) => person.name)).not.toContain('Saji Philip');
-    const saji = screen.getByRole('heading', { name: 'Saji Philip' }).closest('article')!;
-    expect(saji).toHaveTextContent('Independent External Advisor');
+  it('lists Saji, Abhishek and Harshitha as independent external advisors, in that order', () => {
+    expect(team.advisors.map((person) => person.name)).toEqual([
+      'Saji Philip',
+      'Abhishek Mishra',
+      'Harshitha Girish',
+    ]);
+    expect(team.directors.map((person) => person.name)).toEqual(['Praveena Pradeep']);
+    expect(team.founder.role).toBe('Founder Director');
   });
 
   it('keeps every bio short: one card paragraph each, two for the founder', () => {
     expect(team.founder.bio).toHaveLength(2);
-    for (const person of [...team.team, ...team.board, ...team.advisors]) {
+    for (const person of [...team.directors, ...team.advisors]) {
       expect(person.bio.length).toBeLessThanOrEqual(1);
     }
   });
 
   it('opens a long profile with its first paragraph and keeps the rest behind a disclosure', async () => {
     const long = { id: 'long', name: 'Long Profile', bio: ['First.', 'Second.', 'Third.'] };
-    render(<Team content={{ ...team, team: [long] }} />);
+    render(<Team content={{ ...team, directors: [long] }} />);
     const card = screen.getByRole('heading', { name: long.name }).closest('article')!;
     expect(card).toHaveTextContent('First.');
     const summary = within(card).getByText(team.moreLabel);
@@ -661,9 +668,9 @@ describe('Team', () => {
     expect(everyone.map((person) => person.name)).toEqual([
       'Vijayalakshmi Girish',
       'Praveena Pradeep',
-      'Harshitha Girish',
-      'Abhishek Mishra',
       'Saji Philip',
+      'Abhishek Mishra',
+      'Harshitha Girish',
     ]);
     for (const person of everyone) {
       const photo = screen.getByRole('img', { name: `Portrait of ${person.name}` });
@@ -674,14 +681,12 @@ describe('Team', () => {
   });
 
   it('shows initials, name and role alone while a photo and profile are still to come', () => {
-    const newcomer = { id: 'new', name: 'New Member', role: 'Board Member', bio: [] };
-    render(<Team content={{ ...team, board: [newcomer] }} />);
+    const newcomer = { id: 'new', name: 'New Member', role: 'Director', bio: [] };
+    render(<Team content={{ ...team, directors: [newcomer] }} />);
     const card = screen.getByRole('heading', { name: newcomer.name }).closest('article')!;
     expect(within(card).queryByRole('img')).not.toBeInTheDocument();
     expect(card).toHaveTextContent('NM');
-    expect(Array.from(card.querySelectorAll('p')).map((p) => p.textContent)).toEqual([
-      'Board Member',
-    ]);
+    expect(Array.from(card.querySelectorAll('p')).map((p) => p.textContent)).toEqual(['Director']);
     expect(within(card).queryByText(team.moreLabel)).not.toBeInTheDocument();
   });
 });
