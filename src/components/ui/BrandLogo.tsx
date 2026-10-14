@@ -26,9 +26,16 @@ export interface BrandLogoProps {
   className?: string;
   /** Hide from assistive tech where the name is already given (a labelled link, a watermark). */
   decorative?: boolean;
+  /** For logos below the fold: the browser fetches the file only when it scrolls near. */
+  lazy?: boolean;
 }
 
-export function BrandLogo({ variant, className, decorative = false }: BrandLogoProps) {
+export function BrandLogo({
+  variant,
+  className,
+  decorative = false,
+  lazy = false,
+}: BrandLogoProps) {
   const logo = LOGOS[variant];
   return (
     <img
@@ -38,6 +45,7 @@ export function BrandLogo({ variant, className, decorative = false }: BrandLogoP
       height={logo.height}
       alt={decorative ? '' : logo.alt}
       decoding="async"
+      loading={lazy ? 'lazy' : undefined}
     />
   );
 }

@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Lenis from 'lenis';
+import type Lenis from 'lenis';
 import type { MotionScene } from './types';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -24,26 +24,39 @@ let smooth: Lenis | null = null;
  * scroll position never disagree. Anchor links (#about, #services…) glide too.
  */
 export function startSmoothScroll(): () => void {
-  const lenis = new Lenis({
-    lerp: 0.12,
-    wheelMultiplier: 0.95,
-    // Anchor jumps (Let's grow / Connect) are timed, not lerped, so long trips stay slow.
-    anchors: { duration: ANCHOR_DURATION, easing: easeInOutCubic },
+  let stop: (() => void) | undefined;
+  let cancelled = false;
+
+  // Lenis is not needed to read or paint the page, so it is fetched as its own file after the
+  // page is up; until it arrives, scrolling is the browser's own.
+  void import('lenis').then(({ default: Lenis }) => {
+    if (cancelled) return;
+    const lenis = new Lenis({
+      lerp: 0.12,
+      wheelMultiplier: 0.95,
+      // Anchor jumps (Let's grow / Connect) are timed, not lerped, so long trips stay slow.
+      anchors: { duration: ANCHOR_DURATION, easing: easeInOutCubic },
+    });
+    smooth = lenis;
+    const tick = (time: number) => lenis.raf(time * 1000);
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(tick);
+    gsap.ticker.lagSmoothing(0);
+
+    // Web fonts change line lengths, and with them every trigger position.
+    void document.fonts?.ready.then(() => ScrollTrigger.refresh());
+
+    stop = () => {
+      gsap.ticker.remove(tick);
+      lenis.destroy();
+      smooth = null;
+    };
   });
-  smooth = lenis;
-  const tick = (time: number) => lenis.raf(time * 1000);
-
-  lenis.on('scroll', ScrollTrigger.update);
-  gsap.ticker.add(tick);
-  gsap.ticker.lagSmoothing(0);
-
-  // Web fonts change line lengths, and with them every trigger position.
-  void document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
   return () => {
-    gsap.ticker.remove(tick);
-    lenis.destroy();
-    smooth = null;
+    cancelled = true;
+    stop?.();
   };
 }
 

@@ -9,11 +9,12 @@ export const clientsIntro: ClientsContent = {
 };
 
 /**
- * Each logo is the client's original file, byte for byte (only renamed for clean
- * URLs) — never recoloured, cropped or re-encoded. The exception is KEJ: its PNG
- * was small and pixel-doubled, so it is a vector trace of that file (same shapes,
- * same proportions) and stays sharp at any size. `tile` is the colour each file
- * is drawn on (#fefefe for the three with a faintly off-white canvas); KEJ is
+ * The artwork is each client's own file, never recoloured or cropped. The three large PNGs
+ * (about 0.9 MB each) are shipped as WebP at 1200 px (800 px for the square one), roughly 3x the
+ * size they are shown, to keep the page light; the untouched originals are kept in
+ * photos/clients/. The exception is KEJ: its PNG was small and pixel-doubled, so it is a vector
+ * trace of that file (same shapes, same proportions) and stays sharp at any size. `tile` is the
+ * colour each file is drawn on (#fefefe for the three with a faintly off-white canvas); KEJ is
  * white lettering on transparency, so it sits on the site's ink.
  */
 export const clients: Client[] = [
@@ -21,9 +22,9 @@ export const clients: Client[] = [
     id: 'moto-car-spa',
     name: 'Moto Car Spa',
     sector: 'Automotive care',
-    logo: 'clients/moto-car-spa.png',
-    width: 1774,
-    height: 887,
+    logo: 'clients/moto-car-spa.webp',
+    width: 1200,
+    height: 600,
     tile: '#fefefe',
   },
   {
@@ -48,9 +49,9 @@ export const clients: Client[] = [
     id: 'natures-soul-resort',
     name: 'Nature’s Soul Resort',
     sector: 'Hospitality',
-    logo: 'clients/natures-soul-resort.png',
-    width: 1774,
-    height: 887,
+    logo: 'clients/natures-soul-resort.webp',
+    width: 1200,
+    height: 600,
     tile: '#fefefe',
   },
   {
@@ -66,9 +67,9 @@ export const clients: Client[] = [
     id: 'stern-promoters',
     name: 'Stern Promoters',
     sector: 'Real estate',
-    logo: 'clients/stern-promoters.png',
-    width: 1254,
-    height: 1254,
+    logo: 'clients/stern-promoters.webp',
+    width: 800,
+    height: 800,
     tile: '#fefefe',
   },
 ];

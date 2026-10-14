@@ -77,8 +77,10 @@ Design rules the code follows:
 - **One logo, the original.** The client's logo lives in `brand/` (original, vector, 4K masters;
   see `brand/README.md`) and on the site as three cuts in `public/brand/`, always through
   `BrandLogo`. Never redraw the lotus or set the name in type.
-- **Client logos are the clients' own files.** `public/clients/` holds them byte for byte (only
-  renamed); never recompress, recolour or crop them. The one exception is KEJ: its file was
+- **Client logos are the clients' own files.** `public/clients/` holds them, never
+  recoloured or cropped. The three large PNGs (about 0.9 MB each) are shipped as WebP at about 3x
+  their display size; the untouched originals are in `photos/clients/` (make any new web copy
+  from those, not from the WebP). The one exception is KEJ: its file was
   only 670 px wide with a pixel-doubled script, so it was traced to `kej.svg` (same shapes,
   white, same proportions) to stay sharp. Each tile is painted the colour the logo was drawn
   on (`tile` in `src/content/clients.ts`) so the file's edge never shows.

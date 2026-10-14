@@ -104,7 +104,7 @@ export function Footer({ content, business, nav }: FooterProps) {
         </div>
 
         <div className={styles.brand} data-anim="brand">
-          <BrandLogo variant="full" className={styles.brandLogo} />
+          <BrandLogo variant="full" className={styles.brandLogo} lazy />
         </div>
 
         <div className={styles.legal}>

@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import type { Plugin } from 'vite';
-import { business } from './src/content/business';
+import { business } from './src/content/business.ts';
 
 /**
  * The config runs in Node, but the project deliberately ships no @types/node —
@@ -104,18 +104,64 @@ function seo(): Plugin {
   };
 }
 
+const base = nodeEnv.VITE_BASE ?? '/';
+
+/**
+ * Preloads the two fonts every page needs above the fold (the body face and the italic serif), so
+ * text does not wait for the CSS to discover them. The files are fingerprinted, so their URLs come
+ * from the finished bundle.
+ */
+function fontPreload(): Plugin {
+  return {
+    name: 'font-preload',
+    transformIndexHtml: {
+      order: 'post',
+      handler(_html, ctx) {
+        if (!ctx.bundle) return [];
+        return Object.keys(ctx.bundle)
+          .filter((name) =>
+            /(geist-latin-wght-normal|playfair-display-latin-500-italic).*\.woff2$/.test(name),
+          )
+          .map((name) => ({
+            tag: 'link',
+            attrs: {
+              rel: 'preload',
+              as: 'font',
+              type: 'font/woff2',
+              crossorigin: '',
+              href: `${base}${name}`,
+            },
+            injectTo: 'head-prepend' as const,
+          }));
+      },
+    },
+  };
+}
+
 export default defineConfig({
   // GitHub Pages serves a project site from /<repo>/, a custom domain from /.
   // The deploy workflow sets VITE_BASE; local dev and custom domains use the root.
-  base: nodeEnv.VITE_BASE ?? '/',
-  plugins: [react(), seo()],
+  base,
+  plugins: [react(), seo(), fontPreload()],
   // Resolves the "@/…" alias from tsconfig.json.
   resolve: { tsconfigPaths: true },
   css: { devSourcemap: true },
   build: {
     target: 'es2022',
     cssCodeSplit: true,
+    // Every browser that can run the site supports modulepreload natively.
+    modulePreload: { polyfill: false },
     rolldownOptions: {
+      output: {
+        // Libraries change far less often than the site, so they get their own files: a redeploy
+        // leaves them in the visitor's cache, and the browser fetches them in parallel.
+        codeSplitting: {
+          groups: [
+            { name: 'react', test: /node_modules[\\/](react|react-dom|scheduler)[\\/]/ },
+            { name: 'motion', test: /node_modules[\\/]gsap[\\/]/ },
+          ],
+        },
+      },
       input: {
         home: page('./index.html'),
         'inside-hiranmaye': page('./inside-hiranmaye/index.html'),
