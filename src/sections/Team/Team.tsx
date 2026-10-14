@@ -1,4 +1,5 @@
-import { Fragment, useRef } from 'react';
+import { useRef } from 'react';
+import type { CSSProperties } from 'react';
 import type { Person, TeamContent } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { useMotion } from '@/hooks';
@@ -11,10 +12,18 @@ export interface TeamProps {
 }
 
 /** The person's photo filling its frame, or their initials on a soft panel until one arrives. */
-function Portrait({ person, className }: { person: Person; className: string }) {
+function Portrait({
+  person,
+  className,
+  style,
+}: {
+  person: Person;
+  className: string;
+  style?: CSSProperties;
+}) {
   const { photo } = person;
   return (
-    <div className={cx(styles.portrait, className)}>
+    <div className={cx(styles.portrait, className)} style={style}>
       {photo ? (
         <img
           src={`${import.meta.env.BASE_URL}${photo.src}`}
@@ -57,15 +66,32 @@ function PersonCard({ person, moreLabel }: { person: Person; moreLabel: string }
   );
 }
 
-/** Our Team: the founder in full, then the directors and the advisors as cards. */
+/** A leader's feature card: the portrait in its own proportions beside the name, role and full bio. */
+function Leader({ person }: { person: Person }) {
+  const { photo } = person;
+  const frame = photo ? { aspectRatio: `${photo.width} / ${photo.height}` } : undefined;
+
+  return (
+    <div className={styles.founder} data-anim="rise">
+      <Portrait person={person} className={styles.founderPortrait} style={frame} />
+      <div className={styles.founderText}>
+        <h4 className={styles.founderName}>{person.name}</h4>
+        <p className={styles.role}>{person.role}</p>
+        <div className={styles.founderBio}>
+          {person.bio.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Our Team: the founder and the directors together as leadership, then the advisors as cards. */
 export function Team({ content }: TeamProps) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, riseScene);
-  const { founder } = content;
-  const groups = [
-    { label: content.directorsLabel, people: content.directors },
-    { label: content.advisorLabel, people: content.advisors },
-  ];
+  const leaders = [content.founder, ...content.directors];
 
   return (
     <section ref={ref} id="team" className={styles.team} aria-labelledby="team-title">
@@ -75,34 +101,21 @@ export function Team({ content }: TeamProps) {
           {content.heading}
         </h2>
 
-        <div className={styles.founder} data-anim="rise">
-          <div className={styles.founderSide}>
-            <h3 className={styles.groupTitle}>{content.founderLabel}</h3>
-            <Portrait person={founder} className={styles.founderPortrait} />
-          </div>
-          <div className={styles.founderText}>
-            <h4 className={styles.founderName}>{founder.name}</h4>
-            <p className={styles.role}>{founder.role}</p>
-            <div className={styles.founderBio}>
-              {founder.bio.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-          </div>
+        <h3 className={styles.groupTitle}>{content.leadershipLabel}</h3>
+        <div className={styles.leaders}>
+          {leaders.map((person) => (
+            <Leader key={person.id} person={person} />
+          ))}
         </div>
 
-        {groups.map((group) => (
-          <Fragment key={group.label}>
-            <h3 className={styles.groupTitle}>{group.label}</h3>
-            <ul role="list" className={styles.people}>
-              {group.people.map((person) => (
-                <li key={person.id}>
-                  <PersonCard person={person} moreLabel={content.moreLabel} />
-                </li>
-              ))}
-            </ul>
-          </Fragment>
-        ))}
+        <h3 className={styles.groupTitle}>{content.advisorLabel}</h3>
+        <ul role="list" className={styles.people}>
+          {content.advisors.map((person) => (
+            <li key={person.id}>
+              <PersonCard person={person} moreLabel={content.moreLabel} />
+            </li>
+          ))}
+        </ul>
       </Container>
     </section>
   );

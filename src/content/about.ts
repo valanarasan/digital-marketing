@@ -68,7 +68,7 @@ export const visionMission: VisionMissionContent = {
 export const team: TeamContent = {
   kicker: 'Inside Hiranmaye',
   heading: 'Our Team',
-  founderLabel: 'Meet the Founder',
+  leadershipLabel: 'Leadership',
   founder: {
     id: 'vijayalakshmi-girish',
     name: 'Vijayalakshmi Girish',
@@ -79,7 +79,6 @@ export const team: TeamContent = {
       'She also launched Hiranmaye E-Mart, a clothing store started during the pandemic, and has handled the accounts of both businesses. That discipline shapes how we work: every rupee of marketing spend should have a reason and a return.',
     ],
   },
-  directorsLabel: 'Director',
   directors: [
     {
       id: 'praveena-pradeep',
@@ -108,7 +107,7 @@ export const team: TeamContent = {
       role: 'Independent External Advisor',
       photo: { src: 'team/abhishek-mishra.webp', width: 900, height: 720 },
       bio: [
-        'Abhishek is a senior HR and talent leader with nearly 21 years across talent management, leadership development, HR business partnering, consulting and executive coaching. He advises leadership teams on people, talent and organisational change, including in Global Capability Centres (GCCs).',
+        'Abhishek is a senior HR and Talent leader with almost 21 years across Talent Management, Leadership Development, HR Business Partnering, Consulting and Executive Coaching. He works with leadership teams as a mentor, sounding board and problem-solving partner, bringing clarity to complex people, talent and organisational challenges, including in GCCs, with an independent, practical perspective.',
       ],
     },
     {

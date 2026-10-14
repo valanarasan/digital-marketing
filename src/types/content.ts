@@ -254,9 +254,9 @@ export interface Person {
 export interface TeamContent {
   kicker: string;
   heading: string;
-  founderLabel: string;
+  /** Heading over the founder and the directors, who share one section. */
+  leadershipLabel: string;
   founder: Person;
-  directorsLabel: string;
   directors: Person[];
   /** Independent external advisors, listed in their own group. */
   advisorLabel: string;

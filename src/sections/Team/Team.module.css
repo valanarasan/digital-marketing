@@ -27,19 +27,19 @@
 }
 
 /* The founder: a large card, the portrait on the left; name, role and bio beside it, centred on it. */
+.leaders {
+  display: grid;
+  gap: clamp(20px, 2.4vw, 32px);
+}
+
 .founder {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.6fr);
   gap: clamp(24px, 4vw, 72px);
-  margin-top: clamp(32px, 4vw, 56px);
   padding: clamp(28px, 3.6vw, 56px);
   border: 1px solid var(--line-on-light);
   border-radius: var(--radius-card);
   background: var(--color-white);
-}
-
-.founder .groupTitle {
-  margin-top: 0;
 }
 
 /* Portraits: the photo fills its frame; without one, the initials sit on a soft panel. */
@@ -64,8 +64,7 @@
 .founderPortrait {
   width: 100%;
   max-width: 420px;
-  aspect-ratio: 4 / 5;
-  margin-top: 8px;
+  align-self: start;
   border-radius: 12px;
 }
 
@@ -118,10 +117,14 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: clamp(16px, 2vw, 24px);
-  align-items: start;
+}
+
+.people > li {
+  display: flex;
 }
 
 .card {
+  flex: 1;
   overflow: hidden;
   border: 1px solid var(--line-on-light);
   border-radius: var(--radius-card);

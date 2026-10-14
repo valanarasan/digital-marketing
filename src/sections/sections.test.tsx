@@ -616,20 +616,23 @@ describe('VisionMission', () => {
 describe('Team', () => {
   const everyone = [team.founder, ...team.directors, ...team.advisors];
 
-  it('introduces the founder in full, then the directors and the advisors', () => {
+  it('introduces the founder in full, the directors alongside, then the advisors', () => {
     render(<Team content={team} />);
     expect(screen.getByRole('heading', { level: 2, name: team.heading })).toBeInTheDocument();
     expect(
       screen.getAllByRole('heading', { level: 3 }).map((heading) => heading.textContent),
-    ).toEqual([team.founderLabel, team.directorsLabel, team.advisorLabel]);
+    ).toEqual([team.leadershipLabel, team.advisorLabel]);
     for (const person of everyone) {
       expect(screen.getByRole('heading', { name: person.name })).toBeInTheDocument();
       for (const paragraph of person.bio) {
         expect(screen.getByText(paragraph)).toBeInTheDocument();
       }
     }
-    const praveena = screen.getByRole('heading', { name: 'Praveena Pradeep' }).closest('article')!;
-    expect(praveena).toHaveTextContent('Director');
+    // The founder and the director sit together under the one "Leadership" heading.
+    const leaders = screen.getByRole('heading', { name: team.leadershipLabel }).nextElementSibling!;
+    expect(within(leaders as HTMLElement).getAllByRole('heading', { level: 4 })).toHaveLength(2);
+    expect(leaders).toHaveTextContent('Founder Director');
+    expect(leaders).toHaveTextContent('Praveena Pradeep');
     expect(screen.getAllByText('Independent External Advisor')).toHaveLength(team.advisors.length);
   });
 
@@ -643,16 +646,16 @@ describe('Team', () => {
     expect(team.founder.role).toBe('Founder Director');
   });
 
-  it('keeps every bio short: one card paragraph each, two for the founder', () => {
+  it('keeps every bio to at most two paragraphs, the second behind a disclosure on a card', () => {
     expect(team.founder.bio).toHaveLength(2);
     for (const person of [...team.directors, ...team.advisors]) {
-      expect(person.bio.length).toBeLessThanOrEqual(1);
+      expect(person.bio.length).toBeLessThanOrEqual(2);
     }
   });
 
   it('opens a long profile with its first paragraph and keeps the rest behind a disclosure', async () => {
     const long = { id: 'long', name: 'Long Profile', bio: ['First.', 'Second.', 'Third.'] };
-    render(<Team content={{ ...team, directors: [long] }} />);
+    render(<Team content={{ ...team, advisors: [long] }} />);
     const card = screen.getByRole('heading', { name: long.name }).closest('article')!;
     expect(card).toHaveTextContent('First.');
     const summary = within(card).getByText(team.moreLabel);
@@ -681,12 +684,19 @@ describe('Team', () => {
   });
 
   it('shows initials, name and role alone while a photo and profile are still to come', () => {
-    const newcomer = { id: 'new', name: 'New Member', role: 'Director', bio: [] };
-    render(<Team content={{ ...team, directors: [newcomer] }} />);
+    const newcomer = {
+      id: 'new',
+      name: 'New Member',
+      role: 'Independent External Advisor',
+      bio: [],
+    };
+    render(<Team content={{ ...team, advisors: [newcomer] }} />);
     const card = screen.getByRole('heading', { name: newcomer.name }).closest('article')!;
     expect(within(card).queryByRole('img')).not.toBeInTheDocument();
     expect(card).toHaveTextContent('NM');
-    expect(Array.from(card.querySelectorAll('p')).map((p) => p.textContent)).toEqual(['Director']);
+    expect(Array.from(card.querySelectorAll('p')).map((p) => p.textContent)).toEqual([
+      'Independent External Advisor',
+    ]);
     expect(within(card).queryByText(team.moreLabel)).not.toBeInTheDocument();
   });
 });

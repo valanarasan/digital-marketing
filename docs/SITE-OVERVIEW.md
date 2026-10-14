@@ -44,8 +44,7 @@ The team section shows each person with a photo and a short bio:
 
 | Group | People |
 | --- | --- |
-| Founder | Vijayalakshmi Girish, Founder Director |
-| Director | Praveena Pradeep, Director |
+| Leadership | Vijayalakshmi Girish, Founder Director; Praveena Pradeep, Director |
 | Advisors | Saji Philip, Abhishek Mishra, Harshitha Girish, each an Independent External Advisor |
 
 The photos are the people's own, enlarged for sharp display and cropped to the same frame;

@@ -176,11 +176,12 @@ domain (as repo variables; the workflows pass them through).
   designer credit (`footer.credit` in `home.ts`). The map is the Google Maps listing's own
   "Embed a map" URL (`business.office.embedUrl`), so it shows the business by name;
   `business.office.mapsUrl` is the "Open in Google Maps" share link.
-- **Team** (`src/sections/Team/`, content `team` in `about.ts`): the founder card, then the
-  groups Director and Advisors (`directors`, `advisors`). A `Person` may have a
+- **Team** (`src/sections/Team/`, content `team` in `about.ts`): one
+  "Leadership" group with the founder and the directors (`founder`, `directors`) as large feature
+  cards, then the Advisors (`advisors`) as equal-height cards. A `Person` may have a
   `photo` (`{ src, width, height }`, a file in `public/team/`); without one the card shows the
-  person's initials. Bios are one short paragraph (two for the founder); a longer bio
-  automatically gets a "Read full profile" disclosure.
+  person's initials. Bios are one short paragraph (two for the founder); on an advisor
+  card, a longer bio automatically gets a "Read full profile" disclosure.
 - **Team photos** are the client's own, upscaled 2× with EDSR where the original was small, and
   cropped to 4:5 (founder, 900 × 1125) or 5:4 (cards, 900 × 720) WebP. Masters and the method:
   `photos/team/README.md`.
