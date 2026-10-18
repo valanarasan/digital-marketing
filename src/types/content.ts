@@ -243,10 +243,7 @@ export interface Person {
   bio: string[];
   /** Where a photo has been supplied; otherwise the person's initials stand in. */
   photo?: PersonPhoto;
-  /** Headline credentials, as one line. */
-  credential?: string;
   education?: string[];
-  experience?: string[];
   /** A closing line of three short phrases, set in the italic serif. */
   tagline?: string;
   linkedinUrl?: string;
@@ -265,7 +262,6 @@ export interface TeamContent {
   /** Label of the button that opens a full profile. */
   moreLabel: string;
   educationLabel: string;
-  experienceLabel: string;
   linkedinLabel: string;
   closeLabel: string;
 }

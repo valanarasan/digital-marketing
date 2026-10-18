@@ -651,6 +651,9 @@ describe('Team', () => {
   it('keeps every card summary short, so the cards stay the same height', () => {
     for (const person of everyone) {
       expect(person.summary!.split(/\s+/).length).toBeLessThanOrEqual(50);
+      // A profile is one short paragraph, not a biography.
+      expect(person.bio).toHaveLength(1);
+      expect(person.bio[0].split(/\s+/).length).toBeLessThanOrEqual(80);
     }
   });
 
@@ -666,7 +669,7 @@ describe('Team', () => {
     }
     expect(within(dialog).getByText(saji.education![0])).toBeInTheDocument();
     expect(within(dialog).getByText(saji.tagline!)).toBeInTheDocument();
-    expect(within(dialog).getByRole('link', { name: /View on LinkedIn/ })).toHaveAttribute(
+    expect(within(dialog).getByRole('link', { name: /Saji Philip on LinkedIn/ })).toHaveAttribute(
       'href',
       saji.linkedinUrl,
     );
@@ -689,12 +692,17 @@ describe('Team', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it("shows the founder's education and experience in her profile", async () => {
+  it("shows the founder's education, tagline and LinkedIn icon in her profile", async () => {
     render(<Team content={team} />);
     await userEvent.click(screen.getByRole('button', { name: new RegExp(team.founder.name) }));
     const dialog = screen.getByRole('dialog');
-    expect(within(dialog).getByRole('heading', { name: team.experienceLabel })).toBeInTheDocument();
-    expect(within(dialog).getByText(team.founder.experience![1])).toBeInTheDocument();
+    expect(within(dialog).getByRole('heading', { name: team.educationLabel })).toBeInTheDocument();
+    expect(within(dialog).getByText(team.founder.education![0])).toBeInTheDocument();
+    expect(within(dialog).getByText(team.founder.tagline!)).toBeInTheDocument();
+    expect(within(dialog).getByRole('link', { name: /on LinkedIn/ })).toHaveAttribute(
+      'href',
+      team.founder.linkedinUrl,
+    );
   });
 
   it('shows everyone on the page with their photo', () => {

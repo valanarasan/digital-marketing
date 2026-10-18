@@ -42,8 +42,8 @@ manually on GitHub Pages.
 ### Inside Hiranmaye
 In order: who we are, vision and mission, the team, our story, why choose us, a closing quote
 from Warren Buffett, and clients.
-Each person shows a photo, role and a short summary; "Read full profile" opens their education,
-experience, full biography, closing tagline and LinkedIn link:
+Each person shows a photo, role and a short summary; "Read full profile" opens a short
+biography, their education, a closing tagline and a LinkedIn icon beside their name:
 
 | Group | People |
 | --- | --- |

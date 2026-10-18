@@ -62,7 +62,7 @@ export const visionMission: VisionMissionContent = {
 
 /**
  * The team, from the profiles the client supplied (Oct 2026). Each card shows a short summary;
- * the full profile (education, experience, bio, tagline, LinkedIn) opens in a dialog. Photos are
+ * the full profile (a short bio, education, tagline, LinkedIn) opens in a dialog. Photos are
  * the client's own, cropped to the frame, the founder 4:5, everyone else 5:4 (see
  * photos/team/README.md). Without one, the initials stand in.
  */
@@ -79,15 +79,8 @@ export const team: TeamContent = {
     summary:
       'A resilient entrepreneur, visionary leader and business strategist with over 17 years of experience as Managing Director of Gavin Technologies, and now a Director of Hiranmaye E Mart. She is the driving force behind Hiranmaye Digital and is passionate about empowering women.',
     education: ['Bangalore University: Bachelor of Commerce (BCom), Business/Commerce, General'],
-    experience: [
-      'Managing Director, Gavin Technologies Pvt Ltd (2008–2013)',
-      'Managing Director, Hiranmaye E Mart Pvt Ltd (2020–Present)',
-    ],
     bio: [
-      'Vijayalakshmi Girish is a resilient entrepreneur, visionary leader and business strategist with over 17 years of experience as Managing Director of Gavin Technologies and continued leadership as Director of Hiranmaye E Mart Pvt. Ltd. Her journey reflects a relentless never-give-up attitude, the courage to embrace challenges, and an unwavering commitment to growth and innovation.',
-      'As the driving force behind Hiranmaye Digital, she envisions empowering businesses through strategic digital marketing, building impactful brands and creating sustainable growth opportunities. Beyond business, she is deeply passionate about empowering women, inspiring confidence and enabling them to discover their potential and become independent leaders.',
-      'As a Reiki Grand Master, Vijayalakshmi embraces a journey of healing, spiritual growth and self-discovery. She believes in the power of inner balance, positive energy and self-belief to transform lives. Her vision is to empower women to overcome limitations, reconnect with their inner strength and lead lives filled with confidence, purpose and independence.',
-      'Her mission goes beyond building successful businesses. It is about creating meaningful impact, empowering people and inspiring women to dream bigger and achieve more.',
+      'Vijayalakshmi is a resilient entrepreneur and business strategist who led Gavin Technologies as Managing Director and continues to lead Hiranmaye E Mart Pvt. Ltd. As the driving force behind Hiranmaye Digital, she envisions empowering businesses through strategic digital marketing and sustainable growth. She is also a Reiki Grand Master, deeply passionate about empowering women to discover their potential and become independent leaders.',
     ],
     tagline:
       'Resilient in Spirit. Visionary in Business. Relentless in Growth. Passionate About Empowering Women.',
@@ -102,14 +95,11 @@ export const team: TeamContent = {
       photo: { src: 'team/praveena-pradeep.webp', width: 900, height: 720 },
       summary:
         'A dynamic young leader with an MBA in Finance and Marketing and over five years in digital marketing. She combines technical expertise with strategic thinking to turn ideas into impactful business outcomes.',
-      credential:
-        'Digital Marketing Professional · SEO · AEO · Social Media · Google Ads & Meta Ads · Content Strategy · Web Analytics & Performance Optimization · CMS Management · Website Content Optimization',
       education: [
         'Bharathiar University, Coimbatore: Master of Business Administration, Marketing and Finance',
       ],
       bio: [
-        'Praveena is a dynamic young leader with an MBA in Finance and Marketing from Bharathiar University, Coimbatore, and over five years of digital marketing experience. Combining strong technical expertise with strategic thinking and a visionary mindset, she brings innovation, creativity and business acumen to her role as Director.',
-        'A dedicated and hardworking professional, Praveena is passionate about identifying opportunities, challenging conventional thinking and transforming ideas into impactful business outcomes. Her forward-looking vision and relentless drive contribute to Hiranmaye’s ambition to build distinctive brands and achieve sustainable growth.',
+        'Praveena is a dynamic young leader with an MBA in Finance and Marketing from Bharathiar University, Coimbatore, and over five years of digital marketing experience across SEO, AEO, social media, Google and Meta Ads, content strategy and web analytics. She brings innovation, creativity and business acumen to her role as Director, and is passionate about challenging conventional thinking and turning ideas into impactful business outcomes.',
       ],
       tagline: 'Bold in vision. Strategic in action. Relentless in pursuit of excellence.',
       linkedinUrl: 'https://www.linkedin.com/in/praveena-pradeep/',
@@ -125,14 +115,9 @@ export const team: TeamContent = {
       photo: { src: 'team/manjula-nagarajan.webp', width: 900, height: 720 },
       summary:
         'An academician, strategic marketing expert and business mentor with over two decades in management education and marketing strategy. She turns complex business concepts into practical, actionable strategies.',
-      credential:
-        'Corporate trainer · Business consultant for MSMEs · Knowledge facilitator, Thiagarajar School of Management, Madurai, Tamil Nadu, India',
       education: ['PhD; FDP, Indian Institute of Management, Ahmedabad'],
       bio: [
-        'Dr. Manjula Nagarajan is an accomplished academician, strategic marketing expert, inspiring speaker, corporate trainer and business mentor with over two decades of experience in management education, marketing strategy and institutional leadership. As Dean – Outreach at Thiagarajar School of Management, Madurai, she brings a wealth of knowledge and practical insights into business development and strategic management. Her association with the Indian Institute of Management Ahmedabad further strengthens her management expertise.',
-        'With specialisation in marketing strategy, brand management, consumer behaviour, rural marketing and Business Model Canvas (BMC) training, Dr. Manjula excels at translating complex business concepts into practical, actionable strategies.',
-        'As an Independent External Advisor to Hiranmaye, she plays a valuable role in mentoring our team through structured training, strategic guidance and knowledge sharing. Her insights help us strengthen our business fundamentals, identify our core value proposition, maintain focus on our primary business objectives and make informed decisions for sustainable growth.',
-        'Her ability to inspire, challenge conventional thinking and bring clarity to business strategy makes her a trusted mentor in Hiranmaye’s growth journey. Her guidance empowers us to build a stronger foundation, sharpen our market positioning and pursue our long-term vision with confidence and purpose.',
+        'Dr. Manjula Nagarajan is an academician, strategic marketing expert, corporate trainer and business mentor with over two decades in management education and institutional leadership. As Dean – Outreach at Thiagarajar School of Management, Madurai, she specialises in marketing strategy, brand management, consumer behaviour and rural marketing. As our Independent External Advisor, she mentors the team through training and strategic guidance, helping us sharpen our value proposition and make informed decisions.',
       ],
       linkedinUrl: 'https://www.linkedin.com/in/dr-manjula-nagarajan-a48aa722/',
     },
@@ -144,14 +129,9 @@ export const team: TeamContent = {
       photo: { src: 'team/saji-philip.webp', width: 900, height: 720 },
       summary:
         'A business leader and entrepreneur with over 25 years across leadership, strategic marketing and renewable energy. Founder Director & CEO of SAEL Energy Solutions, Managing Director & CEO of Yellow Gold Energy, and Director at RedAmber.',
-      credential:
-        'Energy Storage · Solar Projects · Distribution & Market Entry · RedAmber · Yellow Gold Energy · SAEL Energy Solutions · Serving global markets, from Dubai, United Arab Emirates',
       education: ['University of Madras: MBA, Marketing'],
       bio: [
-        'A visionary business leader, accomplished entrepreneur and exceptional mentor, Saji Philip brings over 25 years of multidisciplinary experience in business leadership, strategic marketing, entrepreneurship and renewable energy.',
-        'As Founder Director & CEO of SAEL Energy Solutions LLP, Managing Director & CEO of Yellow Gold Energy Pvt. Ltd. and Director at RedAmber General Trading LLC, he has built extensive expertise in business development, solar energy solutions, product distribution and global market expansion.',
-        'His strengths lie in transforming business ideas into growth opportunities, building strategic partnerships and anticipating potential risks before they become challenges. With a rare combination of strategic foresight, commercial acumen and mentorship, he brings invaluable perspective to businesses navigating growth and transformation.',
-        'At Hiranmaye Digital, his insights help strengthen strategic decision-making, unlock new opportunities and drive sustainable business growth.',
+        'Saji is a business leader and entrepreneur with over 25 years in leadership, strategic marketing and renewable energy. As Founder Director & CEO of SAEL Energy Solutions, Managing Director & CEO of Yellow Gold Energy and Director at RedAmber, he turns ideas into growth opportunities, builds strategic partnerships and spots risks early. At Hiranmaye Digital, his insights help sharpen strategic decisions and drive sustainable growth.',
       ],
       tagline: 'A visionary mind. A strategic mentor. A catalyst for growth.',
       linkedinUrl: 'https://www.linkedin.com/in/sajiphilipsael/',
@@ -164,15 +144,12 @@ export const team: TeamContent = {
       photo: { src: 'team/abhishek-mishra.webp', width: 900, height: 720 },
       summary:
         'A senior HR and talent leader with nearly 21 years in talent management, leadership development and organisational transformation. He guides Hiranmaye Digital in strategic planning, team development and professional training.',
-      credential:
-        'Fractional CHRO · Principal Consultant, The Perennial Global · HR & Talent Leader (Europe & APAC) · Leadership & Capability Transformation · Organisational & Culture Enablement',
       education: [
         'Audencia International MBA: Business Administration, Management and Operations',
         'Symbiosis Institute of Management Studies: Executive PGDM, Human Resources Development',
       ],
       bio: [
-        'With nearly 21 years of experience in HR, talent management, leadership development and organisational transformation, Abhishek Mishra brings deep expertise in building people capabilities that drive business growth.',
-        'An exceptional speaker, mentor and strategic thinker, he guides Hiranmaye Digital in strategic planning, team development and professional training, helping strengthen organisational capabilities and align people strategies with business objectives. His pragmatic approach, behavioural insights and ability to simplify complex challenges make him a valuable advisor in building high-performing teams and fostering a growth-oriented organisation.',
+        'Abhishek is a senior HR and talent leader with nearly 21 years in talent management, leadership development and organisational transformation, and a Fractional CHRO and Principal Consultant at The Perennial Global. An exceptional speaker and mentor, he guides Hiranmaye Digital in strategic planning, team development and professional training, helping build high-performing, growth-oriented teams.',
       ],
       tagline: 'Empowering People. Strengthening Strategy. Enabling Growth.',
       linkedinUrl: 'https://www.linkedin.com/in/coachabhi/',
@@ -190,9 +167,7 @@ export const team: TeamContent = {
         'Christ University, Bangalore: BBA, Marketing (Jan 2022 – Apr 2025)',
       ],
       bio: [
-        'Harshitha Girish is a dynamic marketing professional, business strategist, content writer, blogger and Bharatanatyam dancer, bringing together strategic thinking and creative expression. As Associate Partner at Restless Dreamers, she drives sales strategy, curriculum development and student training, with prior experience at The LIT School, Snapchat and Under25. She brings a fresh, global perspective to digital strategy, brand building, content creation and consumer engagement.',
-        'At Hiranmaye Digital, Harshitha brings creativity, technology and strategic insight together to inspire innovative marketing and sustainable business growth.',
-        'With a forward-thinking approach to marketing and business growth, she brings a unique blend of strategic vision and practical execution. Her expertise in AI-enabled tools, social media, content and evolving consumer behaviour enables her to identify new opportunities, strengthen brand positioning and drive meaningful customer engagement. She is passionate about helping businesses embrace innovation, build future-ready marketing strategies and achieve sustainable growth in an increasingly digital world.',
+        'Harshitha is a marketing professional, business strategist, content writer and Bharatanatyam dancer, and Associate Partner at Restless Dreamers, with earlier experience at The LIT School, Snapchat and Under25. At Hiranmaye Digital she brings creativity, technology and strategic insight together, with expertise in AI-enabled tools, social media and content that helps businesses build future-ready marketing strategies.',
       ],
       tagline: 'Creativity in Expression. Strategy in Action. Innovation in Growth.',
       linkedinUrl: 'https://www.linkedin.com/in/harshitha-girish-547ab8319/',
@@ -200,7 +175,6 @@ export const team: TeamContent = {
   ],
   moreLabel: 'Read full profile',
   educationLabel: 'Education',
-  experienceLabel: 'Experience',
-  linkedinLabel: 'View on LinkedIn',
+  linkedinLabel: 'LinkedIn',
   closeLabel: 'Close',
 };

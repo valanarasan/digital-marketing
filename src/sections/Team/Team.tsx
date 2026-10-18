@@ -5,7 +5,7 @@ import type { Person, TeamContent } from '@/types/content';
 import { cx } from '@/lib/cx';
 import { useModal, useMotion } from '@/hooks';
 import { riseScene } from '@/motion/scenes';
-import { Container, Kicker, Monogram } from '@/components/ui';
+import { Container, Kicker, Monogram, SocialIcon } from '@/components/ui';
 import styles from './Team.module.css';
 
 export interface TeamProps {
@@ -98,14 +98,24 @@ function ProfileButton({
                 >
                   ×
                 </button>
-                <h2 id={titleId} className={styles.dialogName}>
-                  {person.name}
-                </h2>
+                <div className={styles.dialogHead}>
+                  <h2 id={titleId} className={styles.dialogName}>
+                    {person.name}
+                  </h2>
+                  {person.linkedinUrl ? (
+                    <a
+                      className={styles.linkedin}
+                      href={person.linkedinUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${person.name} on ${content.linkedinLabel} (opens in a new tab)`}
+                    >
+                      <SocialIcon name="linkedin" className={styles.linkedinIcon} />
+                    </a>
+                  ) : null}
+                </div>
                 {person.role ? <p className={styles.role}>{person.role}</p> : null}
                 {person.focus ? <p className={styles.dialogFocus}>{person.focus}</p> : null}
-                {person.credential ? (
-                  <p className={styles.credential}>{person.credential}</p>
-                ) : null}
                 <div className={styles.dialogBody}>
                   {person.bio.map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
@@ -121,28 +131,7 @@ function ProfileButton({
                     </ul>
                   </>
                 ) : null}
-                {person.experience ? (
-                  <>
-                    <h3 className={styles.dialogLabel}>{content.experienceLabel}</h3>
-                    <ul role="list" className={styles.facts}>
-                      {person.experience.map((line) => (
-                        <li key={line}>{line}</li>
-                      ))}
-                    </ul>
-                  </>
-                ) : null}
                 {person.tagline ? <p className={styles.tagline}>{person.tagline}</p> : null}
-                {person.linkedinUrl ? (
-                  <a
-                    className={styles.linkedin}
-                    href={person.linkedinUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {content.linkedinLabel}
-                    <span className="sr-only"> (opens in a new tab)</span>
-                  </a>
-                ) : null}
               </div>
             </div>,
             document.body,
