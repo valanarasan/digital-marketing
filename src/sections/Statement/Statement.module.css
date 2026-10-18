@@ -33,16 +33,35 @@
 }
 
 .icon {
+  /* The band's own highlight colour (its radial glow), a touch brighter than the payoff's gold. */
+  --line-gold: #f2c45c;
   width: clamp(120px, 12vw, 170px);
   height: auto;
+  overflow: visible;
   fill: none;
   stroke: currentColor;
   stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.spin {
-  transform-box: view-box;
-  transform-origin: 60px 60px;
+.axis {
+  stroke: rgba(255, 255, 255, 0.55);
+}
+
+.noise {
+  stroke: rgba(255, 255, 255, 0.4);
+}
+
+.rise,
+.arrow {
+  stroke: var(--line-gold);
+  stroke-width: 2.4;
+}
+
+.point {
+  fill: var(--line-gold);
+  stroke: none;
 }
 
 .small {
@@ -84,9 +103,25 @@
   }
 }
 
-@keyframes spin {
+/* The gold line draws itself in, holds, and draws again; the arrowhead and point land as it passes. */
+@keyframes rise {
+  from {
+    stroke-dashoffset: 1;
+  }
+  30%,
   to {
-    transform: rotate(360deg);
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes land {
+  from,
+  22% {
+    opacity: 0;
+  }
+  34%,
+  to {
+    opacity: 1;
   }
 }
 
@@ -95,8 +130,14 @@
     animation: drift 18s ease-in-out infinite alternate;
   }
 
-  .spin {
-    animation: spin 14s linear infinite;
+  .rise {
+    stroke-dasharray: 1;
+    animation: rise 6s cubic-bezier(0.3, 0.7, 0.2, 1) infinite;
+  }
+
+  .arrow,
+  .point {
+    animation: land 6s ease-out infinite;
   }
 }
 

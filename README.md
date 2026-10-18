@@ -100,7 +100,7 @@ Design rules the code follows:
 | Trust strip | two marquees loop (CSS) and drift with the scroll |
 | Clients | heading and lead rise in; the logo tiles follow one after another |
 | Who we are | statement lights up word by word; the logo's lotus floats gently (CSS) |
-| Statement | impressions / followers / traffic struck through in turn |
+| Statement | impressions / followers / traffic struck through in turn; beside them the breakout line, a gold line that draws itself up out of a flat dashed one every few seconds (CSS) |
 | Services | heading rises; levers arrive as a staircase; gold curve grows; the open lever follows the scroll (`useScrollSteps`) |
 | Process | section turns from sand to night; illustrations scale up and clip in |
 | Why us, Story, Vision & Mission, Team, Solutions | each block rises in once as it scrolls into view |

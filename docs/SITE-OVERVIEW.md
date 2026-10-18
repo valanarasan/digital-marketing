@@ -25,7 +25,8 @@ manually on GitHub Pages.
    lands on a problem at random.
 3. **Who it's for.** A strip showing the stages we serve (startups, scale-ups, SMEs, enterprises)
    and the sectors (manufacturing, real estate, healthcare, education, professional services).
-4. **Our point of view.** The statement that impressions, followers and traffic are not growth.
+4. **Our point of view.** The statement that impressions, followers and traffic are not growth,
+   beside a small chart whose gold line climbs out of a flat one.
 5. **Capabilities.** *One Growth Partner. Multiple Growth Levers.* Five areas that open one by
    one as the visitor scrolls:
    - **Get Found:** SEO, AEO, GEO, content strategy

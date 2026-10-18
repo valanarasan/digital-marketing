@@ -43,15 +43,17 @@ export const story: StoryContent = {
   ],
 };
 
-/** "The best marketing doesn’t feel like marketing." — placed here, as the brief asks, outside "Why us?". */
+/** The pull quote between "Why us?" and Vision & Mission (client's choice, Oct 2026; was Tom Fishburne). */
 export const quote: QuoteContent = {
-  text: 'The best marketing doesn’t feel like marketing.',
-  cite: 'Tom Fishburne',
+  text: 'In the world of business, the people who are most successful are those who are doing what they love.',
+  cite: 'Warren Buffett',
 };
 
-/** The brief reads "To Scale Up our Client's Revenue & Sales !!"; set here in sentence case. */
 export const visionMission: VisionMissionContent = {
-  vision: { label: 'Vision', text: 'To scale up our clients’ revenue & sales!' },
+  vision: {
+    label: 'Vision',
+    text: 'To become a globally trusted growth partner, empowering businesses to unlock their full potential, achieve sustainable growth, and create lasting impact.',
+  },
   mission: {
     label: 'Mission',
     text: 'To help businesses achieve sustainable revenue and sales growth through strategic digital marketing, creative solutions, technology, and measurable performance.',

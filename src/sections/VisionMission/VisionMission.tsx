@@ -9,7 +9,7 @@ export interface VisionMissionProps {
   content: VisionMissionContent;
 }
 
-/** Vision and mission side by side: the vision short and set large, the mission in full. */
+/** Vision and mission side by side, each a full sentence at the same size. */
 export function VisionMission({ content }: VisionMissionProps) {
   const ref = useRef<HTMLElement>(null);
   useMotion(ref, riseScene);

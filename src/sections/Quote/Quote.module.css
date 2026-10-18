@@ -20,10 +20,10 @@
 
 /* The measure is set on the quote itself, so 'ch' means its own large letters. */
 .text {
-  max-width: 17ch;
+  max-width: 24ch;
   margin: 0 auto;
   font-family: var(--font-serif);
-  font-size: clamp(36px, 5vw, 76px);
+  font-size: clamp(30px, 4.2vw, 62px);
   font-style: italic;
   line-height: 1.08;
   letter-spacing: -0.02em;
