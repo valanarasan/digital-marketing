@@ -18,7 +18,7 @@ describe('AboutPage', () => {
     const ids = Array.from(screen.getByRole('main').querySelectorAll('section[id]')).map(
       (section) => section.id,
     );
-    expect(ids).toEqual(['about', 'story', 'why-us', 'vision', 'team', 'clients']);
+    expect(ids).toEqual(['about', 'vision', 'team', 'story', 'why-us', 'clients']);
     expect(screen.getByRole('heading', { name: team.founder.name })).toBeInTheDocument();
     expect(currentLink()).toHaveTextContent('Inside Hiranmaye');
     expect(document.getElementById('contact')?.tagName).toBe('FOOTER');

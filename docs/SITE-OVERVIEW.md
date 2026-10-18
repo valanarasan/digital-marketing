@@ -40,7 +40,8 @@ manually on GitHub Pages.
 8. **Footer.** Contact details, map, social links, About us and legal links.
 
 ### Inside Hiranmaye
-Who we are, our story, why choose us, vision and mission, the team, and clients.
+In order: who we are, vision and mission, the team, our story, why choose us, a closing quote
+from Warren Buffett, and clients.
 The team section shows each person with a photo and a short bio:
 
 | Group | People |

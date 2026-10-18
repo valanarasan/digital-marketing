@@ -6,7 +6,7 @@ with the copy from `final_website_content.pdf`. Five pages, each with its own UR
 | Page | URL | What's on it |
 | --- | --- | --- |
 | Home | `/` | hero, growth check (the spin wheel), trust strip, statement, services (opening lever by lever as you scroll), process, clients |
-| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, our story, why us, quote, vision & mission, team (founder, director, advisors), clients |
+| Inside Hiranmaye | `/inside-hiranmaye/` | who we are, vision & mission, team (founder, director, advisors), our story, why us, quote, clients |
 | Solutions | `/solutions/` | all thirteen solutions, indexed under the title |
 | Privacy Policy | `/privacy-policy/` | how personal data is handled |
 | Terms & Conditions | `/terms-and-conditions/` | the terms for using the site |

@@ -24,10 +24,10 @@ export const aboutHero: PageHeroContent = {
 export const aboutIndexLabel = 'On this page';
 export const aboutIndex: NavItem[] = [
   { label: 'Who we are', href: '#about' },
-  { label: 'Our story', href: '#story' },
-  { label: 'Why us', href: '#why-us' },
   { label: 'Vision & Mission', href: '#vision' },
   { label: 'Our Team', href: '#team' },
+  { label: 'Our story', href: '#story' },
+  { label: 'Why us', href: '#why-us' },
   { label: 'Clients', href: '#clients' },
 ];
 
@@ -43,7 +43,7 @@ export const story: StoryContent = {
   ],
 };
 
-/** The pull quote between "Why us?" and Vision & Mission (client's choice, Oct 2026; was Tom Fishburne). */
+/** The pull quote that closes the page, between "Why us?" and the clients (client's choice, Oct 2026; was Tom Fishburne). */
 export const quote: QuoteContent = {
   text: 'In the world of business, the people who are most successful are those who are doing what they love.',
   cite: 'Warren Buffett',

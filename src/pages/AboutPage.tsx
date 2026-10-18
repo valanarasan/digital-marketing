@@ -33,11 +33,11 @@ export function AboutPage() {
           indexLabel={aboutIndexLabel}
         />
         <WhoWeAre content={who} />
+        <VisionMission content={visionMission} />
+        <Team content={team} />
         <Story content={story} />
         <WhyUs content={whyUs} />
         <Quote content={quote} />
-        <VisionMission content={visionMission} />
-        <Team content={team} />
         <Clients content={clientsIntro} clients={clients} />
       </main>
       <Footer content={footer} business={business} nav={footerNav} />
