@@ -43,7 +43,7 @@ manually on GitHub Pages.
 In order: who we are, vision and mission, the team, our story, why choose us, a closing quote
 from Warren Buffett, and clients.
 Each person shows a photo, role and a short summary; "Read full profile" opens a short
-biography, their education, a closing tagline and a LinkedIn icon beside their name:
+biography, their education, their companies and roles, a closing tagline and a LinkedIn icon beside their name:
 
 | Group | People |
 | --- | --- |

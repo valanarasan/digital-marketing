@@ -131,6 +131,16 @@ function ProfileButton({
                     </ul>
                   </>
                 ) : null}
+                {person.experience ? (
+                  <>
+                    <h3 className={styles.dialogLabel}>{content.experienceLabel}</h3>
+                    <ul role="list" className={styles.facts}>
+                      {person.experience.map((line) => (
+                        <li key={line}>{line}</li>
+                      ))}
+                    </ul>
+                  </>
+                ) : null}
                 {person.tagline ? <p className={styles.tagline}>{person.tagline}</p> : null}
               </div>
             </div>,

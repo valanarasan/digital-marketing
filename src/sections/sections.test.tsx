@@ -698,6 +698,8 @@ describe('Team', () => {
     const dialog = screen.getByRole('dialog');
     expect(within(dialog).getByRole('heading', { name: team.educationLabel })).toBeInTheDocument();
     expect(within(dialog).getByText(team.founder.education![0])).toBeInTheDocument();
+    expect(within(dialog).getByRole('heading', { name: team.experienceLabel })).toBeInTheDocument();
+    expect(within(dialog).getByText(team.founder.experience![0])).toBeInTheDocument();
     expect(within(dialog).getByText(team.founder.tagline!)).toBeInTheDocument();
     expect(within(dialog).getByRole('link', { name: /on LinkedIn/ })).toHaveAttribute(
       'href',

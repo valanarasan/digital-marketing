@@ -210,7 +210,7 @@ domain (as repo variables; the workflows pass them through).
   (`advisors`) as equal-height cards, four across on wide screens and two by two on tablets. Each
   card shows the name, role, a `focus` line and a short `summary` (about 45 words); "Read full
   profile" opens a modal dialog with one short `bio` paragraph (about 70 words), `education`,
-  `tagline` and a LinkedIn icon beside the name (`linkedinUrl`). The dialog keeps profiles short on
+  `experience` (the companies and roles), `tagline` and a LinkedIn icon beside the name (`linkedinUrl`). The dialog keeps profiles short on
   purpose; a test caps each at 80 words. The dialog
   uses the shared `useModal` hook (`src/hooks/useModal.ts`, also used by the contact popup) for
   focus, Escape, the Tab trap and focus return, and `data-lenis-prevent` so it scrolls natively.

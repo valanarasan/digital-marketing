@@ -62,7 +62,7 @@ export const visionMission: VisionMissionContent = {
 
 /**
  * The team, from the profiles the client supplied (Oct 2026). Each card shows a short summary;
- * the full profile (a short bio, education, tagline, LinkedIn) opens in a dialog. Photos are
+ * the full profile (a short bio, education, companies, tagline, LinkedIn) opens in a dialog. Photos are
  * the client's own, cropped to the frame, the founder 4:5, everyone else 5:4 (see
  * photos/team/README.md). Without one, the initials stand in.
  */
@@ -77,10 +77,14 @@ export const team: TeamContent = {
     focus: 'Finance, Operations and Sales',
     photo: { src: 'team/vijayalakshmi-girish.webp', width: 900, height: 1125 },
     summary:
-      'A resilient entrepreneur, visionary leader and business strategist with over 17 years of experience as Managing Director of Gavin Technologies, and now a Director of Hiranmaye E Mart. She is the driving force behind Hiranmaye Digital and is passionate about empowering women.',
+      'A resilient entrepreneur, visionary leader and business strategist with over 17 years of total experience, including as Managing Director of Gavin Technologies and a leader of Hiranmaye E Mart. She is the driving force behind Hiranmaye Digital and is passionate about empowering women.',
     education: ['Bangalore University: Bachelor of Commerce (BCom), Business/Commerce, General'],
+    experience: [
+      'Managing Director, Gavin Technologies Pvt Ltd (2008–2013)',
+      'Managing Director, Hiranmaye E Mart Pvt Ltd (2020–Present)',
+    ],
     bio: [
-      'Vijayalakshmi is a resilient entrepreneur and business strategist who led Gavin Technologies as Managing Director and continues to lead Hiranmaye E Mart Pvt. Ltd. As the driving force behind Hiranmaye Digital, she envisions empowering businesses through strategic digital marketing and sustainable growth. She is also a Reiki Grand Master, deeply passionate about empowering women to discover their potential and become independent leaders.',
+      'Vijayalakshmi is a resilient entrepreneur and business strategist with over 17 years of total experience, including leading Gavin Technologies as Managing Director and Hiranmaye E Mart Pvt. Ltd. As the driving force behind Hiranmaye Digital, she envisions empowering businesses through strategic digital marketing and sustainable growth. She is also a Reiki Grand Master, deeply passionate about empowering women to discover their potential and become independent leaders.',
     ],
     tagline:
       'Resilient in Spirit. Visionary in Business. Relentless in Growth. Passionate About Empowering Women.',
@@ -116,6 +120,10 @@ export const team: TeamContent = {
       summary:
         'An academician, strategic marketing expert and business mentor with over two decades in management education and marketing strategy. She turns complex business concepts into practical, actionable strategies.',
       education: ['PhD; FDP, Indian Institute of Management, Ahmedabad'],
+      experience: [
+        'Dean – Outreach, Thiagarajar School of Management, Madurai',
+        'Corporate trainer and business consultant for MSMEs',
+      ],
       bio: [
         'Dr. Manjula Nagarajan is an academician, strategic marketing expert, corporate trainer and business mentor with over two decades in management education and institutional leadership. As Dean – Outreach at Thiagarajar School of Management, Madurai, she specialises in marketing strategy, brand management, consumer behaviour and rural marketing. As our Independent External Advisor, she mentors the team through training and strategic guidance, helping us sharpen our value proposition and make informed decisions.',
       ],
@@ -130,6 +138,11 @@ export const team: TeamContent = {
       summary:
         'A business leader and entrepreneur with over 25 years across leadership, strategic marketing and renewable energy. Founder Director & CEO of SAEL Energy Solutions, Managing Director & CEO of Yellow Gold Energy, and Director at RedAmber.',
       education: ['University of Madras: MBA, Marketing'],
+      experience: [
+        'Founder Director & CEO, SAEL Energy Solutions LLP',
+        'Managing Director & CEO, Yellow Gold Energy Pvt. Ltd.',
+        'Director, RedAmber General Trading LLC',
+      ],
       bio: [
         'Saji is a business leader and entrepreneur with over 25 years in leadership, strategic marketing and renewable energy. As Founder Director & CEO of SAEL Energy Solutions, Managing Director & CEO of Yellow Gold Energy and Director at RedAmber, he turns ideas into growth opportunities, builds strategic partnerships and spots risks early. At Hiranmaye Digital, his insights help sharpen strategic decisions and drive sustainable growth.',
       ],
@@ -148,6 +161,7 @@ export const team: TeamContent = {
         'Audencia International MBA: Business Administration, Management and Operations',
         'Symbiosis Institute of Management Studies: Executive PGDM, Human Resources Development',
       ],
+      experience: ['Fractional CHRO', 'Principal Consultant, The Perennial Global'],
       bio: [
         'Abhishek is a senior HR and talent leader with nearly 21 years in talent management, leadership development and organisational transformation, and a Fractional CHRO and Principal Consultant at The Perennial Global. An exceptional speaker and mentor, he guides Hiranmaye Digital in strategic planning, team development and professional training, helping build high-performing, growth-oriented teams.',
       ],
@@ -166,6 +180,10 @@ export const team: TeamContent = {
         'University of Birmingham: MSc, International Business (pursuing, Sep 2026 – Sep 2027)',
         'Christ University, Bangalore: BBA, Marketing (Jan 2022 – Apr 2025)',
       ],
+      experience: [
+        'Associate Partner, Restless Dreamers',
+        'Previously at The LIT School, Snapchat and Under25',
+      ],
       bio: [
         'Harshitha is a marketing professional, business strategist, content writer and Bharatanatyam dancer, and Associate Partner at Restless Dreamers, with earlier experience at The LIT School, Snapchat and Under25. At Hiranmaye Digital she brings creativity, technology and strategic insight together, with expertise in AI-enabled tools, social media and content that helps businesses build future-ready marketing strategies.',
       ],
@@ -175,6 +193,7 @@ export const team: TeamContent = {
   ],
   moreLabel: 'Read full profile',
   educationLabel: 'Education',
+  experienceLabel: 'Companies',
   linkedinLabel: 'LinkedIn',
   closeLabel: 'Close',
 };
