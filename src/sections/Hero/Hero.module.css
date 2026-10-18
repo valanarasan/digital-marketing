@@ -33,7 +33,7 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
   gap: 16px;
   padding-block: 18px;
@@ -41,12 +41,6 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(243, 239, 230, 0.66);
-}
-
-.mastMark {
-  display: block;
-  width: 38px;
-  height: auto;
 }
 
 .location {
@@ -198,7 +192,7 @@
   }
 
   .mast {
-    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .location {

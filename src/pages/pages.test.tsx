@@ -14,7 +14,7 @@ const currentLink = () =>
 describe('AboutPage', () => {
   it('lays out Inside Hiranmaye in order, with its menu link marked current', () => {
     render(<AboutPage />);
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Inside Hiranmaye.');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Inside Hiranmaye...');
     const ids = Array.from(screen.getByRole('main').querySelectorAll('section[id]')).map(
       (section) => section.id,
     );

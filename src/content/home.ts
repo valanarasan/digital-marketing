@@ -189,12 +189,6 @@ export const footer: FooterContent = {
     { label: 'Privacy Policy', href: 'privacy-policy/' },
     { label: 'Terms', href: 'terms-and-conditions/' },
   ],
-  credit: {
-    prefix: 'Designed & built by',
-    name: 'Arasan',
-    linkedinUrl: 'https://www.linkedin.com/in/valan-arasan/',
-    email: 'avalanarasan@gmail.com',
-  },
 };
 
 /** The footer keeps its own "Let’s Connect" link; the header folds it into the CTA. */

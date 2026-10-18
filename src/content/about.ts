@@ -16,7 +16,7 @@ import type {
 export const aboutHero: PageHeroContent = {
   kicker: 'About us',
   title: 'Inside',
-  titleAccent: 'Hiranmaye.',
+  titleAccent: 'Hiranmaye...',
   intro: 'We build brands that are easier to discover, harder to ignore and engineered to grow!',
 };
 

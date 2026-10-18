@@ -42,9 +42,6 @@ export function Hero({ header, content, contentId, onExplore }: HeroProps) {
       <Container>
         <div className={styles.mast}>
           <span data-anim="mast">{content.eyebrow}</span>
-          <span data-anim="mast">
-            <BrandLogo variant="mark" className={styles.mastMark} decorative />
-          </span>
           <span data-anim="mast" className={styles.location}>
             {content.location}
           </span>

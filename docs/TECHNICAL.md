@@ -131,6 +131,34 @@ The `seo` plugin in `vite.config.ts` also:
 
 Each page's `<title>`, description and Open Graph text are written in that page's `index.html`.
 
+### Performance
+
+Total build output is about 1.8 MB (it was 4.3 MB before the work below).
+
+- **Chunks** (`build.rolldownOptions.output.codeSplitting` in `vite.config.ts`): `react` (219 KB,
+  68 KB gzipped), `motion` (GSAP and ScrollTrigger, 113 KB, 44 KB gzipped), and the site code
+  (74 KB, 25 KB gzipped). Libraries rarely change, so a redeploy leaves them in the visitor's
+  cache; only the site chunk is fetched again.
+- **Lenis** (smooth scrolling) is loaded with a dynamic `import('lenis')` in `startSmoothScroll`
+  (`src/motion/gsap.ts`), as its own 5 KB file after the page is up. Until it arrives, scrolling
+  is the browser's own; if the component unmounts first, it is never started.
+- **GSAP is not lazy-loaded.** The prerendered page stays hidden until the motion scenes have set
+  their start poses, so deferring GSAP would not show the page sooner, and showing it earlier would
+  flash the finished layout before the animations start.
+- **Fonts:** the `fontPreload` plugin preloads the Geist and Playfair Display (italic) Latin
+  woff2 files, whose fingerprinted names it reads from the bundle.
+- **Images:** the three large client logos are WebP at 1200 px (800 px for the square one),
+  about 110 KB together instead of 2.8 MB. The untouched PNG originals are in `photos/clients/`;
+  make any new web copy from those. Below-the-fold images use `loading="lazy"` (client logos,
+  team photos, the footer logo via `BrandLogo`'s `lazy` prop, the map iframe). React's prerender
+  adds a preload for every non-lazy `<img>`, so an image far down the page should be lazy.
+- **Server** (`deploy/web.config`): gzip for text, a one-year cache for the fingerprinted files in
+  `/assets`, and a 30-day cache for `/brand`, `/clients` and `/team`. HTML is not cached, so a
+  deploy shows straight away. IIS cannot serve pre-compressed Brotli without a module, so none is
+  built. After changing `web.config`, check the site still loads: a rule the host locks gives a 500.
+- The `vite.config.ts` import of `business.ts` uses the `.ts` extension, which Vite's native
+  config loader requires.
+
 ## 7. Environment variables
 
 | Variable | Used for | Default |
@@ -172,8 +200,9 @@ domain (as repo variables; the workflows pass them through).
   still a link to `#contact` as a no-JS fallback. It stops the click reaching Lenis (otherwise the
   page scrolls behind the popup), traps Tab inside the dialog, focuses the dialog on open, and
   returns focus without scrolling.
-- **Footer** `#contact` carries the contact details, map, socials, legal links and the
-  designer credit (`footer.credit` in `home.ts`). The map is the Google Maps listing's own
+- **Footer** `#contact` carries the contact details, map, socials and legal links. There is no
+  visible designer credit (removed at the client's request, Oct 2026); the designer is named in
+  `public/humans.txt` and the `author` meta tags only. The map is the Google Maps listing's own
   "Embed a map" URL (`business.office.embedUrl`), so it shows the business by name;
   `business.office.mapsUrl` is the "Open in Google Maps" share link.
 - **Team** (`src/sections/Team/`, content `team` in `about.ts`): one
@@ -185,7 +214,8 @@ domain (as repo variables; the workflows pass them through).
 - **Team photos** are the client's own, upscaled 2× with EDSR where the original was small, and
   cropped to 4:5 (founder, 900 × 1125) or 5:4 (cards, 900 × 720) WebP. Masters and the method:
   `photos/team/README.md`.
-- **Client logos** are the clients' original files, byte for byte. The one exception is KEJ,
+- **Client logos** are the clients' own artwork, never recoloured or cropped. The three large
+  PNGs are shipped as WebP (see Performance); the originals are in `photos/clients/`. KEJ is
   traced to `public/clients/kej.svg` because its file was too small to stay sharp (README).
 
 ## 9. Deployment
@@ -228,7 +258,7 @@ keep it for review, not as the public address.
 | Change the default enquiry message | `inquiry` in `business.ts` |
 | Change colours or fonts | `src/styles/tokens.css` |
 | Change anchor-scroll speed | `ANCHOR_DURATION` in `src/motion/gsap.ts` |
-| Change the designer credit | `footer.credit` in `src/content/home.ts`, `public/humans.txt`, the `author` meta tags |
+| Change the designer credit | `public/humans.txt` and the `author` meta tags (there is no visible credit; commit `4e711b1` shows how it was built) |
 | Update the privacy policy or terms | `src/content/legal.ts` (and review the wording) |
 | Change the share image | replace `public/og-image.png` (1200×630) |
 | Add a client logo | file in `public/clients/`, entry in `src/content/clients.ts` |

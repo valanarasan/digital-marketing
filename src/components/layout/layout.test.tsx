@@ -111,19 +111,10 @@ describe('Header', () => {
 });
 
 describe('Footer', () => {
-  it('credits whoever built the site, with LinkedIn and email', () => {
+  it('shows no designer credit (the client asked; it stays in humans.txt and the author tag)', () => {
     render(<Footer content={footer} business={business} nav={footerNav} />);
-    expect(screen.getByText(new RegExp(footer.credit.prefix))).toHaveTextContent(
-      footer.credit.name,
-    );
-    expect(screen.getByRole('link', { name: /on LinkedIn/ })).toHaveAttribute(
-      'href',
-      footer.credit.linkedinUrl,
-    );
-    expect(screen.getByRole('link', { name: 'Email' })).toHaveAttribute(
-      'href',
-      `mailto:${footer.credit.email}`,
-    );
+    expect(screen.queryByText(/Designed & built by/)).not.toBeInTheDocument();
+    expect(document.querySelector('a[href*="linkedin.com/in/"]')).toBeNull();
   });
 
   it('carries every contact route', () => {

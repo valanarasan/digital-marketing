@@ -36,7 +36,7 @@ manually on GitHub Pages.
 6. **Process.** Five steps: Diagnose, Architect, Activate, Optimise, Compound.
 7. **Clients.** Logos of Moto Car Spa, KEJ, Yellow Gold Energy, Nature's Soul Resort, SAEL and
    Stern Promoters.
-8. **Footer.** Contact details, map, social links, About us, legal links and the designer credit.
+8. **Footer.** Contact details, map, social links, About us and legal links.
 
 ### Inside Hiranmaye
 Who we are, our story, why choose us, vision and mission, the team, and clients.
@@ -87,6 +87,14 @@ The footer also shows two phone numbers (+91 99006 68383 and +91 63810 78392), t
 - The sitemap and robots file sit at the domain root, so Google can pick them up. Submit the
   sitemap (`https://hiranmayedigital.com/sitemap.xml`) in Google Search Console.
 
+## Speed
+
+The pages are built to load quickly: the three large client logos were shrunk from about 2.8 MB to
+about 110 KB, the code is split so visitors reuse what they already downloaded, fonts load early,
+images below the fold load only when scrolled to, and the server compresses text and remembers
+files for repeat visits. Total site size dropped from 4.3 MB to 1.8 MB. When adding new images,
+ask the developer to prepare them first; a few raw photos can undo this.
+
 ## Accessibility
 
 The site is built to meet WCAG 2.1 Level AA: it works with a keyboard, has a "skip to content"
@@ -131,5 +139,7 @@ not lead to work, 30 days to answer privacy requests) match how the company real
 
 ## Credits
 
-Designed and built by Arasan (LinkedIn: https://www.linkedin.com/in/valan-arasan/). The credit
-appears in the footer of every page.
+Designed and built by Arasan (LinkedIn: https://www.linkedin.com/in/valan-arasan/). At the
+client's request there is no credit on the page itself (removed October 2026). The site names
+its designer only where visitors don't see it: `humans.txt` (hiranmayedigital.com/humans.txt)
+and the `author` tag in each page's HTML.

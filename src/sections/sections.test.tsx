@@ -566,7 +566,7 @@ describe('PageHero', () => {
       />,
     );
     expect(screen.getByTestId('header')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Inside Hiranmaye.');
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Inside Hiranmaye...');
     expect(screen.getByText(aboutHero.intro!)).toBeInTheDocument();
     const index = screen.getByRole('navigation', { name: 'On this page' });
     expect(within(index).getAllByRole('link')).toHaveLength(aboutIndex.length);
@@ -698,6 +698,21 @@ describe('Team', () => {
       'Independent External Advisor',
     ]);
     expect(within(card).queryByText(team.moreLabel)).not.toBeInTheDocument();
+  });
+
+  it('shows a director without a photo by initials, with no fixed portrait frame', () => {
+    const director = {
+      id: 'new-director',
+      name: 'New Director',
+      role: 'Director',
+      bio: ['Joins the board.'],
+    };
+    render(<Team content={{ ...team, directors: [director] }} />);
+    const block = screen.getByRole('heading', { name: director.name }).parentElement!
+      .parentElement!;
+    expect(within(block).queryByRole('img')).not.toBeInTheDocument();
+    expect(block).toHaveTextContent('ND');
+    expect(block).toHaveTextContent('Joins the board.');
   });
 });
 
