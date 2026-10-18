@@ -616,7 +616,7 @@ describe('VisionMission', () => {
 describe('Team', () => {
   const everyone = [team.founder, ...team.directors, ...team.advisors];
 
-  it('introduces the founder in full, the directors alongside, then the advisors', () => {
+  it('introduces the founder and the director together, then the advisors', () => {
     render(<Team content={team} />);
     expect(screen.getByRole('heading', { level: 2, name: team.heading })).toBeInTheDocument();
     expect(
@@ -624,57 +624,81 @@ describe('Team', () => {
     ).toEqual([team.leadershipLabel, team.advisorLabel]);
     for (const person of everyone) {
       expect(screen.getByRole('heading', { name: person.name })).toBeInTheDocument();
-      for (const paragraph of person.bio) {
-        expect(screen.getByText(paragraph)).toBeInTheDocument();
-      }
+      expect(screen.getByText(person.summary!)).toBeInTheDocument();
     }
     // The founder and the director sit together under the one "Leadership" heading.
     const leaders = screen.getByRole('heading', { name: team.leadershipLabel }).nextElementSibling!;
     expect(within(leaders as HTMLElement).getAllByRole('heading', { level: 4 })).toHaveLength(2);
     expect(leaders).toHaveTextContent('Founder Director');
-    expect(leaders).toHaveTextContent('Praveena Pradeep');
-    expect(screen.getAllByText('Independent External Advisor')).toHaveLength(team.advisors.length);
+    expect(leaders).toHaveTextContent('Finance, Operations and Sales');
+    expect(leaders).toHaveTextContent('Technology and Operations');
   });
 
-  it('lists Saji, Abhishek and Harshitha as independent external advisors, in that order', () => {
+  it('lists the advisors in order, each an independent external advisor', () => {
     expect(team.advisors.map((person) => person.name)).toEqual([
+      'Dr. Manjula Nagarajan',
       'Saji Philip',
       'Abhishek Mishra',
       'Harshitha Girish',
     ]);
+    for (const advisor of team.advisors) {
+      expect(advisor.role).toBe('Independent External Advisor');
+    }
     expect(team.directors.map((person) => person.name)).toEqual(['Praveena Pradeep']);
     expect(team.founder.role).toBe('Founder Director');
   });
 
-  it('keeps every bio to at most two paragraphs, the second behind a disclosure on a card', () => {
-    expect(team.founder.bio).toHaveLength(2);
-    for (const person of [...team.directors, ...team.advisors]) {
-      expect(person.bio.length).toBeLessThanOrEqual(2);
+  it('keeps every card summary short, so the cards stay the same height', () => {
+    for (const person of everyone) {
+      expect(person.summary!.split(/\s+/).length).toBeLessThanOrEqual(50);
     }
   });
 
-  it('opens a long profile with its first paragraph and keeps the rest behind a disclosure', async () => {
-    const long = { id: 'long', name: 'Long Profile', bio: ['First.', 'Second.', 'Third.'] };
-    render(<Team content={{ ...team, advisors: [long] }} />);
-    const card = screen.getByRole('heading', { name: long.name }).closest('article')!;
-    expect(card).toHaveTextContent('First.');
-    const summary = within(card).getByText(team.moreLabel);
-    const details = summary.closest('details')!;
-    expect(details).not.toHaveAttribute('open');
-    await userEvent.click(summary);
-    expect(details).toHaveAttribute('open');
-    expect(within(details).getByText('Third.')).toBeInTheDocument();
+  it('opens the full profile in a dialog and returns focus when it closes', async () => {
+    render(<Team content={team} />);
+    const saji = team.advisors[1];
+    const open = screen.getByRole('button', { name: `${team.moreLabel}: ${saji.name}` });
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    await userEvent.click(open);
+    const dialog = screen.getByRole('dialog', { name: saji.name });
+    for (const paragraph of saji.bio) {
+      expect(within(dialog).getByText(paragraph)).toBeInTheDocument();
+    }
+    expect(within(dialog).getByText(saji.education![0])).toBeInTheDocument();
+    expect(within(dialog).getByText(saji.tagline!)).toBeInTheDocument();
+    expect(within(dialog).getByRole('link', { name: /View on LinkedIn/ })).toHaveAttribute(
+      'href',
+      saji.linkedinUrl,
+    );
+    await userEvent.keyboard('{Escape}');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(open).toHaveFocus();
+  });
+
+  it('closes the dialog from its button and from the backdrop', async () => {
+    render(<Team content={team} />);
+    const open = screen.getByRole('button', { name: new RegExp(team.founder.name) });
+    await userEvent.click(open);
+    await userEvent.click(screen.getByRole('button', { name: team.closeLabel }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    await userEvent.click(open);
+    const dialog = screen.getByRole('dialog');
+    await userEvent.click(dialog);
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    await userEvent.click(dialog.parentElement!);
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it("shows the founder's education and experience in her profile", async () => {
+    render(<Team content={team} />);
+    await userEvent.click(screen.getByRole('button', { name: new RegExp(team.founder.name) }));
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByRole('heading', { name: team.experienceLabel })).toBeInTheDocument();
+    expect(within(dialog).getByText(team.founder.experience![1])).toBeInTheDocument();
   });
 
   it('shows everyone on the page with their photo', () => {
     render(<Team content={team} />);
-    expect(everyone.map((person) => person.name)).toEqual([
-      'Vijayalakshmi Girish',
-      'Praveena Pradeep',
-      'Saji Philip',
-      'Abhishek Mishra',
-      'Harshitha Girish',
-    ]);
     for (const person of everyone) {
       const photo = screen.getByRole('img', { name: `Portrait of ${person.name}` });
       expect(photo).toHaveAttribute('src', `/${person.photo!.src}`);
@@ -697,22 +721,27 @@ describe('Team', () => {
     expect(Array.from(card.querySelectorAll('p')).map((p) => p.textContent)).toEqual([
       'Independent External Advisor',
     ]);
-    expect(within(card).queryByText(team.moreLabel)).not.toBeInTheDocument();
+    expect(within(card).queryByRole('button')).not.toBeInTheDocument();
   });
 
-  it('shows a director without a photo by initials, with no fixed portrait frame', () => {
-    const director = {
-      id: 'new-director',
-      name: 'New Director',
-      role: 'Director',
-      bio: ['Joins the board.'],
-    };
-    render(<Team content={{ ...team, directors: [director] }} />);
-    const block = screen.getByRole('heading', { name: director.name }).parentElement!
-      .parentElement!;
-    expect(within(block).queryByRole('img')).not.toBeInTheDocument();
-    expect(block).toHaveTextContent('ND');
-    expect(block).toHaveTextContent('Joins the board.');
+  it('shows a leader with initials and no focus line when no photo or focus is given', () => {
+    const founder = { id: 'f', name: 'Fresh Founder', role: 'Founder', bio: ['Hello.'] };
+    render(<Team content={{ ...team, founder }} />);
+    const card = screen.getByRole('heading', { name: founder.name }).parentElement!;
+    expect(card).toHaveTextContent('Hello.');
+    expect(card.parentElement).toHaveTextContent('FF');
+    expect(within(card).queryByText('Finance, Operations and Sales')).not.toBeInTheDocument();
+  });
+
+  it('falls back to the first paragraph, and leaves out facts it does not have', async () => {
+    const plain = { id: 'plain', name: 'Plain Person', bio: ['First.', 'Second.'] };
+    render(<Team content={{ ...team, advisors: [plain] }} />);
+    expect(screen.getByText('First.')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /Plain Person/ }));
+    const dialog = screen.getByRole('dialog');
+    expect(within(dialog).getByText('Second.')).toBeInTheDocument();
+    expect(within(dialog).queryByRole('link')).not.toBeInTheDocument();
+    expect(within(dialog).queryByRole('heading', { name: team.educationLabel })).toBeNull();
   });
 });
 

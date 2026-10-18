@@ -1,7 +1,8 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import type { MouseEvent, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 import { business, inquiry } from '@/content';
+import { useModal } from '@/hooks';
 import { whatsappLink } from '@/lib/whatsapp';
 import { ButtonLink } from './ButtonLink';
 import { SocialIcon } from './SocialIcon';
@@ -28,42 +29,7 @@ export function ContactCta({ label, children, variant, className, onOpen }: Cont
   const dialogRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLAnchorElement>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    const trigger = triggerRef.current;
-    // Focus the dialog itself, so no control looks pre-selected until the visitor tabs to one.
-    dialogRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setOpen(false);
-        return;
-      }
-      if (event.key !== 'Tab') return;
-      // Keep Tab inside the dialog: it is modal, so the page behind must not take focus.
-      // The dialog is mounted while open and always holds the close button.
-      const dialog = dialogRef.current!;
-      const focusable = dialog.querySelectorAll<HTMLElement>('a[href], button');
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      const active = document.activeElement;
-      if (!dialog.contains(active)) {
-        event.preventDefault();
-        first.focus();
-      } else if (event.shiftKey && (active === first || active === dialog)) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && active === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      // Hand focus back without scrolling: the page must stay where the visitor is.
-      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
-    };
-  }, [open]);
+  useModal(open, dialogRef, () => setOpen(false), triggerRef);
 
   const show = (event: MouseEvent) => {
     // Not just preventDefault: smooth scroll listens for anchor clicks on window and would

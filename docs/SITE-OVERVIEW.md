@@ -42,12 +42,13 @@ manually on GitHub Pages.
 ### Inside Hiranmaye
 In order: who we are, vision and mission, the team, our story, why choose us, a closing quote
 from Warren Buffett, and clients.
-The team section shows each person with a photo and a short bio:
+Each person shows a photo, role and a short summary; "Read full profile" opens their education,
+experience, full biography, closing tagline and LinkedIn link:
 
 | Group | People |
 | --- | --- |
 | Leadership | Vijayalakshmi Girish, Founder Director; Praveena Pradeep, Director |
-| Advisors | Saji Philip, Abhishek Mishra, Harshitha Girish, each an Independent External Advisor |
+| Advisors | Dr. Manjula Nagarajan, Saji Philip, Abhishek Mishra, Harshitha Girish, each an Independent External Advisor |
 
 The photos are the people's own, enlarged for sharp display and cropped to the same frame;
 nothing is retouched.

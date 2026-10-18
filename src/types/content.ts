@@ -235,10 +235,21 @@ export interface Person {
   name: string;
   /** Only where the content gives one. */
   role?: string;
-  /** Paragraphs; empty while a profile is still to come. */
+  /** A line under the role: the person's area at Hiranmaye or the post that defines them. */
+  focus?: string;
+  /** Two or three sentences shown on the card; falls back to the first bio paragraph. */
+  summary?: string;
+  /** The full profile, in paragraphs, shown in the profile dialog; empty while still to come. */
   bio: string[];
   /** Where a photo has been supplied; otherwise the person's initials stand in. */
   photo?: PersonPhoto;
+  /** Headline credentials, as one line. */
+  credential?: string;
+  education?: string[];
+  experience?: string[];
+  /** A closing line of three short phrases, set in the italic serif. */
+  tagline?: string;
+  linkedinUrl?: string;
 }
 
 export interface TeamContent {
@@ -251,8 +262,12 @@ export interface TeamContent {
   /** Independent external advisors, listed in their own group. */
   advisorLabel: string;
   advisors: Person[];
-  /** Label for the disclosure that holds the rest of a long profile. */
+  /** Label of the button that opens a full profile. */
   moreLabel: string;
+  educationLabel: string;
+  experienceLabel: string;
+  linkedinLabel: string;
+  closeLabel: string;
 }
 
 /** One of the services on the Solutions page. Only `id`, `name` and `paragraphs` are always present. */

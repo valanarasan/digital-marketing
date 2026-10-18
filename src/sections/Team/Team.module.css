@@ -115,8 +115,21 @@
 
 .people {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+  grid-template-columns: 1fr;
   gap: clamp(16px, 2vw, 24px);
+}
+
+/* Four advisors: two by two on tablets, four across on wide screens. */
+@media (min-width: 640px) {
+  .people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .people {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 .people > li {
@@ -150,12 +163,30 @@
   color: var(--text-muted-on-light);
 }
 
-.more {
-  margin-top: 4px;
+.focus {
+  margin-top: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-gold-deep);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cardBody .summary {
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 .summary {
   display: inline-flex;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
   align-items: center;
   min-height: 44px;
   margin-top: 8px;
@@ -169,4 +200,124 @@
   .founder {
     grid-template-columns: 1fr;
   }
+}
+
+/* The full-profile dialog. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  background: rgba(6, 12, 23, 0.65);
+}
+
+.dialog {
+  position: relative;
+  width: min(100%, 720px);
+  max-height: min(88vh, 900px);
+  overflow-y: auto;
+  padding: clamp(28px, 3.6vw, 48px);
+  border-radius: var(--radius-card);
+  background: var(--color-white);
+  color: var(--color-navy);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.7);
+}
+
+.dialog:focus {
+  outline: none;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-gold-deep);
+  border-radius: var(--radius-pill);
+  font-size: 26px;
+  line-height: 1;
+  color: var(--color-gold-deep);
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+.close:hover {
+  background: var(--color-gold-deep);
+  color: var(--color-white);
+}
+
+.dialogName {
+  margin: 0 44px 0 0;
+  font-size: clamp(26px, 2.6vw, 36px);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.dialogFocus {
+  margin-top: 6px;
+  font-weight: 500;
+  color: var(--color-gold-deep);
+}
+
+.credential {
+  margin-top: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted-on-light);
+}
+
+.dialogBody {
+  display: grid;
+  gap: 14px;
+  margin-top: 22px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-on-light);
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--color-navy);
+}
+
+.dialogLabel {
+  margin: 26px 0 8px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold-deep);
+}
+
+.facts {
+  display: grid;
+  gap: 6px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-muted-on-light);
+}
+
+.tagline {
+  margin-top: 28px;
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 2vw, 26px);
+  font-style: italic;
+  line-height: 1.3;
+  color: var(--color-gold-deep);
+}
+
+.linkedin {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 20px;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--color-navy);
 }
